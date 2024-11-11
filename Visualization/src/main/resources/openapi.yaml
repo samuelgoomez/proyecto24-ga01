@@ -1,0 +1,915 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: desarrollo@ejemplo.com
+    name: Equipo de Desarrollo
+  description: "Este API REST se encarga de gestionar la información relacionada con\
+    \ las visualizaciones y las recomendaciones dentro del microservicio de Visualizaciones\
+    \ y Recomendaciones del sistema de Netflix. Proporciona diversos endpoints para\
+    \ rastrear el historial de visualización de los usuarios, analizar patrones de\
+    \ comportamiento y ofrecer recomendaciones personalizadas basadas en sus preferencias\
+    \ y actividades. Permite realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar)\
+    \ sobre los datos de visualización y preferencias, asegurando que las recomendaciones\
+    \ sean precisas y se adapten a los gustos de cada usuario. Esta API actúa como\
+    \ un puente entre el sistema de análisis y el frontend, garantizando que los datos\
+    \ sobre el consumo de contenido se mantengan actualizados y que las recomendaciones\
+    \ se presenten en tiempo real para mejorar la experiencia del usuario en la plataforma."
+  title: API de Visualizaciones y Recomendaciones
+  version: 1.0.0
+servers:
+- description: Servidor principal del microservicio de Visualizaciones y Recomendaciones
+  url: https://api.ejemplo.com/views
+tags:
+- description: Este endpoint maneja las diferentes operaciones sobre las visualizaciones
+  name: Visualization
+- description: Este endpoint maneja las diferentes operaciones sobre las recomendaciones
+  name: Recommendation
+paths:
+  /visualizations/{userID}:
+    delete:
+      description: Elimina todo el historial de visualizaciones del usuario autenticado
+        o una visualización
+      parameters:
+      - explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_visualizations__userID__delete_200_response'
+          description: Historial eliminado exitosamente
+        "400":
+          description: "Error en la solicitud, por ejemplo, el contenido no existe\
+            \ en el historial"
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Contenido o historial no encontrado
+        "500":
+          description: Error en el servidor
+      summary: Borrar historial de visualizaciones
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+    get:
+      description: Retorna la lista de contenido visualizado por el usuario autenticado.
+      parameters:
+      - description: ID del usuario.
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Visualizacion'
+                type: array
+          description: Lista de visualizaciones recuperada exitosamente
+        "401":
+          description: Usuario no autenticado
+        "500":
+          description: Error en el servidor
+      summary: Obtener visualizaciones de un usuario (historial de visualización)
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/film/{filmID}/play:
+    post:
+      description: Inicia la reproducción de una pelicula existente para el usuario
+        autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la pelicula que se va a reproducir.
+        explode: false
+        in: path
+        name: filmID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Reproducción iniciada
+        "400":
+          description: Error en los datos de reproducción
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Pelicula no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Iniciar la reproduccion de una pelicula.
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/serie/{serieID}/play:
+    post:
+      description: Inicia la reproducción de una serie existente para el usuario autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la serie que se va a reproducir.
+        explode: false
+        in: path
+        name: serieID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Reproducción iniciada
+        "400":
+          description: Error en los datos de reproducción
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Serie no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Iniciar la reproduccion de una serie.
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/film/{filmID}/end:
+    post:
+      description: Finaliza la reproducción de una pelicula existente para el usuario
+        autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la pelicula que se va a reproducir.
+        explode: false
+        in: path
+        name: filmID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "201":
+          description: Reproducción finalizada
+        "400":
+          description: Error en los datos de reproducción
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Pelicula no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Finaliza la reproduccion de una pelicula.
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/serie/{serieID}/end:
+    post:
+      description: Finaliza la reproducción de una serie existente para el usuario
+        autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la serie que se va a reproducir.
+        explode: false
+        in: path
+        name: serieID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "201":
+          description: Reproducción finalizada
+        "400":
+          description: Error en los datos de reproducción
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Serie no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Finaliza la reproduccion de una serie.
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/film/{filmID}/pause:
+    post:
+      description: Pausa la reproducción de la pelicula especificado por el usuario
+        autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la pelicula que se va a pausar.
+        explode: false
+        in: path
+        name: filmID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Reproducción pausada exitosamente
+        "400":
+          description: Error en los datos para pausar
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Pelicula no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Pausar reproducción
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/serie/{serieID}/pause:
+    post:
+      description: Pausa la reproducción de la serie especificado por el usuario autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la serie que se va a pausar.
+        explode: false
+        in: path
+        name: serieID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Reproducción pausada exitosamente
+        "400":
+          description: Error en los datos para pausar
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Serie no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Pausar reproducción
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/film/{filmID}/language:
+    post:
+      description: Cambia el idioma de reproducción de la pelicula especificado por
+        el usuario autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la pelicula que se va a cambiar el idioma.
+        explode: false
+        in: path
+        name: filmID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_visualization__userID__film__filmID__language_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Idioma cambiado exitosamente
+        "400":
+          description: Error en los datos para cambiar el idioma
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Pelicula no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Cambia el idioma para la pelicula
+      tags:
+      - Visualization
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/serie/{serieID}/language:
+    post:
+      description: Cambia el idioma de reproducción de la serie especificado por el
+        usuario autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la serie que se va a cambiar el idioma.
+        explode: false
+        in: path
+        name: serieID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_visualization__userID__film__filmID__language_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Idioma cambiado exitosamente
+        "400":
+          description: Error en los datos para cambiar el idioma
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Serie no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Cambia el idioma para la serie
+      tags:
+      - Visualization
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/film/{filmID}/subtitles:
+    post:
+      description: Activa o desactiva los subtítulos para la pelicula especificado
+        por el usuario autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la pelicula que se va a cambiar los subtitulos.
+        explode: false
+        in: path
+        name: filmID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_visualization__userID__film__filmID__subtitles_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Subtítulos activados exitosamente
+        "400":
+          description: Error en los datos para activar subtítulos
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Pelicula no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Cambia el estado de los subtítulos
+      tags:
+      - Visualization
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/serie/{serieID}/subtitles:
+    post:
+      description: Activa o desactiva los subtítulos para la serie especificado por
+        el usuario autenticado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la serie que se va a cambiar los subtitulos.
+        explode: false
+        in: path
+        name: serieID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_visualization__userID__film__filmID__subtitles_post_request'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpcionesVisualizacion'
+          description: Subtítulos activados exitosamente
+        "400":
+          description: Error en los datos para activar subtítulos
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Serie no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Cambia el estado de los subtítulos
+      tags:
+      - Visualization
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/film/{filmID}/download:
+    post:
+      description: Permite al usuario autenticado descargar la pelicula especificado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la pelicula que se va a descargar.
+        explode: false
+        in: path
+        name: filmID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_visualization__userID__film__filmID__download_post_200_response'
+          description: Descarga hecha exitosamente
+        "400":
+          description: Error en los datos para descargar la pelicula
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Pelicula no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Descargar contenido
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /visualization/{userID}/serie/{serieID}/download:
+    post:
+      description: Permite al usuario autenticado descargar la serie especificado.
+      parameters:
+      - description: ID del usuario
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      - description: ID de la serie que se va a descargar.
+        explode: false
+        in: path
+        name: serieID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/_visualization__userID__film__filmID__download_post_200_response'
+          description: Descarga hecha exitosamente
+        "400":
+          description: Error en los datos para descargar la serie
+        "401":
+          description: Usuario no autenticado
+        "404":
+          description: Serie no encontrada
+        "500":
+          description: Error en el servidor
+      summary: Descargar contenido
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+  /recommendations/film/{userID}:
+    get:
+      description: Retorna recomendaciones de peliculas basadas en las visualizaciones
+        del usuario autenticado.
+      parameters:
+      - description: ID del usuario.
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Recomendacion'
+                type: array
+          description: Recomendaciones recuperadas exitosamente
+        "401":
+          description: Usuario no autenticado
+        "500":
+          description: Error en el servidor
+      summary: Obtener recomendaciones personalizadas
+      tags:
+      - Recommendation
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Recommendation
+  /recommendations/serie/{userID}:
+    get:
+      description: Retorna recomendaciones de series basadas en las visualizaciones
+        del usuario autenticado.
+      parameters:
+      - description: ID del usuario.
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Recomendacion'
+                type: array
+          description: Recomendaciones recuperadas exitosamente
+        "401":
+          description: Usuario no autenticado
+        "500":
+          description: Error en el servidor
+      summary: Obtener recomendaciones personalizadas
+      tags:
+      - Recommendation
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Recommendation
+  /visualization/{userID}/continue-watching:
+    get:
+      description: Recupera los elementos que el usuario ha comenzado a ver pero no
+        ha terminado.
+      parameters:
+      - description: ID del usuario que desea obtener la lista de "Seguir Viendo"
+        explode: false
+        in: path
+        name: userID
+        required: true
+        schema:
+          example: 1
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Visualizacion'
+                type: array
+          description: Lista de contenido "Seguir Viendo" obtenida correctamente.
+        "404":
+          description: No se encontraron elementos "Seguir Viendo"
+        "500":
+          description: Error en el servidor
+      summary: Obtener la lista de contenido "Seguir Viendo"
+      tags:
+      - Visualization
+      x-accepts:
+      - application/json
+      x-tags:
+      - tag: Visualization
+components:
+  schemas:
+    Visualizacion:
+      example:
+        filmID: 1
+        visualizationID: 1
+        serieID: 1
+        userID: 1
+        visualizationDate: 2023-10-09T12:00:00Z
+        progreso: Viendo
+      properties:
+        visualizationID:
+          description: ID de la visualizacion
+          example: 1
+          type: integer
+        userID:
+          description: ID del usuario
+          example: 1
+          type: integer
+        filmID:
+          description: ID de pelicula
+          example: 1
+          type: integer
+        serieID:
+          description: ID de serie
+          example: 1
+          type: integer
+        visualizationDate:
+          description: Fecha y hora cuando se visualizó el contenido
+          example: 2023-10-09T12:00:00Z
+          format: date-time
+          type: string
+        progreso:
+          description: Progreso de la visualizacion
+          example: Viendo
+          type: string
+      type: object
+    OpcionesVisualizacion:
+      example:
+        estado: reproduciendo
+        visualizationID: 1
+        idioma: español
+        subtitulos: true
+      properties:
+        visualizationID:
+          description: ID único de la visualización
+          example: 1
+          type: integer
+        estado:
+          description: Estado de la visualización
+          example: reproduciendo
+          type: string
+        idioma:
+          description: Idioma de la reproducción
+          example: español
+          type: string
+        subtitulos:
+          description: Subtítulos activados.
+          example: true
+          type: boolean
+      type: object
+    Recomendacion:
+      example:
+        photoURL: https://example.com/photo.jpg
+        filmID: 1
+        serieID: 1
+        title: El Señor de los Anillos
+      properties:
+        filmID:
+          description: ID de pelicula
+          example: 1
+          type: integer
+        serieID:
+          description: ID de serie
+          example: 1
+          type: integer
+        title:
+          description: Titulo del contenido
+          example: El Señor de los Anillos
+          type: string
+        photoURL:
+          description: Foto del contenido
+          example: https://example.com/photo.jpg
+          type: string
+      type: object
+    UserData:
+      properties:
+        userID:
+          description: ID único del usuario
+          example: 1
+          type: integer
+        username:
+          description: Nombre de usuario
+          example: juanperez
+          type: string
+        password:
+          description: Contraseña
+          example: 1e34r
+          type: string
+        email:
+          description: Dirección de correo electrónico del usuario
+          example: juan.perez@example.com
+          format: email
+          type: string
+        name:
+          description: Nombre completo del usuario
+          example: Juan Pérez
+          type: string
+        createdAt:
+          description: Fecha y hora en que se creó el usuario
+          example: 2023-10-09T10:20:30Z
+          format: date-time
+          type: string
+        preferences:
+          description: Array con los id's de géneros de contenido que le gustan al
+            usuario
+          example:
+          - 1
+          - 3
+          - 4
+          items:
+            type: integer
+          type: array
+      required:
+      - createdAt
+      - email
+      - name
+      - password
+      - preferences
+      - userID
+      - username
+      type: object
+    _visualizations__userID__delete_200_response:
+      example:
+        message: Historial de visualizaciones eliminado exitosamente.
+      properties:
+        message:
+          example: Historial de visualizaciones eliminado exitosamente.
+          type: string
+      type: object
+    _visualization__userID__film__filmID__language_post_request:
+      properties:
+        languageCode:
+          description: Nombre del idioma a cambiar
+          example: Español
+          type: string
+      type: object
+    _visualization__userID__film__filmID__subtitles_post_request:
+      properties:
+        languageCode:
+          description: Especifica mediante Sí o No si desea activar los subtitulos
+          example: Sí
+          type: string
+      type: object
+    _visualization__userID__film__filmID__download_post_200_response:
+      example:
+        message: Descarga realizada exitosamente
+      properties:
+        message:
+          example: Descarga realizada exitosamente
+          type: string
+      type: object
