@@ -104,4 +104,15 @@ public class UserApiController implements UserApi {
         }
     }
 
+    @Override
+    public ResponseEntity<User> loginUser(@RequestParam(value = "username", required = true) String username,@RequestParam(value = "password", required = true) String password) {
+    	User user = userDAO.login(username,password);
+    	
+    	if (user != null) {
+            return ResponseEntity.ok(user);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
 }

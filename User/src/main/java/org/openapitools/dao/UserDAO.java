@@ -214,5 +214,38 @@ public class UserDAO {
 		 return users;
 	 }
 	 
+	 public User login (String username, String password) {
+		User user = null;
+		   String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+
+		   try (Connection connection = dataSource.getConnection(); // Obtener conexión
+			   PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			   preparedStatement.setString(1, username); // Establecer el userId en el PreparedStatement
+			   preparedStatement.setString(2, password);
+			   ResultSet resultSet = preparedStatement.executeQuery(); // Ejecutar la actualización
+
+			   if (resultSet.next()) {
+				   Integer[] preferencesArray = (Integer[]) resultSet.getArray("preferences").getArray();
+				   List<Integer> preferences = new ArrayList<>();
+				   for (Integer filmID : preferencesArray) {
+					   preferences.add(filmID);
+				   }
+				   
+				   user = new User (
+						   resultSet.getInt("userID"),
+						   resultSet.getString("username"),
+						   resultSet.getString("password"),
+						   resultSet.getString("email"),
+						   resultSet.getString("name"),
+						   resultSet.getTimestamp("createdAt").toInstant().atOffset(ZoneOffset.UTC),
+						   preferences
+				   );
+			   }
+		   } catch (SQLException e) {
+			   e.printStackTrace(); // Manejo de excepciones
+		   }
+
+		   return user; // Retornar true si se eliminaron filas, false de lo contrario
+	}
 	 	
 }
