@@ -58,5 +58,120 @@ public class FilmDAO {
     	return films;
     }
     
-  
+    public Film postFilm(Film film) {
+        String sql = "INSERT INTO films (title, genreID, releaseYear, duration, description, photoURL, arrayActors) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            // Establecer los parámetros para la consulta
+            preparedStatement.setString(1, film.getTitle());
+            preparedStatement.setInt(2, film.getGenreID());
+            preparedStatement.setInt(3, film.getReleaseYear());
+            preparedStatement.setInt(4, film.getDuration());
+            preparedStatement.setString(5, film.getDescription());
+            preparedStatement.setString(6, film.getPhotoURL());
+
+            java.sql.Array actorsArray = connection.createArrayOf("integer", film.getArrayActors().toArray(new Integer[0]));
+            preparedStatement.setArray(7, actorsArray);
+
+            // Ejecutar la consulta
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows > 0) {
+                // Obtener el ID generado automáticamente
+                try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        film.setFilmID(generatedKeys.getInt(1)); // Establecer el ID en el objeto Film
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al insertar la película", e);
+        }
+
+        return film;  // Devolver el objeto Film con el ID generado
+    }
+
+    public Film getFilmById(Integer filmID) {
+        Film film = null;
+        String sql = "SELECT * FROM films WHERE filmID = ?";
+
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, filmID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+            	
+            	Integer[] actorArray = (Integer[]) resultSet.getArray("arrayActors").getArray();
+                List<Integer> arrayActors = new ArrayList<>();
+                for (Integer actorId : actorArray) {
+                    arrayActors.add(actorId);
+                }
+                             
+                film = new Film(
+                    resultSet.getInt("filmID"),
+                    resultSet.getString("title"),
+                    resultSet.getInt("genreID"),
+                    resultSet.getInt("releaseYear"),
+                    resultSet.getInt("duration"),
+                    resultSet.getString("description"),
+                    resultSet.getString("photoURL"),
+                    arrayActors
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return film;
+    }
+    
+    public Film putFilmById(Integer filmID, Film film) {
+        Film newFilm = null;
+        String sql = "UPDATE films SET title=?, genreID=?, releaseYear=?, duration=?, description=?, photoURL=?, arrayActors=? WHERE filmID = ?";
+        
+        try (Connection connection = dataSource.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setString(1, film.getTitle());
+                preparedStatement.setInt(2, film.getGenreID());
+                preparedStatement.setInt(3, film.getReleaseYear());
+                preparedStatement.setInt(4, film.getDuration());
+                preparedStatement.setString(5, film.getDescription());
+                preparedStatement.setString(6, film.getPhotoURL());
+                java.sql.Array actorsArray = connection.createArrayOf("integer", film.getArrayActors().toArray(new Integer[0]));
+                preparedStatement.setArray(7, actorsArray);
+                preparedStatement.setInt(8, filmID);
+                int filas = preparedStatement.executeUpdate();
+                if (filas > 0) {
+                	newFilm = film;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        return newFilm;
+    }
+    
+    public boolean deleteFilmById(Integer filmID) {
+    	boolean resultado = false;
+        String sql = "DELETE FROM films WHERE filmID=?";
+
+        try (Connection connection = dataSource.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, filmID);
+            int filas = preparedStatement.executeUpdate();
+            
+            if(filas > 0) {
+            	resultado = true;
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return resultado;
+    }
 }

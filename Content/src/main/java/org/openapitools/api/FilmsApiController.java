@@ -58,4 +58,52 @@ public class FilmsApiController implements FilmsApi {
     	}
     }
 
+    @Override
+    public ResponseEntity<Film> filmsPost(@RequestBody Film film) {
+        Film newFilm = filmDAO.postFilm(film);
+
+        if (newFilm != null) {
+            return ResponseEntity.ok(newFilm);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+
+    @Override
+    public ResponseEntity<Film> filmsFilmIDGet(@PathVariable("filmID") Integer filmID) {
+        Film film = filmDAO.getFilmById(filmID);
+
+        if (film != null) {
+            return ResponseEntity.ok(film);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+    
+    @Override
+    public ResponseEntity<Film> filmsFilmIDPut(@PathVariable("filmID") Integer filmID, @RequestBody Film film) {
+        Film newFilm = filmDAO.putFilmById(filmID,film);
+
+        if (newFilm != null) {
+            return ResponseEntity.ok(newFilm);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+    
+    @Override
+    public ResponseEntity<Void> filmsFilmIDDelete(@PathVariable("filmID") Integer filmID) {
+        boolean resultado = filmDAO.deleteFilmById(filmID);
+
+        if (resultado) {
+        	return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+
 }
