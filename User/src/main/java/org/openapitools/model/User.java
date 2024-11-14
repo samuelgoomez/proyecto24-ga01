@@ -49,9 +49,10 @@ public class User {
   /**
    * Constructor with only required parameters
    */
-  public User(Integer userID, String username, String email, String name, OffsetDateTime createdAt, List<Integer> preferences) {
+  public User(Integer userID, String username,String password, String email, String name, OffsetDateTime createdAt, List<Integer> preferences) {
     this.userID = userID;
     this.username = username;
+    this.password = password;
     this.email = email;
     this.name = name;
     this.createdAt = createdAt;

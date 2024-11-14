@@ -1,5 +1,6 @@
 package org.openapitools.api;
 
+import org.openapitools.dao.FilmDAO;
 import org.openapitools.model.Film;
 
 
@@ -26,21 +27,35 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-11T16:08:26.906146+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-06T18:04:35.581569900+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
 @Controller
 @RequestMapping("${openapi.aPIDeContenido.base-path:/v1/content}")
 public class FilmsApiController implements FilmsApi {
 
     private final NativeWebRequest request;
+    private final FilmDAO filmDAO;
 
     @Autowired
-    public FilmsApiController(NativeWebRequest request) {
+    public FilmsApiController(NativeWebRequest request, FilmDAO filmDAO) {
         this.request = request;
+        this.filmDAO = filmDAO;
     }
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
+    }
+    
+    @Override
+    public ResponseEntity<List<Film>> filmsGet () {
+    	List<Film> films = filmDAO.getFilms();
+    	
+    	if (!films.isEmpty()) {
+    		return ResponseEntity.ok(films);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
     }
 
 }
