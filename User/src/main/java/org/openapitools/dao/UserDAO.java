@@ -251,5 +251,67 @@ public class UserDAO {
 	public boolean logout () {
 		return true;
 	}
+
+	public SuscripcionPlan addPlan (int userID,SuscripcionPlan plan) {
+		String addList = "INSERT INTO subPlans (planID,userID,startDate,endDate,paymentID) VALUES (?,?,?,?,?)";
+		Timestamp startDate = Timestamp.from(Instant.now());
+		Timestamp endDate = Timestamp.valueOf(startDate.toLocalDateTime().plusMonths(1));
+		SuscripcionPlan newPlan = null;
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(addList)) {
+
+			   // Establecer los parámetros para la consulta
+				preparedStatement.setInt(1, plan.getPlanID());
+			   preparedStatement.setInt(2, userID);
+			   preparedStatement.setTimestamp(3, startDate);
+			   preparedStatement.setTimestamp(4, endDate);
+			   preparedStatement.setInt(5, plan.getPaymentID());
+
+			   // Ejecutar la consulta
+			   int affectedRows = preparedStatement.executeUpdate();
+			   
+			   if (affectedRows > 0) {
+					newPlan = new SuscripcionPlan(
+						   plan.getPlanID(),
+						   userID,
+						   startDate.toLocalDateTime().toLocalDate(),
+						   endDate.toLocalDateTime().toLocalDate(),
+						   plan.getPaymentID()
+				   );
+			   }
+
+		   } catch (SQLException e) {
+			   e.printStackTrace();
+			   throw new RuntimeException("Error al insertar la película", e);
+		   }	 
+		
+		return newPlan;
+	}
+
+	public SuscripcionPlan getPlan(int userID) {
+		SuscripcionPlan plan = null;
+		   String sql = "SELECT * FROM subPlans WHERE userID = ?";
+
+		   try (Connection connection = dataSource.getConnection();
+			   PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			   preparedStatement.setInt(1, userID);
+			   ResultSet resultSet = preparedStatement.executeQuery();
+			   if (resultSet.next()) {
+				   
+				   plan = new SuscripcionPlan (
+						   resultSet.getInt("planID"),
+						   resultSet.getInt("userID"),
+						   resultSet.getTimestamp("startDate").toLocalDateTime().toLocalDate(),
+						   resultSet.getTimestamp("endDate").toLocalDateTime().toLocalDate(),
+						   resultSet.getInt("paymentID")
+				   );
+			   }
+		   } catch (SQLException e) {
+			   e.printStackTrace();
+		   }
+
+		   return plan;
+	   }
 	 	
 }
