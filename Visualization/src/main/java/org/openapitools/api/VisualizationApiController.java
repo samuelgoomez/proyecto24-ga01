@@ -77,4 +77,32 @@ public class VisualizationApiController implements VisualizationApi {
 
     }
 
+    @Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDFilmFilmIDPausePost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID) {
+    	String pause = "Pausado"; 
+    	OpcionesVisualizacion opciones = visualizationDAO.changePauseFilm(userID,filmID,pause);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
+    @Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDSerieSerieIDPausePost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer serieID) {
+    	String pause = "Pausado"; 
+    	OpcionesVisualizacion opciones = visualizationDAO.changePauseSerie(userID,serieID,pause);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
 }
