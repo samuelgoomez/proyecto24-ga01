@@ -41,6 +41,15 @@ public class Visualizacion {
     return this;
   }
 
+  public Visualizacion(Integer visualizationID,Integer userID,Integer filmID,Integer serieID, OffsetDateTime visualizationDate, String progreso) {
+	  this.visualizationID = visualizationID;
+	  this.userID = userID;
+	  this.filmID = filmID;
+	  this.serieID = serieID;
+	  this.visualizationDate = visualizationDate;
+	  this.progreso = progreso;
+  }
+  
   /**
    * ID de la visualizacion
    * @return visualizationID
