@@ -416,4 +416,147 @@ public class UserDAO {
 
 		   return deleted; // Retornar true si se eliminaron filas, false de lo contrario
 	}
+
+	public Profile getProfile(int userID, int profileID) {
+		Profile perfil = null;
+		String sql = "SELECT * FROM profiles WHERE userID = ? AND profileID = ?";
+
+		try (Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, userID);
+			preparedStatement.setInt(2, profileID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				
+				perfil = new Profile (
+						resultSet.getInt("profileID"),
+						resultSet.getInt("userID"),
+						resultSet.getString("name"),
+						TypeEnum.fromValue(resultSet.getString("type")),
+						URI.create(resultSet.getString("avatarURL")),
+						resultSet.getTimestamp("createdAt").toInstant().atOffset(ZoneOffset.UTC)
+				);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return perfil;
+	}
+
+	public Profile addProfile (int userID, Profile profile) {
+		String addList = "INSERT INTO profiles (userID,name,type,avatarURL,createdAt) VALUES (?,?,?,?,?)";
+		int profileID = 0;
+		Timestamp createdAt;
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(addList,Statement.RETURN_GENERATED_KEYS)) {
+
+			   // Establecer los parámetros para la consulta
+			   preparedStatement.setInt(1, userID);
+			   preparedStatement.setString(2, profile.getName());
+			   preparedStatement.setString(3, profile.getType().getValue());
+			   preparedStatement.setString(4, profile.getAvatarURL().toString());
+			   
+			   createdAt = Timestamp.from(Instant.now());
+			   preparedStatement.setTimestamp(5, createdAt);         
+
+			   // Ejecutar la consulta
+			   int affectedRows = preparedStatement.executeUpdate();
+			   
+			   if (affectedRows > 0) {
+				   try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+					   if (generatedKeys.next()) {
+						   profileID = generatedKeys.getInt(1); // Suponiendo que `listID` es el ID generado
+					   }
+				   }
+			   }
+
+		   } catch (SQLException e) {
+			   e.printStackTrace();
+			   throw new RuntimeException("Error al insertar la película", e);
+		   }
+		
+		Instant instant = createdAt.toInstant();
+		OffsetDateTime offsetDateTime = instant.atOffset(ZoneOffset.UTC);
+		
+		Profile perfil = new Profile(
+				profileID,
+				userID,
+				profile.getName(),
+				profile.getType(),
+				profile.getAvatarURL(),
+				offsetDateTime
+		);
+		
+		return perfil;
+	}
+
+	public Profile editProfile(int userID,int profileID, Profile profile) {
+		Profile newProfile = null;
+		String sql = "UPDATE profiles SET name=?, type=?, avatarURL=? WHERE userID = ? AND profileID = ?";
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+				preparedStatement.setString(1, profile.getName());
+				preparedStatement.setString(2, profile.getType().getValue());
+				preparedStatement.setString(3, profile.getAvatarURL().toString());
+				preparedStatement.setInt(4, userID);
+				preparedStatement.setInt(5, profileID);
+				int filas = preparedStatement.executeUpdate();
+				if (filas > 0) {
+					newProfile = profile;
+					newProfile.setUserID(userID);
+					newProfile.setProfileID(profileID);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return profile;
+    }
+
+	public boolean deleteProfile (int userID, int profileID) {
+		boolean deleted = false; // Variable para verificar si se eliminaron filas
+		   String sql = "DELETE FROM profiles WHERE userID = ? AND profileID = ?";
+
+		   try (Connection connection = dataSource.getConnection(); // Obtener conexión
+			   PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			   preparedStatement.setInt(1, userID); // Establecer el userId en el PreparedStatement
+			   preparedStatement.setInt(2, profileID);
+			   int rowsAffected = preparedStatement.executeUpdate(); // Ejecutar la actualización
+			   deleted = rowsAffected > 0; // Verificar si se eliminaron filas
+		   } catch (SQLException e) {
+			   e.printStackTrace(); // Manejo de excepciones
+		   }
+
+		   return deleted; // Retornar true si se eliminaron filas, false de lo contrario
+	}
+
+	public List<Profile> getProfiles(int userID) {
+		List<Profile> lists = new ArrayList<>();
+		   String sql = "SELECT * FROM profiles WHERE userID = ?";
+
+		   try (Connection connection = dataSource.getConnection();
+			   PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			   preparedStatement.setInt(1, userID);
+			   ResultSet resultSet = preparedStatement.executeQuery();
+			   while (resultSet.next()) {
+				   
+				  Profile perfil = new Profile (
+						   resultSet.getInt("profileID"),
+						   resultSet.getInt("userID"),
+						   resultSet.getString("name"),
+						   TypeEnum.fromValue(resultSet.getString("type")),
+						   URI.create(resultSet.getString("avatarURL")),
+						   resultSet.getTimestamp("createdAt").toInstant().atOffset(ZoneOffset.UTC)
+				   );
+				   
+				   lists.add(perfil);
+			   }
+		   } catch (SQLException e) {
+			   e.printStackTrace();
+		   }
+
+		   return lists;
+	   }
 }

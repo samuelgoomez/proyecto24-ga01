@@ -197,4 +197,61 @@ public class UserApiController implements UserApi {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
         }
     }
+
+    @Override
+    public ResponseEntity<Profile> getProfileById(@PathVariable("userID") Integer userID,@PathVariable("profileID") Integer profileID) {
+    	Profile perfil = userDAO.getProfile(userID,profileID);
+    	
+    	if (perfil != null) {
+            return ResponseEntity.ok(perfil);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<Profile> addProfile(@PathVariable("userID") Integer userID, @RequestBody Profile profile) {
+    	Profile perfil = userDAO.addProfile(userID, profile);
+    	
+    	if (perfil != null) {
+            return ResponseEntity.ok(perfil);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<Profile> editProfile(@PathVariable("userID") Integer userID,@PathVariable("profileID") Integer profileID,@RequestBody Profile profile) {
+    	Profile perfil = userDAO.editProfile(userID,profileID,profile);
+    	
+    	if (perfil != null) {
+            return ResponseEntity.ok(perfil);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<DeleteProfile200Response> deleteProfile(@PathVariable("userID") Integer userID,@PathVariable("profileID") Integer profileID) {
+    	boolean respuesta = userDAO.deleteProfile(userID,profileID);
+    	DeleteProfile200Response mensaje = new DeleteProfile200Response();
+    	
+    	if (respuesta) {
+    		mensaje.message("Perfil eliminado");
+            return ResponseEntity.ok(mensaje);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Profile>> listProfiles(@PathVariable("userID") Integer userID) {
+    	List<Profile> lists = userDAO.getProfiles(userID);
+    	
+    	if (!lists.isEmpty()) {
+            return ResponseEntity.ok(lists);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
 }
