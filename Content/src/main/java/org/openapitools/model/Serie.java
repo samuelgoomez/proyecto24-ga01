@@ -50,10 +50,11 @@ public class Serie {
   /**
    * Constructor with only required parameters
    */
-  public Serie(Integer serieID, String title, Integer seasons, Integer genreID, String description, String photoURL, List<Integer> arrayActors) {
+  public Serie(Integer serieID, String title, Integer seasons, Integer releaseYear, Integer genreID, String description, String photoURL, List<Integer> arrayActors) {
     this.serieID = serieID;
     this.title = title;
     this.seasons = seasons;
+    this.releaseYear = releaseYear;
     this.genreID = genreID;
     this.description = description;
     this.photoURL = photoURL;
