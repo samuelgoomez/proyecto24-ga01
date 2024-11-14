@@ -1,5 +1,6 @@
 package org.openapitools.api;
 
+import org.openapitools.dao.UserDAO;
 import org.openapitools.model.User;
 
 
@@ -26,21 +27,35 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-12T21:17:46.398497900+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-05T01:15:13.550616600+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
 @Controller
 @RequestMapping("${openapi.aPIDeUsuario.base-path:/v1/user}")
 public class UsersApiController implements UsersApi {
 
     private final NativeWebRequest request;
+    private final UserDAO userDAO;
 
     @Autowired
-    public UsersApiController(NativeWebRequest request) {
+    public UsersApiController(NativeWebRequest request, UserDAO userDAO) {
         this.request = request;
+        this.userDAO = userDAO;
     }
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
+    }
+    
+    @Override
+    public ResponseEntity<List<User>> getUsers () {
+    	List<User> users = userDAO.getUsers();
+    	
+    	if (!users.isEmpty()) {
+    		return ResponseEntity.ok(users);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
     }
 
 }
