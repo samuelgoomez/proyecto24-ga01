@@ -313,5 +313,20 @@ public class UserDAO {
 
 		   return plan;
 	   }
-	 	
+	
+	public boolean cancelSubPlan (int userID) {
+		boolean deleted = false; // Variable para verificar si se eliminaron filas
+		   String sql = "DELETE FROM subPlans WHERE userID = ?";
+
+		   try (Connection connection = dataSource.getConnection(); // Obtener conexión
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			   preparedStatement.setInt(1, userID); // Establecer el userId en el PreparedStatement
+			   int rowsAffected = preparedStatement.executeUpdate(); // Ejecutar la actualización
+			   deleted = rowsAffected > 0; // Verificar si se eliminaron filas
+		   } catch (SQLException e) {
+			   e.printStackTrace(); // Manejo de excepciones
+		   }
+
+		   return deleted; // Retornar true si se eliminaron filas, false de lo contrario
+	}
 }
