@@ -247,5 +247,9 @@ public class UserDAO {
 
 		   return user; // Retornar true si se eliminaron filas, false de lo contrario
 	}
+
+	public boolean logout () {
+		return true;
+	}
 	 	
 }

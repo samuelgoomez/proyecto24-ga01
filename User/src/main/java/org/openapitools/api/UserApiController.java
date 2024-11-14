@@ -115,4 +115,17 @@ public class UserApiController implements UserApi {
         }
     }
 
+    @Override
+    public ResponseEntity<LogoutUser200Response> logoutUser() {
+    	boolean respuesta = userDAO.logout();
+    	LogoutUser200Response mensaje = new LogoutUser200Response();
+    	
+    	if (respuesta) {
+    		mensaje.message("Sesión Cerrada");
+            return ResponseEntity.ok(mensaje);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
 }
