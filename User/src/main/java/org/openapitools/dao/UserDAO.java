@@ -329,4 +329,91 @@ public class UserDAO {
 
 		   return deleted; // Retornar true si se eliminaron filas, false de lo contrario
 	}
+
+	public PaymentMethod getPayment(int userID) {
+		PaymentMethod payment = null;
+		String sql = "SELECT * FROM payments WHERE userID = ?";
+
+		try (Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, userID);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				LocalDate expirationDate = resultSet.getTimestamp("expirationDate").toLocalDateTime().toLocalDate();
+				
+				payment = new PaymentMethod (
+						resultSet.getInt("paymentID"),
+						resultSet.getInt("userID"),
+						resultSet.getInt("cardNumber"),
+						expirationDate,
+						resultSet.getString("cardHolderName")
+				);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return payment;
+	}
+
+	public PaymentMethod addPayment (int userID, PaymentMethod payment) {
+		String addList = "INSERT INTO payments (userID,cardNumber,expirationDate,cardHolderName) VALUES (?,?,?,?)";
+		int paymentID = 0;
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(addList,Statement.RETURN_GENERATED_KEYS)) {
+
+			   // Establecer los parámetros para la consulta
+			   preparedStatement.setInt(1, userID);
+			   preparedStatement.setInt(2, payment.getCardNumber());
+			   
+			   LocalDateTime localDateTime = payment.getExpirationDate().atStartOfDay();
+			   Timestamp expirationDate = Timestamp.valueOf(localDateTime);
+			   preparedStatement.setTimestamp(3, expirationDate);
+			   
+			   preparedStatement.setString(4, payment.getCardHolderName());
+			   
+
+			   // Ejecutar la consulta
+			   int affectedRows = preparedStatement.executeUpdate();
+			   
+			   if (affectedRows > 0) {
+				   try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+					   if (generatedKeys.next()) {
+						   paymentID = generatedKeys.getInt(1); // Suponiendo que `listID` es el ID generado
+					   }
+				   }
+			   }
+
+		   } catch (SQLException e) {
+			   e.printStackTrace();
+			   throw new RuntimeException("Error al insertar la película", e);
+		   }
+		
+		PaymentMethod pay = new PaymentMethod(
+				paymentID,
+				userID,
+				payment.getCardNumber(),
+				payment.getExpirationDate(),
+				payment.getCardHolderName()
+		);
+		
+		return pay;
+	}
+
+	public boolean deletePayment (int userID) {
+		boolean deleted = false; // Variable para verificar si se eliminaron filas
+		   String sql = "DELETE FROM payments WHERE userID = ?";
+
+		   try (Connection connection = dataSource.getConnection(); // Obtener conexión
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			   preparedStatement.setInt(1, userID); // Establecer el userId en el PreparedStatement
+			   int rowsAffected = preparedStatement.executeUpdate(); // Ejecutar la actualización
+			   deleted = rowsAffected > 0; // Verificar si se eliminaron filas
+		   } catch (SQLException e) {
+			   e.printStackTrace(); // Manejo de excepciones
+		   }
+
+		   return deleted; // Retornar true si se eliminaron filas, false de lo contrario
+	}
 }
