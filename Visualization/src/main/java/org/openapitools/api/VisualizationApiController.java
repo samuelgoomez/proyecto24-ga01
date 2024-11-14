@@ -1,5 +1,6 @@
 package org.openapitools.api;
 
+import org.openapitools.dao.VisualizationDAO;
 import org.openapitools.model.OpcionesVisualizacion;
 import org.openapitools.model.Visualizacion;
 import org.openapitools.model.VisualizationUserIDFilmFilmIDDownloadPost200Response;
@@ -30,21 +31,126 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-11T16:32:34.104885200+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-06T22:57:10.884527400+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
 @Controller
 @RequestMapping("${openapi.aPIDeVisualizacionesYRecomendaciones.base-path:/views}")
 public class VisualizationApiController implements VisualizationApi {
 
     private final NativeWebRequest request;
+    private final VisualizationDAO visualizationDAO;
 
     @Autowired
-    public VisualizationApiController(NativeWebRequest request) {
+    public VisualizationApiController(NativeWebRequest request, VisualizationDAO visualizationDAO) {
         this.request = request;
+        this.visualizationDAO = visualizationDAO;
     }
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
+    }
+    
+    
+    @Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDFilmFilmIDPlayPost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID) { 
+    	OpcionesVisualizacion opciones = visualizationDAO.playFilm(userID,filmID);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+    
+    @Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDSerieSerieIDPlayPost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer serieID) { 
+    	OpcionesVisualizacion opciones = visualizationDAO.playSerie(userID,serieID);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
+    @Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDFilmFilmIDPausePost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID) {
+    	String pause = "Pausado"; 
+    	OpcionesVisualizacion opciones = visualizationDAO.changePauseFilm(userID,filmID,pause);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
+    @Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDSerieSerieIDPausePost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer serieID) {
+    	String pause = "Pausado"; 
+    	OpcionesVisualizacion opciones = visualizationDAO.changePauseSerie(userID,serieID,pause);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
+	@Override
+    public ResponseEntity<Void> visualizationUserIDFilmFilmIDEndPost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID) { 
+    	boolean result = visualizationDAO.endFilm(userID,filmID);
+    	
+    	if (result) {
+            return ResponseEntity.ok().build();  // 200 OK si se ha eliminado correctamente
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el actor
+    }
+
+	@Override
+    public ResponseEntity<Void> visualizationUserIDSerieSerieIDEndPost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer serieID) { 
+    	boolean result = visualizationDAO.endSerie(userID,serieID);
+    	
+    	if (result) {
+            return ResponseEntity.ok().build();  // 200 OK si se ha eliminado correctamente
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el actor
+    }
+
+	@Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDFilmFilmIDLanguagePost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID, @RequestBody VisualizationUserIDFilmFilmIDLanguagePostRequest visualizationUserIDFilmFilmIDLanguagePostRequest) {
+    	String language = visualizationUserIDFilmFilmIDLanguagePostRequest.getLanguageCode();
+    	OpcionesVisualizacion opciones = visualizationDAO.changeLanguageFilm(userID,filmID,language);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
+	@Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDSerieSerieIDLanguagePost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer serieID, @RequestBody VisualizationUserIDFilmFilmIDLanguagePostRequest visualizationUserIDFilmFilmIDLanguagePostRequest) {
+    	String language = visualizationUserIDFilmFilmIDLanguagePostRequest.getLanguageCode();
+    	OpcionesVisualizacion opciones = visualizationDAO.changeLanguageSerie(userID,serieID,language);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
     }
 
 }

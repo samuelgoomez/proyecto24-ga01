@@ -33,7 +33,13 @@ public class OpcionesVisualizacion {
     this.visualizationID = visualizationID;
     return this;
   }
-
+  
+  public OpcionesVisualizacion (Integer visualizationID, String estado, String idioma, Boolean subtitulos) {
+	  this.visualizationID = visualizationID;
+	  this.estado = estado;
+	  this.idioma = idioma;
+	  this.subtitulos = subtitulos;
+  }
   /**
    * ID único de la visualización
    * @return visualizationID
