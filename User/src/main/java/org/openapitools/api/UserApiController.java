@@ -128,4 +128,26 @@ public class UserApiController implements UserApi {
         }
     }
 
+    @Override
+    public ResponseEntity<SuscripcionPlan> hireSuscripcionPlan(@PathVariable("userID") Integer userID,@RequestBody SuscripcionPlan suscripcionPlan) {
+    	SuscripcionPlan plan = userDAO.addPlan(userID,suscripcionPlan);
+    	
+    	if (plan != null) {
+            return ResponseEntity.ok(plan);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<SuscripcionPlan> getSuscripcionPlan(@PathVariable("userID") Integer userID) {
+    	SuscripcionPlan plan = userDAO.getPlan(userID);
+    	
+    	if (plan != null) {
+            return ResponseEntity.ok(plan);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
 }
