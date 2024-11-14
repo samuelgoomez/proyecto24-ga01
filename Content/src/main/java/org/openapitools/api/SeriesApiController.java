@@ -1,5 +1,6 @@
 package org.openapitools.api;
 
+import org.openapitools.dao.SerieDAO;
 import org.openapitools.model.Episode;
 import org.openapitools.model.Serie;
 
@@ -27,21 +28,33 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-11T16:08:26.906146+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-06T18:04:35.581569900+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
 @Controller
 @RequestMapping("${openapi.aPIDeContenido.base-path:/v1/content}")
 public class SeriesApiController implements SeriesApi {
 
     private final NativeWebRequest request;
+    private final SerieDAO serieDAO;
 
     @Autowired
-    public SeriesApiController(NativeWebRequest request) {
+    public SeriesApiController(NativeWebRequest request, SerieDAO serieDAO) {
         this.request = request;
+        this.serieDAO = serieDAO;
     }
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
+    }
+
+    @Override
+    public ResponseEntity<List<Serie>> seriesGet() {
+        List<Serie> series = serieDAO.getAllSeries();
+
+        if (series.isEmpty()) {
+            return ResponseEntity.noContent().build();  // 204 No Content si la lista está vacía
+        }
+        return ResponseEntity.ok(series);  // Devuelve la lista de actores si hay contenido
     }
 
 }
