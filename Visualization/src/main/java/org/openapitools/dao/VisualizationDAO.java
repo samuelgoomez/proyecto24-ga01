@@ -307,5 +307,83 @@ public class VisualizationDAO {
 		
 		return result;
 	}
+
+	public OpcionesVisualizacion changeLanguageFilm (int userID,int filmID, String language) {
+		String updateVisualization = "UPDATE visualizations SET idioma = ? WHERE userID = ? AND filmID = ?";
+		String getOptions = "SELECT visualizationID,estado,idioma,subtitulos FROM visualizations WHERE userID = ? AND filmID = ?";
+		
+		OpcionesVisualizacion opciones = null;
+		
+		try (Connection connection = dataSource.getConnection(); // Obtener conexión
+		        PreparedStatement preparedStatement = connection.prepareStatement(updateVisualization)) {
+				preparedStatement.setString(1, language);
+		        preparedStatement.setInt(2, userID); 
+		        preparedStatement.setInt(3, filmID); 
+		        int rowsAffected = preparedStatement.executeUpdate();
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace(); // Manejo de excepciones
+		    }
+		
+		try (Connection connection = dataSource.getConnection(); // Obtener conexión
+		        PreparedStatement preparedStatement2 = connection.prepareStatement(getOptions)) {
+		        preparedStatement2.setInt(1, userID); 
+		        preparedStatement2.setInt(2, filmID); 
+		        ResultSet resultSet = preparedStatement2.executeQuery();
+		        
+		        if (resultSet.next()) {
+		        	 opciones = new OpcionesVisualizacion(
+			                resultSet.getInt("visualizationID"),
+			                resultSet.getString("estado"),
+			                resultSet.getString("idioma"),
+			                resultSet.getBoolean("subtitulos")
+			            );
+		        }
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace(); // Manejo de excepciones
+		    }
+		
+		return opciones;
+	}
+
+	public OpcionesVisualizacion changeLanguageSerie (int userID,int serieID, String language) {
+		String updateVisualization = "UPDATE visualizations SET idioma = ? WHERE userID = ? AND serieID = ?";
+		String getOptions = "SELECT visualizationID,estado,idioma,subtitulos FROM visualizations WHERE userID = ? AND serieID = ?";
+		
+		OpcionesVisualizacion opciones = null;
+		
+		try (Connection connection = dataSource.getConnection(); // Obtener conexión
+		        PreparedStatement preparedStatement = connection.prepareStatement(updateVisualization)) {
+				preparedStatement.setString(1, language);
+		        preparedStatement.setInt(2, userID); 
+		        preparedStatement.setInt(3, serieID); 
+		        int rowsAffected = preparedStatement.executeUpdate();
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace(); // Manejo de excepciones
+		    }
+		
+		try (Connection connection = dataSource.getConnection(); // Obtener conexión
+		        PreparedStatement preparedStatement2 = connection.prepareStatement(getOptions)) {
+		        preparedStatement2.setInt(1, userID); 
+		        preparedStatement2.setInt(2, serieID); 
+		        ResultSet resultSet = preparedStatement2.executeQuery();
+		        
+		        if (resultSet.next()) {
+		        	 opciones = new OpcionesVisualizacion(
+			                resultSet.getInt("visualizationID"),
+			                resultSet.getString("estado"),
+			                resultSet.getString("idioma"),
+			                resultSet.getBoolean("subtitulos")
+			            );
+		        }
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace(); // Manejo de excepciones
+		    }
+		
+		return opciones;
+	}
 	
 }

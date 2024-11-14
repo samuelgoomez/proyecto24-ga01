@@ -125,4 +125,32 @@ public class VisualizationApiController implements VisualizationApi {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el actor
     }
 
+	@Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDFilmFilmIDLanguagePost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID, @RequestBody VisualizationUserIDFilmFilmIDLanguagePostRequest visualizationUserIDFilmFilmIDLanguagePostRequest) {
+    	String language = visualizationUserIDFilmFilmIDLanguagePostRequest.getLanguageCode();
+    	OpcionesVisualizacion opciones = visualizationDAO.changeLanguageFilm(userID,filmID,language);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
+	@Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDSerieSerieIDLanguagePost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer serieID, @RequestBody VisualizationUserIDFilmFilmIDLanguagePostRequest visualizationUserIDFilmFilmIDLanguagePostRequest) {
+    	String language = visualizationUserIDFilmFilmIDLanguagePostRequest.getLanguageCode();
+    	OpcionesVisualizacion opciones = visualizationDAO.changeLanguageSerie(userID,serieID,language);
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
 }
