@@ -265,5 +265,47 @@ public class VisualizationDAO {
 		
 		return opciones;
 	}
+
+	public boolean endFilm (int userID,int filmID) {
+		String updateVisualization = "UPDATE visualizations SET progreso = ? WHERE userID = ? AND filmID = ?";
+		boolean result = false;
+		
+		OpcionesVisualizacion opciones = null;
+		
+		try (Connection connection = dataSource.getConnection(); // Obtener conexión
+		        PreparedStatement preparedStatement = connection.prepareStatement(updateVisualization)) {
+				preparedStatement.setString(1, "Finalizado");
+		        preparedStatement.setInt(2, userID); 
+		        preparedStatement.setInt(3, filmID); 
+		        int rowsAffected = preparedStatement.executeUpdate();
+		        result = rowsAffected > 0;
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace(); // Manejo de excepciones
+		    }
+		
+		return result;
+	}
+
+	public boolean endSerie (int userID,int serieID) {
+		String updateVisualization = "UPDATE visualizations SET progreso = ? WHERE userID = ? AND serieID = ?";
+		boolean result = false;
+		
+		OpcionesVisualizacion opciones = null;
+		
+		try (Connection connection = dataSource.getConnection(); // Obtener conexión
+		        PreparedStatement preparedStatement = connection.prepareStatement(updateVisualization)) {
+				preparedStatement.setString(1, "Finalizado");
+		        preparedStatement.setInt(2, userID); 
+		        preparedStatement.setInt(3, serieID); 
+		        int rowsAffected = preparedStatement.executeUpdate();
+		        result = rowsAffected > 0;
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace(); // Manejo de excepciones
+		    }
+		
+		return result;
+	}
 	
 }

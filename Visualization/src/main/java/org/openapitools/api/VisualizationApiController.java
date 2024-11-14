@@ -105,4 +105,24 @@ public class VisualizationApiController implements VisualizationApi {
 
     }
 
+	@Override
+    public ResponseEntity<Void> visualizationUserIDFilmFilmIDEndPost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID) { 
+    	boolean result = visualizationDAO.endFilm(userID,filmID);
+    	
+    	if (result) {
+            return ResponseEntity.ok().build();  // 200 OK si se ha eliminado correctamente
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el actor
+    }
+
+	@Override
+    public ResponseEntity<Void> visualizationUserIDSerieSerieIDEndPost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer serieID) { 
+    	boolean result = visualizationDAO.endSerie(userID,serieID);
+    	
+    	if (result) {
+            return ResponseEntity.ok().build();  // 200 OK si se ha eliminado correctamente
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el actor
+    }
+
 }
