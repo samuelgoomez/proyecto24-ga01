@@ -162,4 +162,39 @@ public class UserApiController implements UserApi {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
         }
     }
+
+    @Override
+    public ResponseEntity<PaymentMethod> getPaymentMethod(@PathVariable("userID") Integer userID) {
+    	PaymentMethod payment = userDAO.getPayment(userID);
+    	
+    	if (payment != null) {
+            return ResponseEntity.ok(payment);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<PaymentMethod> addPaymentMethod(@PathVariable("userID") Integer userID, @RequestBody PaymentMethod paymentMethod) {
+    	PaymentMethod payment = userDAO.addPayment(userID, paymentMethod);
+    	
+    	if (payment != null) {
+            return ResponseEntity.ok(payment);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<DeletePaymentMethod200Response> deletePaymentMethod(@PathVariable("userID") Integer userID) {
+    	boolean respuesta = userDAO.deletePayment(userID);
+    	DeletePaymentMethod200Response mensaje = new DeletePaymentMethod200Response();
+    	
+    	if (respuesta) {
+    		mensaje.message("Metodo de pago eliminado");
+            return ResponseEntity.ok(mensaje);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
 }
