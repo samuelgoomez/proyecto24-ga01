@@ -150,4 +150,16 @@ public class UserApiController implements UserApi {
         }
     }
 
+    @Override
+    public ResponseEntity<CancelSuscripcionPlan200Response> cancelSuscripcionPlan(@PathVariable("userID") Integer userID) {
+    	boolean respuesta = userDAO.cancelSubPlan(userID);
+    	CancelSuscripcionPlan200Response mensaje = new CancelSuscripcionPlan200Response();
+    	
+    	if (respuesta) {
+    		mensaje.message("Plan de suscrición cancelado");
+            return ResponseEntity.ok(mensaje);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
 }
