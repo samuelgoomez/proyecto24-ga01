@@ -153,4 +153,48 @@ public class VisualizationApiController implements VisualizationApi {
 
     }
 
+	@Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDFilmFilmIDSubtitlesPost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID,@RequestBody VisualizationUserIDFilmFilmIDSubtitlesPostRequest visualizationUserIDFilmFilmIDSubtitlesPostRequest) {
+    	String confirm = visualizationUserIDFilmFilmIDSubtitlesPostRequest.getLanguageCode();
+    	OpcionesVisualizacion opciones = null;
+    	
+    	if (confirm.equals("Sí")) {
+    		opciones = visualizationDAO.changeSubtitlesFilm(userID,filmID,true);
+    	}
+    	else {
+    		opciones = visualizationDAO.changeSubtitlesFilm(userID,filmID,false);
+    	}
+    	
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
+	@Override
+    public ResponseEntity<OpcionesVisualizacion> visualizationUserIDSerieSerieIDSubtitlesPost (@PathVariable("userID") Integer userID,@PathVariable("serieID") Integer filmID,@RequestBody VisualizationUserIDFilmFilmIDSubtitlesPostRequest visualizationUserIDFilmFilmIDSubtitlesPostRequest) {
+    	String confirm = visualizationUserIDFilmFilmIDSubtitlesPostRequest.getLanguageCode();
+    	OpcionesVisualizacion opciones = null;
+    	
+    	if (confirm.equals("Sí")) {
+    		opciones = visualizationDAO.changeSubtitlesSerie(userID,filmID,true);
+    	}
+    	else {
+    		opciones = visualizationDAO.changeSubtitlesSerie(userID,filmID,false);
+    	}
+    	
+    	
+    	if (opciones != null) {
+    		return ResponseEntity.ok(opciones);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+
+    }
+
 }
