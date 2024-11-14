@@ -57,4 +57,105 @@ public class SeriesApiController implements SeriesApi {
         return ResponseEntity.ok(series);  // Devuelve la lista de actores si hay contenido
     }
 
+    @Override 
+    public ResponseEntity<Void> seriesSerieIDDelete(@PathVariable("serieID") Integer serieID) {
+        boolean  result = serieDAO.deleteSerieById(serieID);
+        if (result) {
+            return ResponseEntity.ok().build();  // 200 OK si se ha eliminado correctamente
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el actor
+    }
+
+    @Override
+    public ResponseEntity<Serie> seriesPost(@RequestBody Serie serie) {
+        Serie newSerie = serieDAO.insertSerie(serie);
+        
+        if (newSerie != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(newSerie);  // 201 Created y devuelve el actor en el cuerpo
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();  // 400 Bad Request si hubo un problema en la inserción
+    }
+
+    @Override
+    public ResponseEntity<Serie> seriesSerieIDPut(@PathVariable("serieID") Integer serieID, @RequestBody Serie serie) {
+        boolean result = serieDAO.updateSerieById(serieID, serie);
+        
+        if (result) {
+            return ResponseEntity.ok(serie);  // 200 OK y devuelve el actor actualizado
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el actor
+    }
+
+    @Override
+    public ResponseEntity<Episode> seriesSerieIDEpisodesEpisodeIDGet(@PathVariable("serieID") Integer serieID, 
+    @PathVariable("episodeID")Integer episodeID) {
+        Episode episode = serieDAO.getEpisodeById(episodeID);
+        if (episode != null && episode.getSerieID() ==  serieID) {
+            return ResponseEntity.ok(episode);  // Devuelve el episodio si existe
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el episod
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<Episode>> seriesSerieIDEpisodesGet(@PathVariable("serieID") Integer serieID) {
+        List<Episode> episodes = serieDAO.getAllEpisodes(serieID);
+        
+        if (episodes.isEmpty()) {
+            return ResponseEntity.noContent().build();  // 204 No Content si la lista está vacía
+        }
+        return ResponseEntity.ok(episodes);  // Devuelve la lista de actores si hay contenido
+    }
+
+    @Override
+    public ResponseEntity<Void> seriesSerieIDEpisodesPost(@PathVariable("serieID") Integer serieID, @RequestBody Episode episode) {
+        if (episode != null) {
+            boolean result = serieDAO.insertEpisode(serieID,episode);
+            if (result) {
+                return ResponseEntity.status(HttpStatus.CREATED).build();  // 201 Created
+            }
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();  // 400 Bad Request si hubo un
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el episod
+    }
+
+    @Override
+    public ResponseEntity<Void> seriesSerieIDEpisodesEpisodeIDPut(@PathVariable("serieID") Integer serieID, 
+    @PathVariable("episodeID") Integer episodeID, @RequestBody Episode episode) {
+        if (episode.getSerieID() == serieID) {
+            boolean result =  serieDAO.updateEpisodeById(episodeID, episode);
+            if (result) {
+                return ResponseEntity.ok().build();  // 200 OK
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el episod
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();  // 400 Bad Request si el episod
+    }
+
+    @Override
+    public ResponseEntity<Void> seriesSerieIDEpisodesEpisodeIDDelete(@PathVariable("serieID") Integer serieID,
+    @PathVariable("episodeID") Integer episodeID) {
+        Episode episode =  serieDAO.getEpisodeById(episodeID);
+        if (episode != null &&  episode.getSerieID() == serieID) {
+            boolean result =  serieDAO.deleteEpisodeById(episodeID);
+            if (result) {
+                return ResponseEntity.ok().build();  // 200 OK
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el episod
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe el episod
+    }
+
+    @Override
+    public ResponseEntity<Serie> seriesSerieIDGet(@PathVariable("serieID") Integer serieID) {
+        Serie serie = serieDAO.getSerieById(serieID);
+
+        if (serie != null) {
+            return ResponseEntity.ok(serie);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
 }
