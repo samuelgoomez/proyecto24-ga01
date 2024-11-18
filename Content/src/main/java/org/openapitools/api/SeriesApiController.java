@@ -168,4 +168,14 @@ public class SeriesApiController implements SeriesApi {
         return ResponseEntity.ok(series);  // Devuelve la lista de actores si hay contenido
     }
 
+    @Override
+    public ResponseEntity<List<Serie>> seriesActorActorIDGet(Integer actorId) {
+        List<Serie> series = serieDAO.getSerieByActorID(actorId);
+
+        if (series.isEmpty()) {
+            return ResponseEntity.noContent().build();  // 204 No Content si la lista está vacía
+        }
+        return ResponseEntity.ok(series);  // Devuelve la lista de actores si hay contenido
+    }
+
 }

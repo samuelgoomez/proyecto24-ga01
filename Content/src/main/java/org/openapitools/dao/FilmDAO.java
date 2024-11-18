@@ -217,4 +217,48 @@ public class FilmDAO {
 
         return films;  // Devuelve la lista de películas encontradas
     }
+
+    public List<Film> getFilmsByActorID(Integer actorId) {
+        List<Film> films = new ArrayList<>();
+        String sql = "SELECT filmID, title, genreID, releaseYear, duration, description, photoURL, arrayActors " +
+                     "FROM films WHERE ? = ANY(arrayActors)";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Establecer el ID del actor como parámetro en la consulta
+            preparedStatement.setInt(1, actorId);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Crear un nuevo objeto Film a partir de los datos de cada fila
+                    Film film = new Film();
+                    film.setFilmID(resultSet.getInt("filmID"));
+                    film.setTitle(resultSet.getString("title"));
+                    film.setGenreID(resultSet.getInt("genreID"));
+                    film.setReleaseYear(resultSet.getInt("releaseYear"));
+                    film.setDuration(resultSet.getInt("duration"));
+                    film.setDescription(resultSet.getString("description"));
+                    film.setPhotoURL(resultSet.getString("photoURL"));
+
+                    java.sql.Array actorsArray = resultSet.getArray("arrayActors");
+                    if (actorsArray != null) {
+                        Integer[] actors = (Integer[]) actorsArray.getArray();
+                        film.setArrayActors(Collections.unmodifiableList(Arrays.asList(actors)));
+                    }
+
+                    // Añadir el film a la lista de películas
+                    films.add(film);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return films;  // Devuelve la lista de películas encontradas
+    }
 }
+
+
