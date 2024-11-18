@@ -737,4 +737,240 @@ public List<ModelList> getLists(int userID) {
 
 	   return lists;
    }
+
+   public void addListSerie(int userID,int listID,int serieID) {
+	Array seriesArray = null;
+	List<Integer> seriesList = null;
+	
+	String sql = "SELECT series FROM lists WHERE userID=? AND listID=?";
+	
+	try (Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			preparedStatement.setInt(1, userID);
+			preparedStatement.setInt(2, listID);
+			
+			ResultSet resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				seriesArray = resultSet.getArray("series");
+				Integer[] films = (Integer[]) seriesArray.getArray();
+				seriesList = new ArrayList<>(Arrays.asList(films));
+				seriesList.add(serieID);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	
+	String sql2 = "UPDATE lists SET series=? WHERE userID=? AND listID=?";
+	
+	try (Connection connection = dataSource.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
+		
+			java.sql.Array series = connection.createArrayOf("integer", seriesList.toArray(new Integer[0]));
+			preparedStatement.setArray(1, series);
+			
+			preparedStatement.setInt(2, userID);
+			preparedStatement.setInt(3, listID);
+			
+			int filas = preparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addListFilm(int userID,int listID,int filmID) {
+		Array filmsArray = null;
+		List<Integer> filmsList = null;
+		
+		String sql = "SELECT films FROM lists WHERE userID=? AND listID=?";
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+				preparedStatement.setInt(1, userID);
+				preparedStatement.setInt(2, listID);
+				
+				ResultSet resultSet = preparedStatement.executeQuery();
+				if (resultSet.next()) {
+					filmsArray = resultSet.getArray("films");
+					Integer[] films = (Integer[]) filmsArray.getArray();
+					 filmsList = new ArrayList<>(Arrays.asList(films));
+					 filmsList.add(filmID);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+		String sql2 = "UPDATE lists SET films=? WHERE userID=? AND listID=?";
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
+			
+				java.sql.Array films = connection.createArrayOf("integer", filmsList.toArray(new Integer[0]));
+				preparedStatement.setArray(1, films);
+				
+				preparedStatement.setInt(2, userID);
+				preparedStatement.setInt(3, listID);
+				
+				int filas = preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+ 		}
+
+		 public void deleteListSerie(int userID,int listID,int serieID) {
+	        java.sql.Array seriesArray = null;
+	        List<Integer> seriesList = null;
+	        
+	        String sql = "SELECT series FROM lists WHERE userID=? AND listID=?";
+	        
+	        try (Connection connection = dataSource.getConnection();
+	                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+	                preparedStatement.setInt(1, userID);
+	                preparedStatement.setInt(2, listID);
+	                
+	                ResultSet resultSet = preparedStatement.executeQuery();
+	                if (resultSet.next()) {
+	                	seriesArray = resultSet.getArray("series");
+	                	Integer[] films = (Integer[]) seriesArray.getArray();
+	                	seriesList = new ArrayList<>(Arrays.asList(films));
+	                	seriesList.remove(Integer.valueOf(serieID));
+	                }
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	        
+	        String sql2 = "UPDATE lists SET series=? WHERE userID=? AND listID=?";
+	        
+	        try (Connection connection = dataSource.getConnection();
+	                PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
+	        		
+	        		java.sql.Array series = connection.createArrayOf("integer", seriesList.toArray(new Integer[0]));
+	        		preparedStatement.setArray(1, series);
+	        		
+	                preparedStatement.setInt(2, userID);
+	                preparedStatement.setInt(3, listID);
+	                
+	                int filas = preparedStatement.executeUpdate();
+	            } catch (SQLException e) {
+	                e.printStackTrace();
+	            }
+	 }
+
+	 public void deleteListFilm(int userID,int listID,int filmID) {
+		java.sql.Array filmsArray = null;
+		List<Integer> filmsList = null;
+		
+		String sql = "SELECT films FROM lists WHERE userID=? AND listID=?";
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+				preparedStatement.setInt(1, userID);
+				preparedStatement.setInt(2, listID);
+				
+				ResultSet resultSet = preparedStatement.executeQuery();
+				if (resultSet.next()) {
+					filmsArray = resultSet.getArray("films");
+					Integer[] films = (Integer[]) filmsArray.getArray();
+					 filmsList = new ArrayList<>(Arrays.asList(films));
+					 filmsList.remove(Integer.valueOf(filmID));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		
+		String sql2 = "UPDATE lists SET films=? WHERE userID=? AND listID=?";
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql2)) {
+				
+				java.sql.Array films = connection.createArrayOf("integer", filmsList.toArray(new Integer[0]));
+				preparedStatement.setArray(1, films);
+				
+				preparedStatement.setInt(2, userID);
+				preparedStatement.setInt(3, listID);
+				
+				int filas = preparedStatement.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+ 	}
+
+	 public List<FilmList> getListFilm (int userID, int listID) {
+		List<FilmList> listFilms = new ArrayList<>();
+		List<Integer> idList = null;
+		Array filmsArray = null;
+		String sql = "SELECT films FROM lists WHERE userID=? AND listID=?";
+		
+		try (Connection connection = dataSource.getConnection();
+				   PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+				   preparedStatement.setInt(1, userID);
+				   preparedStatement.setInt(2, listID);
+				   
+				   ResultSet resultSet = preparedStatement.executeQuery();
+				   if (resultSet.next()) {
+					   filmsArray = resultSet.getArray("films");
+					   Integer[] films = (Integer[]) filmsArray.getArray();
+						idList = new ArrayList<>(Arrays.asList(films));
+				   }
+			   } catch (SQLException e) {
+				   e.printStackTrace();
+			   }
+		
+		String filmServiceUrl = "http://localhost:8080/v1/content/films/{id}";
+		
+		for(int i=0;i<idList.size();i++) {
+			Mono<FilmList> filmMono = webClient.get()
+					   .uri(filmServiceUrl, idList.get(i))
+					   .retrieve()
+					   .bodyToMono(Map.class) // Recibe la respuesta como un Map
+					   .map(response -> {
+						   int filmID = ((Number) response.get("filmID")).intValue();
+						   String title = (String) response.get("title");
+						   return new FilmList(filmID, title);
+					   }).onErrorResume(e -> Mono.empty());
+			FilmList finalFilm = filmMono.block();
+			listFilms.add(finalFilm);
+		}
+		
+		return listFilms;
+	}
+
+	public List<SeriesList> getListSeries (int userID, int listID) {
+		List<SeriesList> listSeries = new ArrayList<>();
+		List<Integer> idList = null;
+		Array seriesArray = null;
+		String sql = "SELECT series FROM lists WHERE userID=? AND listID=?";
+		
+		try (Connection connection = dataSource.getConnection();
+				   PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+				   preparedStatement.setInt(1, userID);
+				   preparedStatement.setInt(2, listID);
+				   
+				   ResultSet resultSet = preparedStatement.executeQuery();
+				   if (resultSet.next()) {
+					   seriesArray = resultSet.getArray("series");
+					   Integer[] films = (Integer[]) seriesArray.getArray();
+						idList = new ArrayList<>(Arrays.asList(films));
+				   }
+			   } catch (SQLException e) {
+				   e.printStackTrace();
+			   }
+		
+		String filmServiceUrl = "http://localhost:8080/v1/content/series/{id}";
+		
+		for(int i=0;i<idList.size();i++) {
+			Mono<SeriesList> serieMono = webClient.get()
+					   .uri(filmServiceUrl, idList.get(i))
+					   .retrieve()
+					   .bodyToMono(Map.class) // Recibe la respuesta como un Map
+					   .map(response -> {
+						   int serieID = ((Number) response.get("serieID")).intValue();
+						   String title = (String) response.get("title");
+						   return new SeriesList(serieID, title);
+					   }).onErrorResume(e -> Mono.empty());
+			SeriesList finalSerie = serieMono.block();
+			listSeries.add(finalSerie);
+		}
+		
+		return listSeries;
+	}
 }
