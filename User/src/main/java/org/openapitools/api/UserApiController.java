@@ -254,4 +254,61 @@ public class UserApiController implements UserApi {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
         }
     }
+
+    @Override
+    public ResponseEntity<ModelList> addList(@PathVariable("userID") Integer userID, @RequestBody ModelList modelList) {
+    	ModelList lista = userDAO.addList(userID, modelList);
+    	
+    	if (lista != null) {
+            return ResponseEntity.ok(lista);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<DeleteList200Response> deleteList(@PathVariable("userID") Integer userID,@PathVariable("listID") Integer listID) {
+    	boolean respuesta = userDAO.deleteList(userID,listID);
+    	DeleteList200Response mensaje = new DeleteList200Response();
+    	
+    	if (respuesta) {
+    		mensaje.message("Lista eliminada");
+            return ResponseEntity.ok(mensaje);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<ModelList> editList(@PathVariable("userID") Integer userID,@PathVariable("listID") Integer listID,@RequestBody ModelList modelList) {
+    	ModelList lista = userDAO.editList(userID,listID,modelList);
+    	
+    	if (lista != null) {
+            return ResponseEntity.ok(lista);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<ModelList> getList(@PathVariable("userID") Integer userID,@PathVariable("listID") Integer listID) {
+    	ModelList list = userDAO.getList(userID,listID);
+    	
+    	if (list != null) {
+            return ResponseEntity.ok(list);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
+
+    @Override
+    public ResponseEntity<List<ModelList>> getUserLists(@PathVariable("userID") Integer userID) {
+    	List<ModelList> lists = userDAO.getLists(userID);
+    	
+    	if (!lists.isEmpty()) {
+            return ResponseEntity.ok(lists);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    }
 }
