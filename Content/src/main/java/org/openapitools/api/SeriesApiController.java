@@ -158,4 +158,14 @@ public class SeriesApiController implements SeriesApi {
         }
     }
 
+    @Override
+    public ResponseEntity<List<Serie>> seriesGenreGenreIDGet(Integer genreId) {
+        List<Serie> series = serieDAO.getSerieByGenre(genreId);
+
+        if (series.isEmpty()) {
+            return ResponseEntity.noContent().build();  // 204 No Content si la lista está vacía
+        }
+        return ResponseEntity.ok(series);  // Devuelve la lista de actores si hay contenido
+    }
+
 }
