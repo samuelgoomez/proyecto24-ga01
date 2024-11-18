@@ -259,6 +259,45 @@ public class FilmDAO {
 
         return films;  // Devuelve la lista de películas encontradas
     }
+
+    public Film getFilmByTitle(String title) {
+        Film film = null;
+        String sql = "SELECT * FROM films WHERE title = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Establecer el título como parámetro en la consulta
+            preparedStatement.setString(1, title);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Crear un nuevo objeto Film a partir de los datos de la fila
+                    film = new Film();
+                    film.setFilmID(resultSet.getInt("filmID"));
+                    film.setTitle(resultSet.getString("title"));
+                    film.setGenreID(resultSet.getInt("genreID"));
+                    film.setReleaseYear(resultSet.getInt("releaseYear"));
+                    film.setDuration(resultSet.getInt("duration"));
+                    film.setDescription(resultSet.getString("description"));
+                    film.setPhotoURL(resultSet.getString("photoURL"));
+
+
+                    java.sql.Array actorsArray = resultSet.getArray("arrayActors");
+                    if (actorsArray != null) {
+                        Integer[] actors = (Integer[]) actorsArray.getArray();
+                        film.setArrayActors(Collections.unmodifiableList(Arrays.asList(actors)));
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return film;  // Retorna el objeto Film o null si no se encontró
+    }
 }
 
 
