@@ -174,4 +174,130 @@ public class FilmDAO {
         
         return resultado;
     }
+
+    public List<Film> getFilmsByGenreID(Integer genreId) {
+        List<Film> films = new ArrayList<>();
+        String sql = "SELECT filmID, title, genreID, releaseYear, duration, description, photoURL, arrayActors " +
+                     "FROM films WHERE genreID = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Establecer el ID del género como parámetro en la consulta
+            preparedStatement.setInt(1, genreId);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Crear un nuevo objeto Film a partir de los datos de cada fila
+                    Film film = new Film();
+                    film.setFilmID(resultSet.getInt("filmID"));
+                    film.setTitle(resultSet.getString("title"));
+                    film.setGenreID(resultSet.getInt("genreID"));
+                    film.setReleaseYear(resultSet.getInt("releaseYear"));
+                    film.setDuration(resultSet.getInt("duration"));
+                    film.setDescription(resultSet.getString("description"));
+                    film.setPhotoURL(resultSet.getString("photoURL"));
+
+
+                    java.sql.Array actorsArray = resultSet.getArray("arrayActors");
+                    if (actorsArray != null) {
+                        Integer[] actors = (Integer[]) actorsArray.getArray();
+                        film.setArrayActors(Collections.unmodifiableList(Arrays.asList(actors)));
+                    }
+
+                    // Añadir el film a la lista de películas
+                    films.add(film);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return films;  // Devuelve la lista de películas encontradas
+    }
+
+    public List<Film> getFilmsByActorID(Integer actorId) {
+        List<Film> films = new ArrayList<>();
+        String sql = "SELECT filmID, title, genreID, releaseYear, duration, description, photoURL, arrayActors " +
+                     "FROM films WHERE ? = ANY(arrayActors)";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Establecer el ID del actor como parámetro en la consulta
+            preparedStatement.setInt(1, actorId);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // Crear un nuevo objeto Film a partir de los datos de cada fila
+                    Film film = new Film();
+                    film.setFilmID(resultSet.getInt("filmID"));
+                    film.setTitle(resultSet.getString("title"));
+                    film.setGenreID(resultSet.getInt("genreID"));
+                    film.setReleaseYear(resultSet.getInt("releaseYear"));
+                    film.setDuration(resultSet.getInt("duration"));
+                    film.setDescription(resultSet.getString("description"));
+                    film.setPhotoURL(resultSet.getString("photoURL"));
+
+                    java.sql.Array actorsArray = resultSet.getArray("arrayActors");
+                    if (actorsArray != null) {
+                        Integer[] actors = (Integer[]) actorsArray.getArray();
+                        film.setArrayActors(Collections.unmodifiableList(Arrays.asList(actors)));
+                    }
+
+                    // Añadir el film a la lista de películas
+                    films.add(film);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return films;  // Devuelve la lista de películas encontradas
+    }
+
+    public Film getFilmByTitle(String title) {
+        Film film = null;
+        String sql = "SELECT * FROM films WHERE title = ?";
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            // Establecer el título como parámetro en la consulta
+            preparedStatement.setString(1, title);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    // Crear un nuevo objeto Film a partir de los datos de la fila
+                    film = new Film();
+                    film.setFilmID(resultSet.getInt("filmID"));
+                    film.setTitle(resultSet.getString("title"));
+                    film.setGenreID(resultSet.getInt("genreID"));
+                    film.setReleaseYear(resultSet.getInt("releaseYear"));
+                    film.setDuration(resultSet.getInt("duration"));
+                    film.setDescription(resultSet.getString("description"));
+                    film.setPhotoURL(resultSet.getString("photoURL"));
+
+
+                    java.sql.Array actorsArray = resultSet.getArray("arrayActors");
+                    if (actorsArray != null) {
+                        Integer[] actors = (Integer[]) actorsArray.getArray();
+                        film.setArrayActors(Collections.unmodifiableList(Arrays.asList(actors)));
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return film;  // Retorna el objeto Film o null si no se encontró
+    }
 }
+
+
