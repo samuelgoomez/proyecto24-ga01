@@ -130,4 +130,17 @@ public class FilmsApiController implements FilmsApi {
     
     }
 
+    @Override
+    public ResponseEntity<Film> filmsTitleTitleGet(@PathVariable String title) {
+        Film film = filmDAO.getFilmByTitle(title);
+
+        if (film != null) {
+            return ResponseEntity.ok(film);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+    
+
 }
