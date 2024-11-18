@@ -118,4 +118,16 @@ public class FilmsApiController implements FilmsApi {
     
     }
 
+    @Override
+    public ResponseEntity<List<Film>> filmsActorActorIDGet(@PathVariable("actorID") Integer actorID) {
+        List<Film> films = filmDAO.getFilmsByActorID(actorID);
+
+        if (!films.isEmpty()) {
+            return ResponseEntity.ok(films);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+
 }
