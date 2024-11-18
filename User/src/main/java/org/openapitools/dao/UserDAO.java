@@ -559,4 +559,182 @@ public class UserDAO {
 
 		   return lists;
 	   }
+
+	   public ModelList addList (int userID, ModelList list) {
+		String addList = "INSERT INTO lists (userID,name,createdAt) VALUES (?,?,?)";
+		int listID = 0;
+		Timestamp createdAt;
+		List<Integer> films = new ArrayList<>();
+		List<Integer> series = new ArrayList<>();
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(addList,Statement.RETURN_GENERATED_KEYS)) {
+
+			   // Establecer los parámetros para la consulta
+			   preparedStatement.setInt(1, userID);
+			   preparedStatement.setString(2, list.getName());
+			   
+			   createdAt = Timestamp.from(Instant.now());
+			   preparedStatement.setTimestamp(3, createdAt);
+
+			   // Ejecutar la consulta
+			   int affectedRows = preparedStatement.executeUpdate();
+			   
+			   if (affectedRows > 0) {
+				   try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+					   if (generatedKeys.next()) {
+						   listID = generatedKeys.getInt(1); // Suponiendo que `listID` es el ID generado
+					   }
+				   }
+			   }
+
+		   } catch (SQLException e) {
+			   e.printStackTrace();
+			   throw new RuntimeException("Error al insertar la película", e);
+		   }
+		
+		Instant instant = createdAt.toInstant();
+		OffsetDateTime offsetDateTime = instant.atOffset(ZoneOffset.UTC);
+		
+		ModelList lista = new ModelList(
+				listID,
+				userID,
+				list.getName(),
+				films,
+				series,
+				offsetDateTime
+	   );
+		
+		return lista;
+	}
+
+	public boolean deleteList (int userID,int listID) {
+		boolean deleted = false; // Variable para verificar si se eliminaron filas
+		   String sql = "DELETE FROM lists WHERE userID = ? AND listID = ?";
+
+		   try (Connection connection = dataSource.getConnection(); // Obtener conexión
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+			   preparedStatement.setInt(1, userID); // Establecer el userId en el PreparedStatement
+			   preparedStatement.setInt(2, listID);
+			   int rowsAffected = preparedStatement.executeUpdate(); // Ejecutar la actualización
+			   deleted = rowsAffected > 0; // Verificar si se eliminaron filas
+		   } catch (SQLException e) {
+			   e.printStackTrace(); // Manejo de excepciones
+		   }
+
+		   return deleted; // Retornar true si se eliminaron filas, false de lo contrario
+	}
+
+	public ModelList editList(int userID,int listID, ModelList list) {
+		ModelList newList = null;
+		String sql = "UPDATE lists SET name=? WHERE userID = ? AND listID = ?";
+		
+		try (Connection connection = dataSource.getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+				preparedStatement.setString(1, list.getName());
+				preparedStatement.setInt(2, userID);
+				preparedStatement.setInt(3, listID);
+				int filas = preparedStatement.executeUpdate();
+				if (filas > 0) {
+					newList = list;
+					newList.setUserID(userID);
+					newList.setListID(listID);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		return newList;
+ }
+
+ public ModelList getList(int userID, int listID) {
+	ModelList list = null;
+	String sql = "SELECT * FROM lists WHERE userID = ? AND listID = ?";
+
+	try (Connection connection = dataSource.getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+		preparedStatement.setInt(1, userID);
+		preparedStatement.setInt(2, listID);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		if (resultSet.next()) {
+			Integer[] filmArray = (Integer[]) resultSet.getArray("films").getArray();
+			List<Integer> films = new ArrayList<>();
+			if(filmArray != null && filmArray.length>0) {
+			for (Integer filmID : filmArray) {
+				films.add(filmID);
+			}
+			}
+			
+		   
+			Integer[] serieArray = (Integer[]) resultSet.getArray("series").getArray();
+			List<Integer> series = new ArrayList<>();
+			if(serieArray != null && serieArray.length>0) {
+			for (Integer serieID : serieArray) {
+				series.add(serieID);
+			}
+			}
+			
+			OffsetDateTime createdAt = resultSet.getTimestamp("createdAt").toInstant().atOffset(ZoneOffset.UTC);
+			
+			list = new ModelList (
+					resultSet.getInt("listID"),
+					resultSet.getInt("userID"),
+					resultSet.getString("name"),
+					films,
+					series,
+					createdAt
+			);
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+
+	return list;
+}
+
+public List<ModelList> getLists(int userID) {
+	List<ModelList> lists = new ArrayList<>();
+	   String sql = "SELECT * FROM lists WHERE userID = ?";
+
+	   try (Connection connection = dataSource.getConnection();
+		   PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+		   preparedStatement.setInt(1, userID);
+		   ResultSet resultSet = preparedStatement.executeQuery();
+		   while (resultSet.next()) {
+
+			   Integer[] filmArray = (Integer[]) resultSet.getArray("films").getArray();
+			   List<Integer> films = new ArrayList<>();
+			   if(filmArray != null && filmArray.length>0) {
+			   for (Integer filmID : filmArray) {
+				   films.add(filmID);
+			   }
+			   }
+			   
+			  
+			   Integer[] serieArray = (Integer[]) resultSet.getArray("series").getArray();
+			   List<Integer> series = new ArrayList<>();
+			   if(serieArray != null && serieArray.length>0) {
+			   for (Integer serieID : serieArray) {
+				   series.add(serieID);
+			   }
+			   }
+			   
+			   OffsetDateTime createdAt = resultSet.getTimestamp("createdAt").toInstant().atOffset(ZoneOffset.UTC);
+			   
+			   ModelList list = new ModelList (
+					   resultSet.getInt("listID"),
+					   resultSet.getInt("userID"),
+					   resultSet.getString("name"),
+					   films,
+					   series,
+					   createdAt
+			   );
+			   
+			   lists.add(list);
+		   }
+	   } catch (SQLException e) {
+		   e.printStackTrace();
+	   }
+
+	   return lists;
+   }
 }
