@@ -209,4 +209,12 @@ public class VisualizationApiController implements VisualizationApi {
     	}
     }
 
+	@Override
+    public ResponseEntity<VisualizationUserIDFilmFilmIDDownloadPost200Response> visualizationUserIDFilmFilmIDDownloadPost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID) {
+    	VisualizationUserIDFilmFilmIDDownloadPost200Response mensaje = new VisualizationUserIDFilmFilmIDDownloadPost200Response();
+    	mensaje.message("Descargando película...");
+        return ResponseEntity.ok(mensaje); 
+
+    }
+
 }
