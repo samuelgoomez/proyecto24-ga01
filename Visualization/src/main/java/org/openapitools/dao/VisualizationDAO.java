@@ -492,5 +492,59 @@ public class VisualizationDAO {
 		
 		return list;
 	}
+
+	public List<Visualizacion> getVisualizationsByUserId(Integer userId) {
+	    List<Visualizacion> visualizations = new ArrayList<>();
+	    String sql = "SELECT * FROM visualizations WHERE userID = ?"; // Asegúrate de tener el campo user_id en la tabla
+
+	    try (Connection connection = dataSource.getConnection();
+	         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+	        preparedStatement.setInt(1, userId);
+	        ResultSet resultSet = preparedStatement.executeQuery();
+
+	        while (resultSet.next()) {
+	        	Integer visualizationID = resultSet.getInt("visualizationID");
+	        	Integer userID = resultSet.getInt("userID");
+	            Integer filmID = resultSet.getInt("filmID");
+	            Integer serieID = resultSet.getInt("serieID");
+	            Timestamp startDate = resultSet.getTimestamp("visualizationDate");
+	            String progreso = resultSet.getString("progreso");
+	            
+	            OffsetDateTime fecha = startDate.toInstant().atOffset(ZoneOffset.UTC);
+
+	            // Crear el objeto Visualization a partir de los datos obtenidos
+	            Visualizacion visualization = new Visualizacion(
+	                visualizationID,// ID de la visualización
+	                userID,
+	                filmID != 0 ? filmID : null, // Solo asignar filmID si no es cero
+	                serieID != 0 ? serieID : null, // Solo asignar serieID si no es cero
+	                fecha, // Convertir Timestamp a LocalDateTime
+	                progreso
+	            );
+
+	            visualizations.add(visualization);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return visualizations;
+	}
+
+	public boolean deleteVisualizationsByUserId(int userID) {
+		boolean deleted = false; // Variable para verificar si se eliminaron filas
+	    String sql = "DELETE FROM visualizations WHERE userID = ?";
+
+	    try (Connection connection = dataSource.getConnection(); // Obtener conexión
+	         PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+	        preparedStatement.setInt(1, userID); // Establecer el userId en el PreparedStatement
+	        int rowsAffected = preparedStatement.executeUpdate(); // Ejecutar la actualización
+	        deleted = rowsAffected > 0; // Verificar si se eliminaron filas
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Manejo de excepciones
+	    }
+
+	    return deleted; // Retornar true si se eliminaron filas, false de lo contrario
+	}
 	
 }
