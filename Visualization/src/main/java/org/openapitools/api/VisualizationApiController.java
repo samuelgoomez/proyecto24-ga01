@@ -197,4 +197,24 @@ public class VisualizationApiController implements VisualizationApi {
 
     }
 
+	@Override
+    public ResponseEntity<List<Visualizacion>> visualizationUserIDContinueWatchingGet (@PathVariable("userID") Integer userID) {
+    	List<Visualizacion> list = visualizationDAO.continueWatching(userID);
+    	
+    	if (!list.isEmpty()) {
+    		return ResponseEntity.ok(list);
+    	}
+    	else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    	}
+    }
+
+	@Override
+    public ResponseEntity<VisualizationUserIDFilmFilmIDDownloadPost200Response> visualizationUserIDFilmFilmIDDownloadPost (@PathVariable("userID") Integer userID,@PathVariable("filmID") Integer filmID) {
+    	VisualizationUserIDFilmFilmIDDownloadPost200Response mensaje = new VisualizationUserIDFilmFilmIDDownloadPost200Response();
+    	mensaje.message("Descargando película...");
+        return ResponseEntity.ok(mensaje); 
+
+    }
+
 }
