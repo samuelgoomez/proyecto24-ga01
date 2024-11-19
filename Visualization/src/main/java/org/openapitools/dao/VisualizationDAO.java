@@ -463,5 +463,34 @@ public class VisualizationDAO {
 		
 		return opciones;
 	}
+
+	public List<Visualizacion> continueWatching (Integer userID) {
+		String sql = "SELECT visualizationID,userID,filmID,serieID,visualizationDate,progreso FROM visualizations WHERE userID=? AND progreso=?";
+		List<Visualizacion> list = new ArrayList<>();
+		
+		try (Connection connection = dataSource.getConnection(); // Obtener conexión
+		        PreparedStatement preparedStatement2 = connection.prepareStatement(sql)) {
+		        preparedStatement2.setInt(1, userID); 
+		        preparedStatement2.setString(2, "Viendo");
+		        ResultSet resultSet = preparedStatement2.executeQuery();
+		        
+		        while (resultSet.next()) {
+		        	 Visualizacion visual = new Visualizacion(
+			                resultSet.getInt("visualizationID"),
+			                resultSet.getInt("userID"),
+			                resultSet.getInt("filmID"),
+			                resultSet.getInt("serieID"),
+			                resultSet.getTimestamp("visualizationDate").toInstant().atOffset(ZoneOffset.UTC),
+			                resultSet.getString("progreso")
+			            );
+		        	 list.add(visual);
+		        }
+		        
+		    } catch (SQLException e) {
+		        e.printStackTrace(); // Manejo de excepciones
+		    }
+		
+		return list;
+	}
 	
 }
