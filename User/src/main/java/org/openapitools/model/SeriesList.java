@@ -18,7 +18,7 @@ import javax.annotation.Generated;
  * SeriesList
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-12T21:17:46.398497900+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-12T19:10:30.312062600+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
 public class SeriesList {
 
   private Integer serieID;
@@ -28,6 +28,11 @@ public class SeriesList {
   public SeriesList serieID(Integer serieID) {
     this.serieID = serieID;
     return this;
+  }
+  
+  public SeriesList (Integer serieID, String title) {
+	  this.serieID = serieID;
+	  this.title = title;
   }
 
   /**
