@@ -1,0 +1,658 @@
+/* Reset de márgenes y paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilo del body */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #141414;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('../images/ñefli.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Estilos de la barra de navegación */
+.navbar {
+  width: 100%;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #000000;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Logo principal */
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #e50914;
+  cursor: pointer;
+}
+
+/* Estilo para el enlace dentro de .logo */
+.logo a {
+  text-decoration: none;  /* Para eliminar el subrayado predeterminado del enlace */
+  color: inherit;  /* Hereda el color de su contenedor, que es #e50914 */
+}
+
+
+/* Sección de perfil de usuario en la esquina superior derecha */
+.user-section {
+  display: flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+/* Icono de usuario */
+.user-icon {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+/* Nombre de usuario */
+#username-display {
+  font-size: 1rem;
+  color: #ffffff;
+  margin-right: 10px;
+}
+
+/* Flecha para desplegar el menú */
+.user-arrow {
+  font-size: 1rem;
+  color: #ffffff;
+  transition: transform 0.3s;
+}
+
+/* Animación de la flecha al abrir el menú */
+.user-section.open .user-arrow {
+  transform: rotate(180deg);
+}
+
+/* Menú desplegable del perfil */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #333333;
+  padding: 0.5rem 0;
+  border-radius: 5px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  min-width: 150px;
+  text-align: left;
+}
+
+/* Mostrar menú desplegable al hacer hover o clic */
+.user-section:hover .dropdown-menu,
+.user-section.open .dropdown-menu {
+  display: block;
+}
+
+/* Enlaces del menú desplegable */
+.dropdown-menu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  transition: background-color 0.3s;
+}
+
+.dropdown-menu a:hover {
+  background-color: #444444;
+}
+
+/* Estilo del título principal (ÑEFLI) */
+.main-title {
+  font-size: 6rem;
+  font-weight: bold;
+  color: #e50914;
+  text-align: center;
+  margin-top: 80px;
+  margin-bottom: 20px;
+}
+
+/* Estilos del contenido principal */
+.main-content {
+  text-align: center;
+  margin-top: 120px; /* Ajuste del margen para evitar superposición con la navbar */
+}
+
+h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.btn-principal {
+  display: inline-block;
+  padding: 12px 25px;
+  font-size: 1.2rem;
+  color: white;
+  background-color: #e50914; /* Color rojo típico de Netflix */
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Transición para hover */
+  margin: 10px 0; /* Espacio alrededor del botón */
+}
+
+.btn-principal:hover {
+  background-color: #f40612; /* Color más oscuro al pasar el mouse */
+  transform: scale(1.05); /* Efecto de ampliación */
+}
+
+.btn-principal:active {
+  background-color: #c40610; /* Color aún más oscuro cuando se hace clic */
+}
+/* Estilo general de las tablas */
+table {
+  width: 85%;
+  margin: 40px auto;
+  border-collapse: collapse;
+  background-color: #222;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 1s ease-out;
+  color: #e5e5e5;
+}
+
+table th, table td {
+  padding: 15px;
+  text-align: left;
+}
+
+table th {
+  background-color: #333;
+  font-size: 18px;
+  border-bottom: 2px solid #444;
+  animation: fadeSlideIn 0.8s ease-in-out;
+}
+
+table td {
+  font-size: 16px;
+  border-bottom: 1px solid #444;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+table tr:hover {
+  background-color: #333;
+  cursor: pointer;
+  transform: scale(1.02);
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+/* Estilo de botones dentro de las tablas */
+/* Estilo de botones dentro de las tablas */
+.btn-editarPelicula, .btn-eliminarPelicula, .btn-editarSerie, .btn-eliminarSerie, .btn-episode, .btn-addPelicula, .btn-addSerie, .btn-editarActor, .btn-eliminarActor, .btn-editarLista, .btn-eliminarLista, .btn-listarPelicula, .btn-listarSerie, .btn-anadir {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 5px 5px;
+  display: inline-block;
+  color: #fff;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Botón Editar */
+.btn-editarPelicula, .btn-editarSerie, .btn-editarActor, .btn-editarLista, .btn-anadir {
+  background-color: #4CAF50; /* Verde */
+}
+
+.btn-editarPelicula:hover, .btn-editarSerie:hover, .btn-editarActor:hover, .btn-editarLista:hover, .btn-anadir:hover {
+  background-color: #45a049;
+  transform: scale(1.1);
+}
+
+/* Botón Eliminar */
+.btn-eliminarPelicula, .btn-eliminarSerie, .btn-eliminarActor, .btn-eliminarLista {
+  background-color: #e50914; /* Rojo Netflix */
+}
+
+.btn-eliminarPelicula:hover, .btn-eliminarSerie:hover, .btn-eliminarActor:hover, .btn-eliminarLista:hover {
+  background-color: #d32f2f;
+  transform: scale(1.1);
+}
+
+/* Botón Episodios */
+.btn-episode {
+  background-color: #0066cc; /* Azul */
+}
+
+.btn-episode:hover {
+  background-color: #005bb5;
+  transform: scale(1.1);
+}
+
+.btn-listarSerie, .btn-listarPelicula{
+  background-color: #929292;
+}
+
+/* Botón Añadir Película */
+.btn-addPelicula {
+  background-color: #e50914; /* Rojo Netflix */
+}
+
+.btn-addPelicula:hover {
+  background-color: #d32f2f;
+  transform: scale(1.1);
+}
+
+/* Botón Añadir Serie */
+.btn-addSerie {
+  background-color: #ff9800; /* Naranja */
+}
+
+.btn-addSerie:hover {
+  background-color: #e68900;
+  transform: scale(1.1);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #222;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e50914; /* Rojo Netflix */
+  border-radius: 10px;
+}
+
+/* Estilo adicional para hover de la tabla */
+table:hover {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+}
+
+/* Ajustes de responsividad */
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 4rem;
+  }
+
+  table {
+    width: 95%;
+  }
+
+  .navbar {
+    padding: 0.8rem 1.5rem;
+  }
+
+  /* Ajuste del menú desplegable en dispositivos móviles */
+  .dropdown-menu {
+    min-width: 100px;
+  }
+}
+
+/* Botón Registrar Película */
+.btn-registrarPelicula {
+  background-color: #e50914; /* Rojo Netflix */
+  padding: 12px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 10px 5px;
+  display: inline-block;
+  color: #ffffff;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-registrarPelicula:hover {
+  background-color: #b81d24; /* Rojo más oscuro */
+  transform: scale(1.05);
+}
+
+/* Botón Registrar Serie */
+.btn-registrarSerie {
+  background-color: #ff9800; /* Naranja */
+  padding: 12px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 10px 5px;
+  display: inline-block;
+  color: #ffffff;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-registrarSerie:hover {
+  background-color: #e68900; /* Naranja más oscuro */
+  transform: scale(1.05);
+}
+
+/* Botón Registrar Serie */
+.btn-registrarEpisodio {
+  background-color: #ff9800; /* Naranja */
+  padding: 12px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 10px 5px;
+  display: inline-block;
+  color: #ffffff;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-registrar:hover {
+  background-color: #e68900; /* Naranja más oscuro */
+  transform: scale(1.05);
+}
+
+/* Botón Registrar Serie */
+.btn-registrarActor {
+  background-color: #b015c1; /* Naranja */
+  padding: 12px 18px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  margin: 10px 5px;
+  display: inline-block;
+  color: #ffffff;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-registrarActor:hover {
+  background-color: #b015c1; /* Naranja más oscuro */
+  transform: scale(1.05);
+}
+
+/* General */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #141414; /* Fondo Netflix */
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+/* Buscador */
+.search-form {
+  margin: 2rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-box {
+  display: flex;
+  align-items: center; /* Alinea verticalmente los elementos */
+  background-color: #222;
+  border-radius: 50px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  max-width: 600px; /* Puedes ajustar el tamaño máximo */
+  width: 100%; /* El contenedor es responsive */
+}
+
+.search-box:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
+}
+
+.search-input {
+  width: 100%; /* Hace que el input ocupe el espacio disponible */
+  padding: 1rem;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: #fff;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border-radius: 50px; /* Redondear el borde del input */
+}
+
+.search-input::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+.search-input:focus {
+  background-color: #333;
+}
+
+.search-button {
+  background-color: #e50914;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border-radius: 50px; /* Redondea el borde del botón */
+  margin:0 auto;
+}
+
+.search-button:hover {
+  background-color: #ff0a16;
+  transform: scale(1.05);
+}
+
+.search-button:active {
+  background-color: #cc0812;
+}
+
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .search-input {
+      width: 300px;
+      font-size: 1rem;
+  }
+
+  .search-button {
+      padding: 0.5rem 1rem;
+  }
+}
+
+.user-info {
+  display: flex; 
+  gap: 10px; 
+  align-items: center; 
+}
+
+.user-info p{
+  align-items: center;
+  justify-content: center; 
+}
+
+.user-info p {
+  display: flex; /* Aplica Flexbox a la etiqueta <p> */
+  align-items: center; /* Centra el contenido verticalmente */
+  justify-content: center; /* Centra el contenido horizontalmente */
+  margin: 0; /* Elimina el margen por defecto de <p> */
+  text-align: center; /* Centra el texto en caso de que haya más de una línea */
+}
+
+#username-display {
+  font-size: 16px; /* Ajusta el tamaño del texto */
+}
+
+.logo{
+  display: flex;
+  margin-right: 10px;
+}
+
+.visualizaciones{
+    display: flex;
+    gap: 10px;
+}
+
+.visualizaciones h2 {
+  margin-right: 10px;
+  display: flex; /* Aplica Flexbox a la etiqueta <p> */
+  align-items: center; /* Centra el contenido verticalmente */
+  justify-content: center; /* Centra el contenido horizontalmente */
+  margin: 0; /* Elimina el margen por defecto de <p> */
+  text-align: center; /* Centra el texto en caso de que haya más de una línea */
+}
+
+/* Estilo general para los enlaces con clase btn-principal */
+.btn-principal {
+  display: inline-flex; /* Cambia a inline-flex para que el texto se comporte como un enlace */
+  align-items: center; /* Centra el texto verticalmente */
+  justify-content: center; /* Centra el texto horizontalmente */
+  text-decoration: none; /* Elimina el subrayado del enlace */
+  font-size: 16px; /* Ajusta el tamaño de la fuente */
+  font-weight: bold; /* Opcional: hace que el texto sea más destacado */
+  padding: 10px 20px; /* Espaciado alrededor del texto */
+  cursor: pointer; /* Muestra el cursor como mano cuando se pasa sobre el texto */
+  border: none; /* Elimina el borde si es necesario */
+  background: none; /* Elimina el fondo si es necesario */
+}
+
+.btn-principal:hover {
+  color: white; /* Cambia el color del texto a blanco cuando se pasa el ratón */
+}
+
+button {
+  margin-bottom: 30px;
+  padding: 12px 25px;
+  background-color: #e50914; /* Botón rojo con estilo de Netflix */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #b00610; /* Color más oscuro al pasar el ratón */
+}
+
+/* Estilo para el contenedor de listas */
+.list-container {
+  margin: 20px 0;
+}
+
+.list-wrapper {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding: 10px;
+  scroll-snap-type: x mandatory;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Estilo para cada tarjeta */
+.list-card {
+  min-width: 250px;
+  background-color: #222;
+  color: white;
+  border-radius: 8px;
+  padding: 16px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.list-card:hover {
+  transform: scale(1.05);
+}
+
+.list-card h3 {
+  font-size: 1.2em;
+  margin: 0 0 10px;
+}
+
+.list-card p {
+  margin: 5px 0;
+  font-size: 0.9em;
+}
+
+/* Botones dentro de las tarjetas */
+.list-card button {
+  background-color: #e50914;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.list-card button:hover {
+  background-color: #ff0a16;
+}
+
+.back-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  z-index: 1000;
+}
+
+.back-button:hover {
+  background-color: rgba(0, 0, 0, 0.9);
+}

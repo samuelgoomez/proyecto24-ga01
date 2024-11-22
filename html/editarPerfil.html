@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <div class="formbold-main-wrapper">
+        <h1>Editar Perfil</h1>
+        <form class="formbold-form-wrapper">
+            <!-- ID oculto del perfil -->
+            <input type="hidden" name="profileID" id="profileID" />
+
+            <div class="formbold-input-flex">
+                <label for="name" class="formbold-form-label">Nombre del Perfil</label>
+                <input type="text" name="name" id="name" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="type" class="formbold-form-label">Tipo de Perfil</label>
+                <select name="type" id="type" class="formbold-form-input">
+                    <option value="adult">Adulto</option>
+                    <option value="child">Niño</option>
+                </select>
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="avatarURL" class="formbold-form-label">URL del Avatar</label>
+                <input type="text" name="avatarURL" id="avatarURL" class="formbold-form-input" />
+            </div>
+
+            <input type="hidden" name="createdAt" id="createdAt" />
+
+            <button type="button" class="formbold-btn" id="btn-guardarPerfil">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script src="../js/editarPerfil.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Serie</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+      </a>
+    <div class="formbold-main-wrapper">
+        <h1>Editar Serie</h1>
+        <form class="formbold-form-wrapper">
+            <!-- ID oculto de la serie -->
+            <input type="hidden" name="serieID" id="serieID" />
+
+            <div class="formbold-input-flex">
+                <label for="title" class="formbold-form-label">Título</label>
+                <input type="text" name="title" id="title" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="seasons" class="formbold-form-label">Número de Temporadas</label>
+                <input type="text" name="seasons" id="seasons" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="releaseYear" class="formbold-form-label">Año de Lanzamiento</label>
+                <input type="text" name="releaseYear" id="releaseYear" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="genreID" class="formbold-form-label">Género</label>
+                <input type="text" name="genreID" id="genreID" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="description" class="formbold-form-label">Descripción</label>
+                <textarea name="description" id="description" class="formbold-form-input"></textarea>
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="photoURL" class="formbold-form-label">URL de la Foto</label>
+                <input type="text" name="photoURL" id="photoURL" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="arrayActors" class="formbold-form-label">Actores (separados por comas)</label>
+                <input type="text" name="arrayActors" id="arrayActors" class="formbold-form-input" />
+            </div>
+
+            <button type="button" class="formbold-btn" id="btn-guardarSerie">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script src="../js/editarSerie.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información de la cuenta</title>
+    <link rel="stylesheet" href="../css/infoCuenta.css">
+</head>
+<body>
+    <!-- Botón de regreso estilo Netflix -->
+    <a href="paginaPrincipal.html" class="back-button">
+        <div class="back-arrow">&lt;</div>
+    </a>
+    
+    <div class="account-container">
+        <!-- Información de la cuenta a la izquierda -->
+        <div class="account-info">
+            <h1>Información de tu cuenta</h1>
+            <div id="info-usuario" class="user-details">
+                <p><strong>Usuario ID:</strong> <span id="userID-display">Cargando...</span></p>
+                <p><strong>Usuario:</strong> <span id="username-display">Cargando...</span></p>
+                <p><strong>Contraseña:</strong> <span id="password-display">Cargando...</span></p>
+                <p><strong>Email:</strong> <span id="email-display">Cargando...</span></p>
+                <p><strong>Nombre:</strong> <span id="name-display">Cargando...</span></p>
+                <p><strong>Fecha de creación:</strong> <span id="createdAt-display">Cargando...</span></p>
+                <p><strong>Preferencias:</strong> <span id="preferences-display">Cargando...</span></p>
+            </div>
+        </div>
+
+        <!-- Botones a la derecha -->
+        <div class="button-container">
+            <button id="verMetodoPago" class="btn-registrar" style="display:none;">Ver método de pago</button>
+            <button id="registrarMetodoPago" class="btn-registrar" style="display:none;">Registrar método de pago</button>
+            <button id="verPlanSuscripcion" class="btn-registrar" style="display:none;">Ver Plan de Suscripción</button>
+            <button id="contratarPlan" class="btn-registrar" style="display:none;">Contratar Plan</button>
+            <button id="btn-editarCuenta" class="btn-editar">Editar cuenta</button>
+            <button id="btn-eliminarCuenta" class="btn-eliminar">Eliminar cuenta</button>
+            <button id="btn-cerrarSesion" class="btn-cerrar">Cerrar sesión</button>
+        </div>
+    </div>
+
+    <script src="../js/infoCuenta.js"></script>
+</body>
+</html>
+

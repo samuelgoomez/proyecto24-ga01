@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+  <a href="javascript:history.back()" class="back-button">
+    <div class="back-arrow">&lt;</div>
+  </a>
+    <div class="formbold-main-wrapper">
+        <h1>Registro de Películas</h1>
+        <div class="formbold-form-wrapper">
+          <form id="filmForm">
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="filmID" class="formbold-form-label"></label>
+                    <input
+                    type="hidden"
+                    name="filmID"
+                    id="filmID"
+                    placeholder="5"
+                    value="1"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="title" class="formbold-form-label"> Título </label>
+                    <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    placeholder="Película"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                  <label for="genreID" class="formbold-form-label"> ID del genero la pelicula </label>
+                    <input
+                    type="number"
+                    name="genreID"
+                    id="genreID"
+                    placeholder="5"
+                    class="formbold-form-input"
+                    />
+                </div>
+                <div>
+                    <label for="releaseYear" class="formbold-form-label"> Año de lanzamiento </label>
+                    <input
+                    type="number"
+                    name="releaseYear"
+                    id="releaseYear"
+                    placeholder="2003"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="duration" class="formbold-form-label"> Duración </label>
+                    <input
+                    type="number"
+                    name="duration"
+                    id="duration"
+                    placeholder="120"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="description" class="formbold-form-label"> Descripcion </label>
+                    <input
+                    type="text"
+                    name="description"
+                    id="description"
+                    placeholder="Descripcion"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="photoURL" class="formbold-form-label"> Miniatura de la película </label>
+                    <input
+                    type="url"
+                    name="photoURL"
+                    id="photoURL"
+                    placeholder="https://example.com/image.jpg"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="arrayActors" class="formbold-form-label"> IDs de Actores (separados por comas) </label>
+                    <input
+                    type="text"
+                    name="arrayActors"
+                    id="arrayActors"
+                    placeholder="1,2,3"
+                    class="formbold-form-input"
+                    />
+                </div>
+              <button type="button" class="formbold-btn" id="btregistrar">
+                  Registrar Película
+              </button>
+          </form>
+        </div>
+      </div>
+      <script src="../js/registrarPelicula.js"></script>
+</body>
+</html>

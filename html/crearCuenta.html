@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-button">
+      <div class="back-arrow">&lt;</div>
+    </a>
+    
+    <div class="formbold-main-wrapper">
+        <h1>Crear Cuenta</h1>
+        <div class="formbold-form-wrapper">
+          <form id="filmForm">
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="userID" class="formbold-form-label"></label>
+                    <input
+                    type="hidden"
+                    name="userID"
+                    id="userID"
+                    value="1"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="username" class="formbold-form-label"> Nombre de usuario </label>
+                    <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Usuario"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                  <label for="password" class="formbold-form-label"> Contraseña </label>
+                    <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="contraseña"
+                    class="formbold-form-input"
+                    />
+                </div>
+                <div>
+                    <label for="email" class="formbold-form-label"> Email </label>
+                    <input
+                    type="string"
+                    name="email"
+                    id="email"
+                    placeholder="email@email.com"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="name" class="formbold-form-label"> Nombre </label>
+                    <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Nombre"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="genre-list-container">
+                <p>Referencias de Géneros</p>
+                <ul class="genre-list">
+                    <li><input type="checkbox" id="genre1" name="genre" value="1"> Acción</li>
+                    <li><input type="checkbox" id="genre2" name="genre" value="2"> Comedia</li>
+                    <li><input type="checkbox" id="genre3" name="genre" value="3"> Drama</li>
+                    <li><input type="checkbox" id="genre4" name="genre" value="4"> Terror</li>
+                    <li><input type="checkbox" id="genre5" name="genre" value="5"> Misterio/Suspense</li>
+                    <li><input type="checkbox" id="genre6" name="genre" value="6"> Infantil</li>
+                </ul>
+             </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="createdAt" class="formbold-form-label"></label>
+                    <input
+                    type="hidden"
+                    name="createdAt"
+                    id="createdAt"
+                    value="2024-11-12T15:30"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <button type="button" class="formbold-btn" id="btcrear">
+                  Crear Cuenta
+              </button>
+          </form>
+        </div>
+      </div>
+      <script src="../js/crearCuenta.js"></script>
+</body>
+</html>
