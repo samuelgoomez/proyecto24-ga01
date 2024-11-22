@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Suscripción</title>
+    <link rel="stylesheet" href="../css/infoCuenta.css">
+</head>
+<body>
+    <!-- Botón de regreso estilo Netflix -->
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+    </a>
+    
+    <div class="account-info">
+        <h1>Información de tu Plan de Suscripción</h1>
+        <div id="info-plan" class="user-details">
+            <p><strong>Nombre del Plan:</strong> <span id="planname-display">Cargando...</span></p>
+            <p><strong>Fecha de Inicio:</strong> <span id="startdate-display">Cargando...</span></p>
+            <p><strong>Fecha de Finalización:</strong> <span id="enddate-display">Cargando...</span></p>
+            <p><strong>Precio:</strong> <span id="price-display">Cargando...</span></p>
+        </div>
+
+        <button id="btn-cancelarPlan" class="btn-eliminar">Cancelar Plan de Suscripción</button>
+    </div>
+
+    <!-- Redirigir al archivo JavaScript -->
+    <script src="../js/verPlanSuscripcion.js"></script>
+</body>
+</html>

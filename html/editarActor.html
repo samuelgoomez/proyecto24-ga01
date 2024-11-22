@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Actor</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+      </a>
+    <div class="formbold-main-wrapper">
+        <h1>Editar Actor</h1>
+        <form class="formbold-form-wrapper">
+            <!-- ID oculto del actor -->
+            <input type="hidden" name="actorID" id="actorID" />
+
+            <div class="formbold-input-flex">
+                <label for="name" class="formbold-form-label">Nombre</label>
+                <input type="text" name="name" id="name" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="birthdayDate" class="formbold-form-label">Fecha de Nacimiento</label>
+                <input type="date" name="birthdayDate" id="birthdayDate" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="photoURL" class="formbold-form-label">URL de la Foto</label>
+                <input type="text" name="photoURL" id="photoURL" class="formbold-form-input" />
+            </div>
+
+            <button type="button" class="formbold-btn" id="btn-guardarActor">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script src="../js/editarActor.js"></script>
+</body>
+</html>

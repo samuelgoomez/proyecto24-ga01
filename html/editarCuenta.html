@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cuenta</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+    </a>
+    <div class="formbold-main-wrapper">
+        <h1>Editar Cuenta</h1>
+        <form class="formbold-form-wrapper">
+            <input type="hidden" name="userID" id="userID" />
+
+            <div class="formbold-input-flex">
+                <label for="username" class="formbold-form-label">Nombre de usuario</label>
+                <input type="text" name="username" id="username" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="password" class="formbold-form-label">Contraseña</label>
+                <input type="text" name="password" id="password" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="email" class="formbold-form-label">Email</label>
+                <input type="text" name="email" id="email" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="name" class="formbold-form-label">Nombre</label>
+                <input type="text" name="name" id="name" class="formbold-form-input" />
+            </div>
+
+            <div class="formbold-input-flex">
+                <label for="preferences" class="formbold-form-label">Preferencias (separados por comas)</label>
+                <input type="text" name="preferences" id="preferences" class="formbold-form-input" />
+            </div>
+
+            <input type="hidden" name="createdAt" id="createdAt" />
+
+            <button type="button" class="formbold-btn" id="btn-guardarCuenta">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script src="../js/editarCuenta.js"></script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Actor</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+  <a href="javascript:history.back()" class="back-button">
+    <div class="back-arrow">&lt;</div>
+  </a>
+    <div class="formbold-main-wrapper">
+        <h1>Registro de Actor</h1>
+        <div class="formbold-form-wrapper">
+          <form id="actorForm">
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="actorID" class="formbold-form-label"></label>
+                    <input
+                    type="hidden"
+                    name="actorID"
+                    id="actorID"
+                    value="1"
+                    placeholder="1"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="name" class="formbold-form-label">Nombre del Actor</label>
+                    <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Nombre del actor"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="birthdayDate" class="formbold-form-label">Fecha de Nacimiento</label>
+                    <input
+                    type="date"
+                    name="birthdayDate"
+                    id="birthdayDate"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="photoURL" class="formbold-form-label">Foto del Actor (URL)</label>
+                    <input
+                    type="url"
+                    name="photoURL"
+                    id="photoURL"
+                    placeholder="https://example.com/image.jpg"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <button type="button" class="formbold-btn" id="btregistrarActor">
+                  Registrar Actor
+              </button>
+          </form>
+        </div>
+      </div>
+      <script src="../js/registrarActor.js"></script>
+</body>
+</html>

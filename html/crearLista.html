@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Preferencias</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+    </a>
+    
+    <div class="formbold-main-wrapper">
+        <h1>¿Cómo quieres llamar a tu lista?</h1>
+        <div class="formbold-form-wrapper">
+            <form id="listForm">
+                <!-- Lista de información -->
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="listID" class="formbold-form-label"></label>
+                        <input type="hidden" name="listID" id="listID" value="1" class="formbold-form-input" readonly/>
+                    </div>
+                </div>
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="userID" class="formbold-form-label"></label>
+                        <input type="hidden" name="userID" id="userID" class="formbold-form-input" readonly/>
+                    </div>
+                </div>
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="name" class="formbold-form-label">Nombre de la Lista</label>
+                        <input type="text" name="name" id="name" class="formbold-form-input" />
+                    </div>
+                </div>
+
+                <!-- Mostrar películas -->
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="films" class="formbold-form-label"></label>
+                        <input type="hidden" name="films" id="films" value="[]" class="formbold-form-input" readonly/>
+                    </div>
+                </div>
+
+                <!-- Mostrar series -->
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="series" class="formbold-form-label"></label>
+                        <input type="hidden" name="series" id="series" value="[]" class="formbold-form-input" readonly/>
+                    </div>
+                </div>
+
+                <!-- Fecha de creación -->
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="createdAt" class="formbold-form-label"></label>
+                        <input type="hidden" name="createdAt" id="createdAt" value="2024-11-12T15:30" class="formbold-form-input" readonly/>
+                    </div>
+                </div>
+
+                <!-- Botón de crear lista -->
+                <button type="button" class="formbold-btn" id="btcrear">
+                    Crear Lista
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/crearLista.js"></script>
+</body>
+</html>

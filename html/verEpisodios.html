@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ñefli</title>
+  <link rel="stylesheet" href="../css/paginaPrincipal.css">
+</head>
+<body>
+  
+  <!-- Barra de navegación -->
+  <header class="navbar">
+    <div class="visualizaciones">
+    <div class="logo"><h2>ÑEFLI</h2></div>
+      <a href="historial.html" class="btn-principal">Historial</a>
+      <a href="recomendaciones.html" class="btn-principal">Recomendaciones</a>
+      <a href="seguirViendo.html" class="btn-principal">Seguir viendo</a>
+    </div>
+    <div class="user-info">
+        <a href="verListas.html" class="btn-principal">Mis Listas</a>
+        <a href="verPerfiles.html" class="btn-principal">Mis Perfiles</a>
+        <div class="user-section" id="userSection">
+          <span class="user-icon">👤</span>
+          <a href="infoCuenta.html" class="usuario-info" id="redirect-link">
+          <p><strong></strong> <span id="username-display">Cargando...</span></p>
+        </a>
+    </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <h1 class="main-title">ÑEFLI</h1>
+    <h2>Bienvenido a Ñefli</h2>
+    <p>Explora nuestro catálogo y disfruta de una experiencia única.</p>
+  </main>
+
+  <h2>Lista de Episodios</h2>
+
+ <!-- Botón de Registrar episodio -->
+<button class="btn-registrarEpisodio" id="btn-registrarEpisodio">Registrar Episodio</button>
+
+
+  <table id="tablaContentEpisodes">
+    <thead>
+      <tr>
+        <th>Número de episodio</th>
+        <th>Número de temporada</th>
+        <th>Titulo</th>
+        <th>PhotoURL</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- Aquí se insertarán los episodios -->
+    </tbody>
+  </table>
+
+  <script src="../js/verEpisodios.js"></script>
+</body>
+</html>

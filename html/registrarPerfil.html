@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Perfil</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <div class="formbold-main-wrapper">
+        <h1>Registro de Perfiles</h1>
+        <div class="formbold-form-wrapper">
+            <form id="profileForm">
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="profileID" class="formbold-form-label"></label>
+                        <input
+                        type="hidden"
+                        name="profileID"
+                        id="profileID"
+                        value="1"
+                        class="formbold-form-input"
+                        />
+                    </div>
+                    <div>
+                        <label for="name" class="formbold-form-label"> Nombre del Perfil </label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            placeholder="Nombre del perfil"
+                            class="formbold-form-input"
+                        />
+                    </div>
+                </div>
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="type" class="formbold-form-label"> Tipo de Perfil </label>
+                        <select name="type" id="type" class="formbold-form-input">
+                            <option value="adult">Adulto</option>
+                            <option value="child">Infantil</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="avatarurl" class="formbold-form-label"> URL del Avatar </label>
+                        <input
+                            type="url"
+                            name="avatarurl"
+                            id="avatarurl"
+                            placeholder="https://example.com/avatar.jpg"
+                            class="formbold-form-input"
+                        />
+                    </div>
+                </div>
+                <div class="formbold-input-flex">
+                    <div>
+                        <label for="createdat" class="formbold-form-label"></label>
+                        <input
+                        type="hidden"
+                        name="createdat"
+                        id="createdAt"
+                        value="2024-11-18 14:30:00"
+                        class="formbold-form-input"
+                        />
+                    </div>
+                  </div>
+                <button type="button" class="formbold-btn" id="btRegistrar">
+                    Registrar Perfil
+                </button>
+            </form>
+        </div>
+    </div>
+    <script src="../js/registrarPerfil.js"></script>
+</body>
+</html>
+

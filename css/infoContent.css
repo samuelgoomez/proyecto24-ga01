@@ -1,0 +1,137 @@
+/* Estilo general */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #111;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor principal con Grid */
+.movie-container {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* 2 columnas: una fija para la imagen, y otra flexible para la información */
+    gap: 20px; /* Espacio entre las columnas */
+    padding: 20px;
+    margin: 20px;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con opacidad */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Caja de la imagen */
+.movie-image {
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.movie-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Contenedor de la información */
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Título de la película */
+.movie-title {
+    font-size: 2em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+/* Detalles de la película (Género, Año, Duración) */
+.movie-details {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.movie-genre,
+.movie-year,
+.movie-duration {
+    font-size: 1.1em;
+    color: #ccc;
+}
+
+/* Sinopsis */
+.movie-synopsis {
+    font-size: 1.1em;
+    color: #ccc;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* Actores */
+.movie-actors {
+    font-size: 1.1em;
+    color: #ccc;
+}
+
+.movie-actions {
+    margin-top: 20px;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+    .movie-container {
+        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+        text-align: center;
+    }
+
+    .movie-image {
+        width: 80%;
+        height: 300px;
+        margin: 0 auto;
+    }
+
+    .movie-info {
+        padding: 10px;
+    }
+
+    .movie-details {
+        flex-direction: column; /* Muestra los detalles en columna en pantallas pequeñas */
+        gap: 10px;
+    }
+}
+
+.btn-play, .btn-listarSerie {
+    padding: 10px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 5px 5px;
+    display: inline-block;
+    color: #fff;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .btn-play {
+    background-color: orange;
+  } 
+
+  .btn-play:hover {
+    background-color: orange;
+    transform: scale(1.1);
+  }
+
+  .btn-listarSerie {
+    background-color: purple;
+  } 
+
+  .btn-listarSerie:hover {
+    background-color: purple;
+    transform: scale(1.1);
+  }

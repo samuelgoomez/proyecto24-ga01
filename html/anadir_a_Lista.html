@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ñefli</title>
+  <link rel="stylesheet" href="../css/paginaPrincipal.css">
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <header class="navbar">
+    <div class="visualizaciones">
+    <div class="logo"><h2>ÑEFLI</h2></div>
+      <a href="historial.html" class="btn-principal">Historial</a>
+      <a href="recomendaciones.html" class="btn-principal">Recomendaciones</a>
+      <a href="seguirViendo.html" class="btn-principal">Seguir viendo</a>
+    </div>
+    <div class="user-info">
+        <a href="verListas.html" class="btn-principal">Mis Listas</a>
+        <a href="verPerfiles.html" class="btn-principal">Mis Perfiles</a>
+        <div class="user-section" id="userSection">
+          <span class="user-icon">👤</span>
+          <a href="infoCuenta.html" class="usuario-info" id="redirect-link">
+          <p><strong></strong> <span id="username-display">Cargando...</span></p>
+        </a>
+    </div>
+    </div>
+  </header>
+
+<!-- Contenido principal -->
+<main class="main-content">
+  <h1 class="main-title">ÑEFLI</h1>
+
+  <div class="list-container">
+    <h2>Lista de <span id="username-display2">Cargando...</span></h2>
+    <div class="list-wrapper" id="lista-dinamica">
+      <!-- Aquí se insertarán las listas dinámicamente -->
+    </div>
+  </div>
+
+  <script src="../js/anadir_a_Lista.js"></script>
+</body>
+</html>

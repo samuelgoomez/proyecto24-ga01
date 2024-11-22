@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ñefli</title>
+  <link rel="stylesheet" href="../css/paginaPrincipal.css">
+  <link rel="stylesheet" href="../css/infoContent.css">
+</head>
+<body>
+  <!-- Barra de navegación -->
+  <header class="navbar">
+    <div class="visualizaciones">
+    <div class="logo"><h2>ÑEFLI</h2></div>
+      <a href="historial.html" class="btn-principal">Historial</a>
+      <a href="recomendaciones.html" class="btn-principal">Recomendaciones</a>
+      <a href="seguirViendo.html" class="btn-principal">Seguir viendo</a>
+    </div>
+    <div class="user-info">
+        <a href="verListas.html" class="btn-principal">Mis Listas</a>
+        <a href="verPerfiles.html" class="btn-principal">Mis Perfiles</a>
+        <div class="user-section" id="userSection">
+          <span class="user-icon">👤</span>
+          <a href="infoCuenta.html" class="usuario-info" id="redirect-link">
+          <p><strong></strong> <span id="username-display">Cargando...</span></p>
+        </a>
+    </div>
+    </div>
+  </header>
+
+  <div class="movie-container">
+    <!-- Imagen de la película -->
+    <div class="movie-image">
+        <img src="https://via.placeholder.com/300x450" alt="Imagen de la película">
+    </div>
+
+    <!-- Información de la película -->
+    <div class="movie-info">
+        <div class="movie-title">Título de la Película</div>
+        <div class="movie-details">
+            <span class="movie-genre">Género: Acción</span>
+            <span class="movie-year">Año: 2024</span>
+            <span class="movie-seasons">Temporadas: 4</span>
+        </div>
+        <div class="movie-synopsis">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec est sit amet leo fringilla tincidunt eget non dui. Curabitur consequat quam id lorem vulputate, ac iaculis libero euismod. Donec fermentum bibendum diam sit amet faucibus.
+        </div>
+        <div class="movie-actors">
+            <strong>Actores:</strong> Actor 1, Actor 2, Actor 3
+        </div>
+        <div class="movie-actions">
+            <button class="btn-play" id="play-button">Play</button>
+            <button class="btn-listarSerie" id="add-to-list-button">Añadir a lista</button>
+            <button class="btn-episode" id="episodes-button">Episodios</button>
+        </div>
+    </div>
+</div>
+<!-- Botones Editar y Eliminar -->
+<div class="movie-actions-bottom">
+    <button class="btn-editarPelicula" id="edit-button">Editar</button>
+    <button class="btn-eliminarPelicula" id="delete-button">Eliminar</button>
+</div>
+
+<script src="../js/infoSerie.js"></script>
+</body>
+</html>
