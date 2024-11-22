@@ -106,4 +106,41 @@ public class FilmsApiController implements FilmsApi {
     
     }
 
+    @Override
+    public ResponseEntity<List<Film>> filmsGenreGenreIDGet(@PathVariable("genreID") Integer genreID) {
+        List<Film> films = filmDAO.getFilmsByGenreID(genreID);
+
+        if (!films.isEmpty()) {
+            return ResponseEntity.ok(films);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+
+    @Override
+    public ResponseEntity<List<Film>> filmsActorActorIDGet(@PathVariable("actorID") Integer actorID) {
+        List<Film> films = filmDAO.getFilmsByActorID(actorID);
+
+        if (!films.isEmpty()) {
+            return ResponseEntity.ok(films);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+
+    @Override
+    public ResponseEntity<Film> filmsTitleTitleGet(@PathVariable String title) {
+        Film film = filmDAO.getFilmByTitle(title);
+
+        if (film != null) {
+            return ResponseEntity.ok(film);  // Devuelve la película si existe
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();  // 404 si no existe
+        }
+    
+    }
+    
+
 }

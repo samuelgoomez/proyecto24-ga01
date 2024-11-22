@@ -18,7 +18,7 @@ import javax.annotation.Generated;
  * FilmList
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-12T21:17:46.398497900+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2024-11-12T19:10:30.312062600+01:00[Europe/Madrid]", comments = "Generator version: 7.9.0")
 public class FilmList {
 
   private Integer filmID;
@@ -28,6 +28,11 @@ public class FilmList {
   public FilmList filmID(Integer filmID) {
     this.filmID = filmID;
     return this;
+  }
+  
+  public FilmList (Integer filmID, String title) {
+	  this.filmID = filmID;
+	  this.title = title;
   }
 
   /**

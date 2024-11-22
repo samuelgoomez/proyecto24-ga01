@@ -280,4 +280,111 @@ public class SerieDAO {
         return serie;
     }
 
+    public List<Serie> getSerieByGenre(Integer genreID) {
+        List <Serie> series = new ArrayList<>();
+        String  query = "SELECT * FROM series WHERE genreID = ?";
+
+        try  (Connection connection = dataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.clearParameters();
+            ps.setInt(1, genreID);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	
+            	Integer[] actorArray = (Integer[]) rs.getArray("arrayActors").getArray();
+                List<Integer> arrayActors = new ArrayList<>();
+                for (Integer actorId : actorArray) {
+                    arrayActors.add(actorId);
+                }
+            	
+                Serie serie = new Serie(
+                		rs.getInt("serieID"),
+                        rs.getString("title"),
+                        rs.getInt("seasons"),
+                        rs.getInt("releaseYear"),
+                        rs.getInt("genreID"),
+                        rs.getString("description"),
+                        rs.getString("photoURL"),
+                        arrayActors
+                );
+                series.add(serie);
+            } 
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return series;
+    }
+
+    public Serie getSerieBytitle(String title) {
+        Serie serie = null;
+        String  query = "SELECT * FROM series WHERE title = ?";
+
+        try  (Connection connection = dataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.clearParameters();
+            ps.setString(1, title);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	
+            	Integer[] actorArray = (Integer[]) rs.getArray("arrayActors").getArray();
+                List<Integer> arrayActors = new ArrayList<>();
+                for (Integer actorId : actorArray) {
+                    arrayActors.add(actorId);
+                }
+            	
+                serie = new Serie(
+                		rs.getInt("serieID"),
+                        rs.getString("title"),
+                        rs.getInt("seasons"),
+                        rs.getInt("releaseYear"),
+                        rs.getInt("genreID"),
+                        rs.getString("description"),
+                        rs.getString("photoURL"),
+                        arrayActors
+                );
+            } 
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return serie;
+    }
+
+    public List<Serie> getSerieByActorID(Integer actorId) {
+        List<Serie> series = new ArrayList<>();
+        String query = "SELECT * FROM series WHERE ? = ANY(arrayActors)";
+    
+        try (Connection connection = dataSource.getConnection();
+        PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.clearParameters();
+            ps.setInt(1, actorId);
+    
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                
+                Integer[] actorArray = (Integer[]) rs.getArray("arrayActors").getArray();
+                List<Integer> arrayActors = new ArrayList<>();
+                for (Integer aID : actorArray) {
+                    arrayActors.add(aID);
+                }
+                
+                Serie serie = new Serie(
+                        rs.getInt("serieID"),
+                        rs.getString("title"),
+                        rs.getInt("seasons"),
+                        rs.getInt("releaseYear"),
+                        rs.getInt("genreID"),
+                        rs.getString("description"),
+                        rs.getString("photoURL"),
+                        arrayActors
+                );
+                series.add(serie);
+            } 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return series;
+    }
+
 }
