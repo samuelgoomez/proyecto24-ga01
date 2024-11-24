@@ -1,0 +1,2616 @@
+{
+	"info": {
+		"_postman_id": "33f344df-a73b-4257-a758-fb94119a611f",
+		"name": "User Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39967427"
+	},
+	"item": [
+		{
+			"name": "OperacionesUser",
+			"item": [
+				{
+					"name": "GetUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Verificar las propiedades de un usuario con ID 1\r",
+									"pm.test(\"Verifica las propiedades del usuario con ID 1\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Comprobar que la respuesta tiene el id correcto\r",
+									"    pm.expect(jsonData.userID).to.eql(1);\r",
+									"    \r",
+									"    // Comprobar el nombre de usuario\r",
+									"    pm.expect(jsonData.username).to.eql(\"toñop123\");\r",
+									"    \r",
+									"    // Comprobar el correo electrónico\r",
+									"    pm.expect(jsonData.email).to.eql(\"ttpp@gmail.com\");\r",
+									"    \r",
+									"    // Comprobar el nombre completo\r",
+									"    pm.expect(jsonData.name).to.eql(\"Toño Perez\");\r",
+									"    \r",
+									"    // Verificar que las preferencias son un array y tienen tres elementos\r",
+									"    pm.expect(jsonData.preferences).to.be.an(\"array\").that.has.lengthOf(3);\r",
+									"    pm.expect(jsonData.preferences).to.include.members([1, 2, 3]);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"username\": { \"type\": \"string\" },\r",
+									"        \"password\": { \"type\": \"string\" },\r",
+									"        \"email\": { \"type\": \"string\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"        \"preferences\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"userID\", \"username\", \"password\", \"email\", \"name\", \"createdAt\", \"preferences\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 201 (Creado)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta tiene la estructura correcta\r",
+									"pm.test(\"La respuesta tiene la estructura esperada\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"username\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"password\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"email\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"preferences\").that.is.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que las propiedades del nuevo usuario son correctas\r",
+									"pm.test(\"Validar las propiedades del nuevo usuario\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.username).to.eql(\"juanperez\");\r",
+									"    pm.expect(jsonData.email).to.eql(\"juan.perez@example.com\");\r",
+									"    pm.expect(jsonData.name).to.eql(\"Juan Pérez\");\r",
+									"    pm.expect(jsonData.preferences).to.include.members([1, 3, 4]);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Validar que el correo electrónico sea único (solo se valida si existe otro usuario en la base de datos)\r",
+									"pm.test(\"El correo electrónico es único\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.email).to.eql(\"juan.perez@example.com\");\r",
+									"    // Aquí podrías hacer una consulta GET para validar que el correo no exista ya\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"username\": { \"type\": \"string\" },\r",
+									"        \"password\": { \"type\": \"string\" },\r",
+									"        \"email\": { \"type\": \"string\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"        \"preferences\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"userID\", \"username\", \"password\", \"email\", \"name\", \"createdAt\", \"preferences\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userID\": 3,\r\n  \"username\": \"juanperez\",\r\n  \"password\": \"1e34r\",\r\n  \"email\": \"juan.perez@example.com\",\r\n  \"name\": \"Juan Pérez\",\r\n  \"createdAt\": \"2023-10-09T10:20:30Z\",\r\n  \"preferences\": [\r\n    1,\r\n    3,\r\n    4\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUsers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que hay al menos un usuario en la lista\r",
+									"pm.test(\"La respuesta contiene al menos un usuario\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+									"});\r",
+									"\r",
+									"// Validar las propiedades de cada usuario\r",
+									"pm.test(\"Cada usuario tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(user => {\r",
+									"        pm.expect(user).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"        pm.expect(user).to.have.property(\"username\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"password\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"email\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"        pm.expect(user).to.have.property(\"preferences\").that.is.an(\"array\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que todos los correos sean únicos\r",
+									"pm.test(\"Todos los correos son únicos\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const emails = jsonData.map(user => user.email);\r",
+									"    const uniqueEmails = [...new Set(emails)];\r",
+									"    pm.expect(emails.length).to.eql(uniqueEmails.length);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"userID\": { \"type\": \"number\" },\r",
+									"            \"username\": { \"type\": \"string\" },\r",
+									"            \"password\": { \"type\": \"string\" },\r",
+									"            \"email\": { \"type\": \"string\" },\r",
+									"            \"name\": { \"type\": \"string\" },\r",
+									"            \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"            \"preferences\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"number\" }\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"userID\", \"username\", \"password\", \"email\", \"name\", \"createdAt\", \"preferences\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene los datos actualizados del usuario\r",
+									"pm.test(\"La respuesta contiene los datos actualizados\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.username).to.eql(\"editado\");\r",
+									"    pm.expect(jsonData.password).to.eql(\"1e34r\");\r",
+									"    pm.expect(jsonData.email).to.eql(\"juan.perez@example.com\");\r",
+									"    pm.expect(jsonData.name).to.eql(\"Editado\");\r",
+									"    pm.expect(jsonData.preferences).to.include.members([1, 3, 4]);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Validar que la respuesta tenga la estructura correcta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"username\": { \"type\": \"string\" },\r",
+									"        \"password\": { \"type\": \"string\" },\r",
+									"        \"email\": { \"type\": \"string\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"        \"preferences\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"userID\", \"username\", \"password\", \"email\", \"name\", \"createdAt\", \"preferences\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userID\": 3,\r\n  \"username\": \"editado\",\r\n  \"password\": \"1e34r\",\r\n  \"email\": \"juan.perez@example.com\",\r\n  \"name\": \"Editado\",\r\n  \"createdAt\": \"2023-10-09T10:20:30Z\",\r\n  \"preferences\": [\r\n    1,\r\n    3,\r\n    4\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profiles",
+			"item": [
+				{
+					"name": "GetProfiles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el array contiene al menos un perfil\r",
+									"pm.test(\"La respuesta contiene al menos un perfil\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+									"});\r",
+									"\r",
+									"// Validar que los perfiles contienen las propiedades correctas\r",
+									"pm.test(\"Cada perfil tiene las propiedades correctas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(profile => {\r",
+									"        pm.expect(profile).to.have.property(\"profileID\").that.is.a(\"number\");\r",
+									"        pm.expect(profile).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"        pm.expect(profile).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"        pm.expect(profile).to.have.property(\"type\").that.is.a(\"string\");\r",
+									"        pm.expect(profile).to.have.property(\"avatarURL\").that.is.a(\"string\");\r",
+									"        pm.expect(profile).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que los perfiles corresponden al usuario con userID = 1\r",
+									"pm.test(\"Los perfiles corresponden al usuario con userID = 1\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(profile => {\r",
+									"        pm.expect(profile.userID).to.eql(2);  // Comprobar que todos los perfiles pertenecen al usuario con userID = 2\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que el esquema de los perfiles es correcto\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"profileID\": { \"type\": \"number\" },\r",
+									"            \"userID\": { \"type\": \"number\" },\r",
+									"            \"name\": { \"type\": \"string\" },\r",
+									"            \"type\": { \"type\": \"string\" },\r",
+									"            \"avatarURL\": { \"type\": \"string\" },\r",
+									"            \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+									"        },\r",
+									"        \"required\": [\"profileID\", \"userID\", \"name\", \"type\", \"avatarURL\", \"createdAt\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de los perfiles es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/2/profiles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"2",
+								"profiles"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetProfiles",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/profiles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"profiles"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 09:55:53 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"profileID\": 5,\n        \"userID\": 1,\n        \"name\": \"Perfil Principal\",\n        \"type\": \"adult\",\n        \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\n        \"createdAt\": \"2024-11-18T09:55:39.528Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "GetProfile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK) para la solicitud exitosa\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene las propiedades esperadas del perfil\r",
+									"pm.test(\"La respuesta contiene las propiedades del perfil\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"profileID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"type\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"avatarURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el perfil obtenido sea el correcto, por ejemplo, el profileID = 2\r",
+									"pm.test(\"Validar que el perfil tiene el profileID correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.profileID).to.eql(2);  // Validar que el profileID sea 2\r",
+									"});\r",
+									"\r",
+									"// Validar que el tipo de perfil sea válido (por ejemplo, \"adult\" o \"infantil\")\r",
+									"pm.test(\"Validar el tipo del perfil\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.type).to.be.oneOf([\"adult\", \"infantil\"]);  // Validar que sea un tipo válido\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/2/profiles/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"2",
+								"profiles",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetProfile",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/profiles/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"profiles",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 09:56:12 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"profileID\": 5,\n    \"userID\": 1,\n    \"name\": \"Perfil Principal\",\n    \"type\": \"adult\",\n    \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\n    \"createdAt\": \"2024-11-18T09:55:39.528Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "PostProfile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 201 (Creado)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene los datos del perfil recién creado\r",
+									"pm.test(\"La respuesta contiene los datos del perfil creado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(2);  // Verificar el userID\r",
+									"    pm.expect(jsonData.name).to.eql(\"Perfil Principal\");  // Verificar el nombre\r",
+									"    pm.expect(jsonData.type).to.eql(\"adult\");  // Verificar el tipo\r",
+									"    pm.expect(jsonData.avatarURL).to.eql(\"https://example.com/avatars/avatar1.png\");  // Verificar avatarURL\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta tenga la estructura correcta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"profileID\": { \"type\": \"number\" },\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"type\": { \"type\": \"string\" },\r",
+									"        \"avatarURL\": { \"type\": \"string\" },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+									"    },\r",
+									"    \"required\": [\"profileID\", \"userID\", \"name\", \"type\", \"avatarURL\", \"createdAt\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"profileID\": 3,\r\n  \"userID\": 2,\r\n  \"name\": \"Perfil Principal\",\r\n  \"type\": \"adult\",\r\n  \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\r\n  \"createdAt\": \"2023-10-09T10:20:30Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/2/profiles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"2",
+								"profiles"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PostProfile",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"profileID\": 2,\r\n  \"userID\": 2,\r\n  \"name\": \"Perfil Principal\",\r\n  \"type\": \"adult\",\r\n  \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\r\n  \"createdAt\": \"2023-10-09T10:20:30Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/profiles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"profiles"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 09:55:39 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"profileID\": 5,\n    \"userID\": 1,\n    \"name\": \"Perfil Principal\",\n    \"type\": \"adult\",\n    \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\n    \"createdAt\": \"2024-11-18T09:55:39.528Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "EditarProfile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (OK) para la actualización exitosa\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene los datos del perfil actualizado\r",
+									"pm.test(\"La respuesta contiene los datos del perfil actualizado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(2);  // Verificar que userID sigue siendo el mismo\r",
+									"    pm.expect(jsonData.name).to.eql(\"Perfil Editado\");  // Verificar el nuevo nombre\r",
+									"    pm.expect(jsonData.type).to.eql(\"child\");  // Verificar el nuevo tipo\r",
+									"    pm.expect(jsonData.avatarURL).to.eql(\"https://example.com/avatars/avatar1.png\");  // Verificar el avatarURL\r",
+									"    pm.expect(jsonData.createdAt).to.eql(\"2023-10-09T10:20:30Z\");  // Verificar la fecha de creación\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta tenga la estructura correcta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"profileID\": { \"type\": \"number\" },\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"type\": { \"type\": \"string\" },\r",
+									"        \"avatarURL\": { \"type\": \"string\" },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+									"    },\r",
+									"    \"required\": [\"profileID\", \"userID\", \"name\", \"type\", \"avatarURL\", \"createdAt\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el perfil tiene los datos esperados después de la actualización\r",
+									"pm.test(\"Los datos del perfil han sido correctamente actualizados\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.name).to.eql(\"Perfil Editado\");\r",
+									"    pm.expect(jsonData.type).to.eql(\"child\");\r",
+									"    pm.expect(jsonData.avatarURL).to.eql(\"https://example.com/avatars/avatar1.png\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el perfil editado corresponde al perfil con profileID = 3\r",
+									"pm.test(\"El perfil editado corresponde al profileID = 3\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.profileID).to.eql(3);  // Verificar que el profileID no cambió\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"profileID\": 3,\r\n  \"userID\": 2,\r\n  \"name\": \"Perfil Editado\",\r\n  \"type\": \"child\",\r\n  \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\r\n  \"createdAt\": \"2023-10-09T10:20:30Z\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/2/profiles/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"2",
+								"profiles",
+								"3"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PutProfile",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"profileID\": 1,\r\n  \"userID\": 1,\r\n  \"name\": \"Perfil Editado\",\r\n  \"type\": \"child\",\r\n  \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\r\n  \"createdAt\": \"2023-10-09T10:20:30Z\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/profiles/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"profiles",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 10:06:07 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"profileID\": 5,\n    \"userID\": 1,\n    \"name\": \"Perfil Editado\",\n    \"type\": \"child\",\n    \"avatarURL\": \"https://example.com/avatars/avatar1.png\",\n    \"createdAt\": \"2023-10-09T10:20:30Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "DeleteProfile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK) para la eliminación exitosa\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene el mensaje correcto de eliminación\r",
+									"pm.test(\"La respuesta contiene el mensaje de eliminación\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Perfil eliminado\");  // Verificar el mensaje esperado\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/2/profiles/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"2",
+								"profiles",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "DeleteProfile",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/profiles/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"profiles",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 10:06:37 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Perfil eliminado\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Listas",
+			"item": [
+				{
+					"name": "PostLista",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene las propiedades esperadas\r",
+									"pm.test(\"La respuesta contiene las propiedades de la lista\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"listID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"films\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData).to.have.property(\"series\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que los datos de la lista coinciden con los enviados\r",
+									"pm.test(\"Validar los datos de la lista creada\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(1);  // Confirmar el userID del path\r",
+									"    pm.expect(jsonData.name).to.eql(\"Mis Series Favoritas\"); // Confirmar el nombre de la lista\r",
+									"    pm.expect(jsonData.films).to.include.members([]); // Validar los films\r",
+									"    pm.expect(jsonData.series).to.include.members([]); // Validar las series\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"listID\": { \"type\": \"number\" },\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"films\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        },\r",
+									"        \"series\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+									"    },\r",
+									"    \"required\": [\"listID\", \"userID\", \"name\", \"films\", \"series\", \"createdAt\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"listID\": 3,\r\n  \"userID\": 1,\r\n  \"name\": \"Mis Series Favoritas\",\r\n  \"films\": [\r\n    0\r\n  ],\r\n  \"series\": [\r\n    0\r\n  ],\r\n  \"createdAt\": \"2023-10-09T10:00:00Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1",
+								"list"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"listID\": 101,\r\n  \"userID\": 101,\r\n  \"name\": \"Mis Series Favoritas\",\r\n  \"films\": [\r\n    0\r\n  ],\r\n  \"series\": [\r\n    0\r\n  ],\r\n  \"createdAt\": \"2023-10-09T10:00:00Z\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"list"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 10:10:48 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"listID\": 2,\n    \"userID\": 1,\n    \"name\": \"Mis Series Favoritas\",\n    \"films\": [],\n    \"series\": [],\n    \"createdAt\": \"2024-11-18T10:10:48.454Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "GetListas",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que hay al menos una lista\r",
+									"pm.test(\"Hay al menos una lista\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.least(1); // Comprobar que el array no está vacío\r",
+									"});\r",
+									"\r",
+									"// Validar que cada lista contiene las propiedades esperadas\r",
+									"pm.test(\"Cada lista contiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(list => {\r",
+									"        pm.expect(list).to.have.property(\"listID\").that.is.a(\"number\");\r",
+									"        pm.expect(list).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"        pm.expect(list).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"        pm.expect(list).to.have.property(\"films\").that.is.an(\"array\");\r",
+									"        pm.expect(list).to.have.property(\"series\").that.is.an(\"array\");\r",
+									"        pm.expect(list).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que todas las listas pertenecen al usuario especificado\r",
+									"pm.test(\"Todas las listas pertenecen al usuario con ID 1\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(list => {\r",
+									"        pm.expect(list.userID).to.eql(1);  // Validar que todas las listas son del usuario 1\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"listID\": { \"type\": \"number\" },\r",
+									"            \"userID\": { \"type\": \"number\" },\r",
+									"            \"name\": { \"type\": \"string\" },\r",
+									"            \"films\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"number\" }\r",
+									"            },\r",
+									"            \"series\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"number\" }\r",
+									"            },\r",
+									"            \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+									"        },\r",
+									"        \"required\": [\"listID\", \"userID\", \"name\", \"films\", \"series\", \"createdAt\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1/lists",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1",
+								"lists"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/lists",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"lists"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 10:15:09 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"listID\": 1,\n        \"userID\": 1,\n        \"name\": \"Mis Series Favoritas\",\n        \"films\": [],\n        \"series\": [],\n        \"createdAt\": \"2024-11-18T10:10:12.744Z\"\n    },\n    {\n        \"listID\": 2,\n        \"userID\": 1,\n        \"name\": \"Mis Series Favoritas\",\n        \"films\": [],\n        \"series\": [],\n        \"createdAt\": \"2024-11-18T10:10:48.454Z\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "GetLista",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto\r",
+									"pm.test(\"La respuesta es un objeto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la lista contiene las propiedades esperadas\r",
+									"pm.test(\"La lista contiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"listID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"films\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData).to.have.property(\"series\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la lista pertenece al usuario con ID 1\r",
+									"pm.test(\"La lista pertenece al usuario con ID 1\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"// Validar que la lista tiene el ID especificado en la URL\r",
+									"pm.test(\"La lista tiene el ID correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const listIDFromPath = 1; // Cambia este valor si usas un ID diferente en la URL\r",
+									"    pm.expect(jsonData.listID).to.eql(listIDFromPath);\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"listID\": { \"type\": \"number\" },\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"films\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        },\r",
+									"        \"series\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+									"    },\r",
+									"    \"required\": [\"listID\", \"userID\", \"name\", \"films\", \"series\", \"createdAt\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1/list/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1",
+								"list",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/list/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"list",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 10:16:34 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"listID\": 1,\n    \"userID\": 1,\n    \"name\": \"Mis Series Favoritas\",\n    \"films\": [],\n    \"series\": [],\n    \"createdAt\": \"2024-11-18T10:10:12.744Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "PutLista",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto\r",
+									"pm.test(\"La respuesta es un objeto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la lista contiene las propiedades esperadas\r",
+									"pm.test(\"La lista contiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"listID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"films\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData).to.have.property(\"series\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData).to.have.property(\"createdAt\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la lista pertenece al usuario especificado\r",
+									"pm.test(\"La lista pertenece al usuario con ID 1\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"// Validar que la lista tiene el ID especificado en la URL\r",
+									"pm.test(\"La lista tiene el ID correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const listIDFromPath = 3; // Cambia este valor si usas un ID diferente en la URL\r",
+									"    pm.expect(jsonData.listID).to.eql(listIDFromPath);\r",
+									"});\r",
+									"\r",
+									"// Validar los cambios realizados\r",
+									"pm.test(\"Los cambios se reflejan en la lista\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.name).to.eql(\"Mis Películas Favoritas Editadas\");\r",
+									"    pm.expect(jsonData.films).to.eql([2]);\r",
+									"    pm.expect(jsonData.series).to.eql([3, 4]);\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"listID\": { \"type\": \"number\" },\r",
+									"        \"userID\": { \"type\": \"number\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"films\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        },\r",
+									"        \"series\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"number\" }\r",
+									"        },\r",
+									"        \"createdAt\": { \"type\": \"string\", \"format\": \"date-time\" }\r",
+									"    },\r",
+									"    \"required\": [\"listID\", \"userID\", \"name\", \"films\", \"series\", \"createdAt\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"listID\": 3,\r\n  \"userID\": 1,\r\n  \"name\": \"Mis Películas Favoritas Editadas\",\r\n  \"films\": [2],\r\n  \"series\": [3, 4],\r\n  \"createdAt\": \"2023-10-09T10:00:00Z\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1/list/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1",
+								"list",
+								"3"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"listID\": 1,\r\n  \"userID\": 1,\r\n  \"name\": \"Mis Películas Favoritas Editadas\",\r\n  \"films\": [2],\r\n  \"series\": [3, 4],\r\n  \"createdAt\": \"2023-10-09T10:00:00Z\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/list/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"list",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 10:33:18 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"listID\": 1,\n    \"userID\": 1,\n    \"name\": \"Mis Películas Favoritas Editadas\",\n    \"films\": [\n        2\n    ],\n    \"series\": [\n        3,\n        4\n    ],\n    \"createdAt\": \"2023-10-09T10:00:00Z\"\n}"
+						}
+					]
+				},
+				{
+					"name": "AddFilmLista",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que el cuerpo de la respuesta está vacío\r",
+									"pm.test(\"El cuerpo de la respuesta está vacío\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.eql('');\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1/list/1/film/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1",
+								"list",
+								"1",
+								"film",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "AddFilmLista",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/list/1/film/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"list",
+										"1",
+										"film",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 15:27:04 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "AddSerieLista",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado sea 200 (OK)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que el cuerpo de la respuesta está vacío\r",
+									"pm.test(\"El cuerpo de la respuesta está vacío\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.eql('');\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1/list/1/serie/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1",
+								"list",
+								"1",
+								"serie",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/1/list/1/serie/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"1",
+										"list",
+										"1",
+										"serie",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Mon, 18 Nov 2024 15:41:33 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Metodos de pago",
+			"item": [
+				{
+					"name": "GetPaymentMethodById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene un objeto con las propiedades esperadas\r",
+									"pm.test(\"La respuesta contiene el método de pago esperado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"paymentID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"cardNumber\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"expirationDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"cardHolderName\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el `userID` en la respuesta es el mismo que el solicitado\r",
+									"pm.test(\"El userID en la respuesta coincide con el solicitado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"// Validar que la fecha de expiración tenga el formato correcto (YYYY-MM-DD)\r",
+									"pm.test(\"La fecha de expiración tiene el formato correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const regex = /^\\d{4}-\\d{2}-\\d{2}$/; // Formato de fecha (YYYY-MM-DD)\r",
+									"    pm.expect(jsonData.expirationDate).to.match(regex);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta del método de pago\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"paymentID\": { \"type\": \"integer\" },\r",
+									"        \"userID\": { \"type\": \"integer\" },\r",
+									"        \"cardNumber\": { \"type\": \"integer\" },\r",
+									"        \"expirationDate\": { \"type\": \"string\", \"format\": \"date\" }, // Formato de fecha en string\r",
+									"        \"cardHolderName\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"paymentID\", \"userID\", \"cardNumber\", \"expirationDate\", \"cardHolderName\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/1/payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"1",
+								"payment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetPaymentMethodById",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/3/payment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"3",
+										"payment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 23 Nov 2024 18:17:21 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"paymentID\": 1,\n    \"userID\": 3,\n    \"cardNumber\": 123456789,\n    \"expirationDate\": \"1978-11-12\",\n    \"cardHolderName\": \"chema\"\n}"
+						}
+					]
+				},
+				{
+					"name": "PostPaymentMethod",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 201 (Creación exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene un objeto con las propiedades esperadas\r",
+									"pm.test(\"La respuesta contiene el método de pago esperado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"paymentID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"cardNumber\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"expirationDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"cardHolderName\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el `userID` en la respuesta es el mismo que el solicitado\r",
+									"pm.test(\"El userID en la respuesta coincide con el solicitado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(3);\r",
+									"});\r",
+									"\r",
+									"// Validar que la fecha de expiración tenga el formato correcto (YYYY-MM-DD)\r",
+									"pm.test(\"La fecha de expiración tiene el formato correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const regex = /^\\d{4}-\\d{2}-\\d{2}$/; // Formato de fecha (YYYY-MM-DD)\r",
+									"    pm.expect(jsonData.expirationDate).to.match(regex);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta del método de pago\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"paymentID\": { \"type\": \"integer\" },\r",
+									"        \"userID\": { \"type\": \"integer\" },\r",
+									"        \"cardNumber\": { \"type\": \"integer\" },\r",
+									"        \"expirationDate\": { \"type\": \"string\", \"format\": \"date\" }, // Formato de fecha en string\r",
+									"        \"cardHolderName\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"paymentID\", \"userID\", \"cardNumber\", \"expirationDate\", \"cardHolderName\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"paymentID\": 3,\r\n    \"userID\": 3,\r\n    \"cardNumber\": 1234,\r\n    \"expirationDate\": \"2024-11-23\",\r\n    \"cardHolderName\": \"Juan Pérez\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/3/payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"3",
+								"payment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PostPaymentMethod",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"paymentID\": 12345,\r\n    \"userID\": 12345,\r\n    \"cardNumber\": 123456789,\r\n    \"expirationDate\": \"2024-11-23\",\r\n    \"cardHolderName\": \"Juan Pérez\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8082/v1/user/user/3/payment",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8082",
+									"path": [
+										"v1",
+										"user",
+										"user",
+										"3",
+										"payment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 23 Nov 2024 18:47:44 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"paymentID\": 5,\n    \"userID\": 3,\n    \"cardNumber\": 123456789,\n    \"expirationDate\": \"2024-11-23\",\n    \"cardHolderName\": \"Juan Pérez\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Planes de subscripcion",
+			"item": [
+				{
+					"name": "GetSuscriptionPlan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene un objeto con las propiedades esperadas\r",
+									"pm.test(\"La respuesta tiene la estructura correcta\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Verificar que es un objeto\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    \r",
+									"    // Verificar las propiedades específicas\r",
+									"    pm.expect(jsonData).to.have.property(\"planID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"startDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"endDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"paymentID\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"// Validar los valores esperados de la respuesta (ejemplo para `userID`, `planID`, etc.)\r",
+									"pm.test(\"Los valores son correctos\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    \r",
+									"    // Validar valores específicos en la respuesta (puedes adaptarlos según lo que esperes)\r",
+									"    pm.expect(jsonData.userID).to.eql(2);\r",
+									"    pm.expect(jsonData.planID).to.eql(2);\r",
+									"    pm.expect(jsonData.paymentID).to.eql(2);\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/2/getSuscripcionPlan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"2",
+								"getSuscripcionPlan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PostSuscripcionPlan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 201 (Creación exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene un objeto con las propiedades esperadas del plan contratado\r",
+									"pm.test(\"La respuesta contiene la información del plan de suscripción contratado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"planID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"userID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"startDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"endDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"paymentID\").that.is.a(\"number\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el `userID` en la respuesta es el mismo que el solicitado\r",
+									"pm.test(\"El userID en la respuesta coincide con el solicitado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userID).to.eql(3);\r",
+									"});\r",
+									"\r",
+									"// Validar que las fechas tengan el formato correcto (YYYY-MM-DD)\r",
+									"pm.test(\"Las fechas tienen el formato correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const regex = /^\\d{4}-\\d{2}-\\d{2}$/; // Formato de fecha (YYYY-MM-DD)\r",
+									"    pm.expect(jsonData.startDate).to.match(regex);\r",
+									"    pm.expect(jsonData.endDate).to.match(regex);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta del plan de suscripción contratado\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"planID\": { \"type\": \"integer\" },\r",
+									"        \"userID\": { \"type\": \"integer\" },\r",
+									"        \"startDate\": { \"type\": \"string\", \"format\": \"date\" }, // Formato de fecha en string\r",
+									"        \"endDate\": { \"type\": \"string\", \"format\": \"date\" },   // Formato de fecha en string\r",
+									"        \"paymentID\": { \"type\": \"integer\" }\r",
+									"    },\r",
+									"    \"required\": [\"planID\", \"userID\", \"startDate\", \"endDate\", \"paymentID\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"planID\": 3,\r\n    \"userID\": 3,\r\n    \"startDate\": \"2024-11-23\",\r\n    \"endDate\": \"2024-12-23\",\r\n    \"paymentID\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/3/hireSuscripcionPlan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"3",
+								"hireSuscripcionPlan"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSuscripcionPlan",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (Cancelación exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/3/cancelSuscripcionPlan",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"3",
+								"cancelSuscripcionPlan"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DeletePaymentMethod",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el código de estado es 200 (Eliminación exitosa)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// Validar que el tiempo de respuesta es menor a 500ms\r",
+							"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/v1/user/user/3/payment",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"v1",
+						"user",
+						"user",
+						"3",
+						"payment"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "DeletePaymentMethod",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8082/v1/user/user/3/payment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8082",
+							"path": [
+								"v1",
+								"user",
+								"user",
+								"3",
+								"payment"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 18:49:45 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Metodo de pago eliminado\"\n}"
+				}
+			]
+		},
+		{
+			"name": "DeleteUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el código de estado es 200 (OK)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que la respuesta contenga el mensaje esperado\r",
+							"pm.test(\"El mensaje es 'Usuario eliminado'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"Usuario eliminado\");\r",
+							"});\r",
+							"\r",
+							"// Validar el esquema de la respuesta\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"message\": { \"type\": \"string\" }\r",
+							"    },\r",
+							"    \"required\": [\"message\"]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+							"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8082/v1/user/user/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"v1",
+						"user",
+						"user",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

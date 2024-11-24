@@ -68,7 +68,7 @@ let obtenerEpisodios = async (serieID) => {
                     <td>${episodio.numEpisodio}</td>
                     <td>${episodio.numTemporada}</td>
                     <td>${episodio.titulo}</td>
-                    <td><img src="${episodio.photoURL}" alt="Foto del episodio" /></td>
+                    <td><img src="${episodio.photoURL}" alt="Foto del episodio" width="100" height="150" /></td>
                     <td>
                         <!-- Botón de Editar -->
                         <button class="btn-editarPelicula" onclick="editarEpisodio(${serieID}, ${episodio.episodeID})">Editar</button>
