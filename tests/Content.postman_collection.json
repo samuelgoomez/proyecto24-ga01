@@ -1,0 +1,3773 @@
+{
+	"info": {
+		"_postman_id": "5347ead2-010a-4d8a-9d7f-1a9d80fbdbbe",
+		"name": "Content Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39967427"
+	},
+	"item": [
+		{
+			"name": "Films",
+			"item": [
+				{
+					"name": "GetFilms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que hay al menos una película en la lista\r",
+									"pm.test(\"La respuesta contiene al menos una película\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+									"});\r",
+									"\r",
+									"// Validar las propiedades de cada película\r",
+									"pm.test(\"Cada película tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(film => {\r",
+									"        pm.expect(film).to.have.property(\"filmID\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"duration\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"        pm.expect(film.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que los títulos de las películas sean únicos\r",
+									"pm.test(\"Los títulos de las películas son únicos\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const titles = jsonData.map(film => film.title);\r",
+									"    const uniqueTitles = [...new Set(titles)];\r",
+									"    pm.expect(titles.length).to.eql(uniqueTitles.length);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"filmID\": { \"type\": \"integer\", \"example\": 1 },\r",
+									"            \"title\": { \"type\": \"string\", \"example\": \"Film Title\" },\r",
+									"            \"genreID\": { \"type\": \"integer\", \"example\": 1 },\r",
+									"            \"releaseYear\": { \"type\": \"integer\", \"example\": 2023 },\r",
+									"            \"duration\": { \"type\": \"integer\", \"example\": 120 },\r",
+									"            \"description\": { \"type\": \"string\", \"example\": \"Film Sinopsis\" },\r",
+									"            \"photoURL\": { \"type\": \"string\", \"description\": \"Imagen descriptiva\" },\r",
+									"            \"arrayActors\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"integer\" },\r",
+									"                \"example\": [101, 102, 103]\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"filmID\", \"title\", \"genreID\", \"releaseYear\", \"duration\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetFilms",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 16:51:20 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"filmID\": 1,\n        \"title\": \"Inception\",\n        \"genreID\": 1,\n        \"releaseYear\": 2010,\n        \"duration\": 148,\n        \"description\": \"Un ladrón especializado en infiltrarse en los sueños.\",\n        \"photoURL\": \"https://example.com/inception.jpg\",\n        \"arrayActors\": [\n            1,\n            2,\n            3\n        ]\n    },\n    {\n        \"filmID\": 2,\n        \"title\": \"Superbad\",\n        \"genreID\": 2,\n        \"releaseYear\": 2007,\n        \"duration\": 113,\n        \"description\": \"Dos amigos intentan conseguir alcohol para una fiesta.\",\n        \"photoURL\": \"https://example.com/superbad.jpg\",\n        \"arrayActors\": [\n            4,\n            5,\n            6\n        ]\n    },\n    {\n        \"filmID\": 3,\n        \"title\": \"Forrest Gump\",\n        \"genreID\": 3,\n        \"releaseYear\": 1994,\n        \"duration\": 142,\n        \"description\": \"La vida de un hombre con una perspectiva única del mundo.\",\n        \"photoURL\": \"https://example.com/forrestgump.jpg\",\n        \"arrayActors\": [\n            7,\n            8,\n            9\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "PostFilms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 201 (creado)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene los datos esperados\r",
+									"pm.test(\"La respuesta contiene los datos esperados\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"filmID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"duration\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar que el contenido del body enviado coincide con la respuesta\r",
+									"pm.test(\"El contenido enviado coincide con la respuesta\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const requestData = {\r",
+									"        \"filmID\": 21,\r",
+									"        \"title\": \"Film Title\",\r",
+									"        \"genreID\": 1,\r",
+									"        \"releaseYear\": 2023,\r",
+									"        \"duration\": 120,\r",
+									"        \"description\": \"Film Sinopsis\",\r",
+									"        \"photoURL\": \"string\",\r",
+									"        \"arrayActors\": [1, 2, 3]\r",
+									"    };\r",
+									"\r",
+									"    pm.expect(jsonData.filmID).to.eql(requestData.filmID);\r",
+									"    pm.expect(jsonData.title).to.eql(requestData.title);\r",
+									"    pm.expect(jsonData.genreID).to.eql(requestData.genreID);\r",
+									"    pm.expect(jsonData.releaseYear).to.eql(requestData.releaseYear);\r",
+									"    pm.expect(jsonData.duration).to.eql(requestData.duration);\r",
+									"    pm.expect(jsonData.description).to.eql(requestData.description);\r",
+									"    pm.expect(jsonData.photoURL).to.eql(requestData.photoURL);\r",
+									"    pm.expect(jsonData.arrayActors).to.eql(requestData.arrayActors);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"filmID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"duration\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"filmID\", \"title\", \"genreID\", \"releaseYear\", \"duration\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"filmID\": 21,\r\n    \"title\": \"Film Title\",\r\n    \"genreID\": 1,\r\n    \"releaseYear\": 2023,\r\n    \"duration\": 120,\r\n    \"description\": \"Film Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PostFilms",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"filmID\": 1,\r\n    \"title\": \"Film Title\",\r\n    \"genreID\": 1,\r\n    \"releaseYear\": 2023,\r\n    \"duration\": 120,\r\n    \"description\": \"Film Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        101,\r\n        102,\r\n        103\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 17:00:32 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"filmID\": 11,\n    \"title\": \"Film Title\",\n    \"genreID\": 1,\n    \"releaseYear\": 2023,\n    \"duration\": 120,\n    \"description\": \"Film Sinopsis\",\n    \"photoURL\": \"string\",\n    \"arrayActors\": [\n        101,\n        102,\n        103\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "PutFilm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (actualización exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene los datos esperados\r",
+									"pm.test(\"La respuesta contiene los datos esperados\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"filmID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"duration\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar que el contenido del body enviado coincide con la respuesta\r",
+									"pm.test(\"El contenido enviado coincide con la respuesta\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const requestData = {\r",
+									"        \"filmID\": 21,\r",
+									"        \"title\": \"Editado\",\r",
+									"        \"genreID\": 1,\r",
+									"        \"releaseYear\": 2023,\r",
+									"        \"duration\": 120,\r",
+									"        \"description\": \"Film Sinopsis\",\r",
+									"        \"photoURL\": \"string\",\r",
+									"        \"arrayActors\": [\r",
+									"            1,\r",
+									"            2,\r",
+									"            3]\r",
+									"    };\r",
+									"\r",
+									"    pm.expect(jsonData.filmID).to.eql(requestData.filmID);\r",
+									"    pm.expect(jsonData.title).to.eql(requestData.title);\r",
+									"    pm.expect(jsonData.genreID).to.eql(requestData.genreID);\r",
+									"    pm.expect(jsonData.releaseYear).to.eql(requestData.releaseYear);\r",
+									"    pm.expect(jsonData.duration).to.eql(requestData.duration);\r",
+									"    pm.expect(jsonData.description).to.eql(requestData.description);\r",
+									"    pm.expect(jsonData.photoURL).to.eql(requestData.photoURL);\r",
+									"    pm.expect(jsonData.arrayActors).to.eql(requestData.arrayActors);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"filmID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"duration\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"filmID\", \"title\", \"genreID\", \"releaseYear\", \"duration\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"filmID\": 21,\r\n    \"title\": \"Editado\",\r\n    \"genreID\": 1,\r\n    \"releaseYear\": 2023,\r\n    \"duration\": 120,\r\n    \"description\": \"Film Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films",
+								"21"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PutFilm",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"filmID\": 1,\r\n    \"title\": \"Film Title\",\r\n    \"genreID\": 1,\r\n    \"releaseYear\": 2023,\r\n    \"duration\": 120,\r\n    \"description\": \"Film Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        101,\r\n        102,\r\n        103\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films/1?filmID=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films",
+										"1"
+									],
+									"query": [
+										{
+											"key": "filmID",
+											"value": "1",
+											"description": "ID de la película a actualizar"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 17:08:18 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"filmID\": 1,\n    \"title\": \"Film Title\",\n    \"genreID\": 1,\n    \"releaseYear\": 2023,\n    \"duration\": 120,\n    \"description\": \"Film Sinopsis\",\n    \"photoURL\": \"string\",\n    \"arrayActors\": [\n        101,\n        102,\n        103\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "GetFilmByTitle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (búsqueda exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto con los datos de la película\r",
+									"pm.test(\"La respuesta contiene los datos de la película\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"filmID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"duration\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar que el título de la película coincide con el título solicitado\r",
+									"pm.test(\"El título de la película coincide con el solicitado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.eql(\"Terrifier\");\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"filmID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"duration\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"filmID\", \"title\", \"genreID\", \"releaseYear\", \"duration\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films/title/Terrifier",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films",
+								"title",
+								"Terrifier"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetFilmByTitle",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films/title/Film Title",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films",
+										"title",
+										"Film Title"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 17:23:30 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"filmID\": 8,\n    \"title\": \"Film Title\",\n    \"genreID\": 1,\n    \"releaseYear\": 2023,\n    \"duration\": 120,\n    \"description\": \"Film Sinopsis\",\n    \"photoURL\": \"string\",\n    \"arrayActors\": [\n        101,\n        102,\n        103\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "GetFilmByGenre",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (búsqueda exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que cada elemento en el array tiene las propiedades correctas\r",
+									"pm.test(\"Cada película tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(film => {\r",
+									"        pm.expect(film).to.have.property(\"filmID\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"duration\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"        pm.expect(film.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que todas las películas tienen el genreID correcto\r",
+									"pm.test(\"Todas las películas tienen el genreID correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(film => {\r",
+									"        pm.expect(film.genreID).to.eql(1);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de las películas en el array\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"filmID\": { \"type\": \"integer\" },\r",
+									"            \"title\": { \"type\": \"string\" },\r",
+									"            \"genreID\": { \"type\": \"integer\" },\r",
+									"            \"releaseYear\": { \"type\": \"integer\" },\r",
+									"            \"duration\": { \"type\": \"integer\" },\r",
+									"            \"description\": { \"type\": \"string\" },\r",
+									"            \"photoURL\": { \"type\": \"string\" },\r",
+									"            \"arrayActors\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"integer\" }\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"filmID\", \"title\", \"genreID\", \"releaseYear\", \"duration\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films/genre/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films",
+								"genre",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetFilmByGenre",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films/genre/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films",
+										"genre",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 17:28:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"filmID\": 8,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    },\n    {\n        \"filmID\": 9,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    },\n    {\n        \"filmID\": 10,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    },\n    {\n        \"filmID\": 11,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "GetFilmByActorID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (búsqueda exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que cada película tiene las propiedades correctas\r",
+									"pm.test(\"Cada película tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(film => {\r",
+									"        pm.expect(film).to.have.property(\"filmID\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"duration\").that.is.a(\"number\");\r",
+									"        pm.expect(film).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"        pm.expect(film).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"        pm.expect(film.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que el actor especificado está presente en la lista de actores\r",
+									"pm.test(\"El actor con ID 1 está presente en las películas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(film => {\r",
+									"        pm.expect(film.arrayActors).to.include(1);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"filmID\": { \"type\": \"integer\" },\r",
+									"            \"title\": { \"type\": \"string\" },\r",
+									"            \"genreID\": { \"type\": \"integer\" },\r",
+									"            \"releaseYear\": { \"type\": \"integer\" },\r",
+									"            \"duration\": { \"type\": \"integer\" },\r",
+									"            \"description\": { \"type\": \"string\" },\r",
+									"            \"photoURL\": { \"type\": \"string\" },\r",
+									"            \"arrayActors\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"integer\" }\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"filmID\", \"title\", \"genreID\", \"releaseYear\", \"duration\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films/actor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films",
+								"actor",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetFilmByActorID",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films/actor/101",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films",
+										"actor",
+										"101"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 17:32:15 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"filmID\": 8,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    },\n    {\n        \"filmID\": 9,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    },\n    {\n        \"filmID\": 10,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    },\n    {\n        \"filmID\": 11,\n        \"title\": \"Film Title\",\n        \"genreID\": 1,\n        \"releaseYear\": 2023,\n        \"duration\": 120,\n        \"description\": \"Film Sinopsis\",\n        \"photoURL\": \"string\",\n        \"arrayActors\": [\n            101,\n            102,\n            103\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "GetFilmById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto\r",
+									"pm.test(\"La respuesta es un objeto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la película tiene las propiedades correctas\r",
+									"pm.test(\"La película tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"filmID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"duration\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la película\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"filmID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"duration\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"filmID\", \"title\", \"genreID\", \"releaseYear\", \"duration\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el ID de la película coincide con el solicitado\r",
+									"pm.test(\"El ID de la película coincide con el solicitado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.filmID).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetFilmById",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films/8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films",
+										"8"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 20:19:34 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"filmID\": 8,\n    \"title\": \"Film Title\",\n    \"genreID\": 1,\n    \"releaseYear\": 2023,\n    \"duration\": 120,\n    \"description\": \"Film Sinopsis\",\n    \"photoURL\": \"string\",\n    \"arrayActors\": [\n        101,\n        102,\n        103\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "DeleteFilm",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (eliminación exitosa)\r",
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Validar el tiempo de respuesta\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/films/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"films",
+								"21"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "DeleteFilm",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films",
+										"3"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 17:13:36 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "DeleteFilm2",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/films/7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"films",
+										"7"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 17:15:29 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Series",
+			"item": [
+				{
+					"name": "Episodes",
+					"item": [
+						{
+							"name": "GetEpisodes",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Validar que la respuesta es un array\r",
+											"pm.test(\"La respuesta es un array\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.be.an(\"array\");\r",
+											"});\r",
+											"\r",
+											"// Validar que hay al menos un episodio en la lista\r",
+											"pm.test(\"La respuesta contiene al menos un episodio\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+											"});\r",
+											"\r",
+											"// Validar las propiedades de cada episodio según el esquema actualizado\r",
+											"pm.test(\"Cada episodio tiene las propiedades esperadas\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    jsonData.forEach(episode => {\r",
+											"        pm.expect(episode).to.have.property(\"episodeID\").that.is.a(\"number\");\r",
+											"        pm.expect(episode).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+											"        pm.expect(episode).to.have.property(\"numEpisodio\").that.is.a(\"number\");\r",
+											"        pm.expect(episode).to.have.property(\"numTemporada\").that.is.a(\"number\");\r",
+											"        pm.expect(episode).to.have.property(\"titulo\").that.is.a(\"string\");\r",
+											"        pm.expect(episode).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+											"    });\r",
+											"});\r",
+											"\r",
+											"// Validar el esquema de la respuesta\r",
+											"const schema = {\r",
+											"    \"type\": \"array\",\r",
+											"    \"items\": {\r",
+											"        \"type\": \"object\",\r",
+											"        \"properties\": {\r",
+											"            \"episodeID\": { \"type\": \"integer\" },\r",
+											"            \"serieID\": { \"type\": \"integer\" },\r",
+											"            \"numEpisodio\": { \"type\": \"integer\" },\r",
+											"            \"numTemporada\": { \"type\": \"integer\" },\r",
+											"            \"titulo\": { \"type\": \"string\" },\r",
+											"            \"photoURL\": { \"type\": \"string\" }\r",
+											"        },\r",
+											"        \"required\": [\"episodeID\", \"serieID\", \"numEpisodio\", \"numTemporada\", \"titulo\", \"photoURL\"]\r",
+											"    }\r",
+											"};\r",
+											"\r",
+											"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+											"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+											"});\r",
+											"\r",
+											"// Validar que el tiempo de respuesta es menor a 500ms\r",
+											"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/1/episodes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"1",
+										"episodes"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "GetEpisodes",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v1/content/series/1/episodes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"content",
+												"series",
+												"1",
+												"episodes"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 21 Nov 2024 17:26:18 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "[\n    {\n        \"episodeID\": 2,\n        \"serieID\": 1,\n        \"numEpisodio\": 1,\n        \"numTemporada\": 3,\n        \"titulo\": \"Episode Title\",\n        \"photoURL\": \"https://example.com/photo.jpg\"\n    },\n    {\n        \"episodeID\": 6,\n        \"serieID\": 1,\n        \"numEpisodio\": 3,\n        \"numTemporada\": 3,\n        \"titulo\": \"Episode Title\",\n        \"photoURL\": \"https://example.com/prueba.jpg\"\n    }\n]"
+								}
+							]
+						},
+						{
+							"name": "PostEpisode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Validar que el código de estado es 201 (Creación exitosa)\r",
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Validar que el tiempo de respuesta es menor a 500ms\r",
+											"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"episodeID\": 41,\r\n    \"serieID\": 1,\r\n    \"numEpisodio\": 3,\r\n    \"numTemporada\": 1,\r\n    \"titulo\": \"Episode Title\",\r\n    \"photoURL\": \"https://example.com/photo.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/1/episodes",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"1",
+										"episodes"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "PostEpisode",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"episodeID\": 1,\r\n    \"serieID\": 7,\r\n    \"numEpisodio\": 1,\r\n    \"numTemporada\": 2,\r\n    \"titulo\": \"Episode Title\",\r\n    \"photoURL\": \"https://example.com/photo.jpg\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/content/series/7/episodes",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"content",
+												"series",
+												"7",
+												"episodes"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Nov 2024 18:01:24 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "PutEpisode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"\r",
+											"\r",
+											"// Validar que el tiempo de respuesta es menor a 500ms\r",
+											"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"episodeID\": 41,\r\n    \"serieID\": 1,\r\n    \"numEpisodio\": 3,\r\n    \"numTemporada\": 1,\r\n    \"titulo\": \"Editado\",\r\n    \"photoURL\": \"https://example.com/photo.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/1/episodes/41",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"1",
+										"episodes",
+										"41"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "PutEpisode",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"episodeID\": 16,\r\n    \"serieID\": 7,\r\n    \"numEpisodio\": 5,\r\n    \"numTemporada\": 2,\r\n    \"titulo\": \"Episode Title\",\r\n    \"photoURL\": \"https://example.com/photo.jpg\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v1/content/series/7/episodes/16",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"content",
+												"series",
+												"7",
+												"episodes",
+												"16"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Nov 2024 18:21:24 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "GetEpisodeById",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Validar que la respuesta contiene un objeto con las propiedades del episodio\r",
+											"pm.test(\"La respuesta contiene un episodio\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.be.an(\"object\");\r",
+											"    pm.expect(jsonData).to.have.property(\"episodeID\").that.is.a(\"number\");\r",
+											"    pm.expect(jsonData).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+											"    pm.expect(jsonData).to.have.property(\"numEpisodio\").that.is.a(\"number\");\r",
+											"    pm.expect(jsonData).to.have.property(\"numTemporada\").that.is.a(\"number\");\r",
+											"    pm.expect(jsonData).to.have.property(\"titulo\").that.is.a(\"string\");\r",
+											"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+											"});\r",
+											"\r",
+											"// Validar que el `episodeID` en la respuesta es el mismo que el solicitado\r",
+											"pm.test(\"El episodeID es el correcto\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.episodeID).to.eql(41);\r",
+											"});\r",
+											"\r",
+											"// Validar el esquema de la respuesta del episodio\r",
+											"const schema = {\r",
+											"    \"type\": \"object\",\r",
+											"    \"properties\": {\r",
+											"        \"episodeID\": { \"type\": \"integer\" },\r",
+											"        \"serieID\": { \"type\": \"integer\" },\r",
+											"        \"numEpisodio\": { \"type\": \"integer\" },\r",
+											"        \"numTemporada\": { \"type\": \"integer\" },\r",
+											"        \"titulo\": { \"type\": \"string\" },\r",
+											"        \"photoURL\": { \"type\": \"string\" }\r",
+											"    },\r",
+											"    \"required\": [\"episodeID\", \"serieID\", \"numEpisodio\", \"numTemporada\", \"titulo\", \"photoURL\"]\r",
+											"};\r",
+											"\r",
+											"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+											"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+											"});\r",
+											"\r",
+											"// Validar que el tiempo de respuesta es menor a 500ms\r",
+											"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/1/episodes/41",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"1",
+										"episodes",
+										"41"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "GetEpisodeById",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v1/content/series/7/episodes/18",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"content",
+												"series",
+												"7",
+												"episodes",
+												"18"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Nov 2024 18:26:02 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"episodeID\": 18,\n    \"serieID\": 7,\n    \"numEpisodio\": 1,\n    \"numTemporada\": 2,\n    \"titulo\": \"Episode Title\",\n    \"photoURL\": \"https://example.com/photo.jpg\"\n}"
+								}
+							]
+						},
+						{
+							"name": "DeleteEpisode",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Validar que el código de estado es 204 (Eliminación exitosa)\r",
+											"pm.test(\"Status code is 204\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"// Validar que la respuesta no tiene contenido\r",
+											"pm.test(\"La respuesta no tiene contenido\", function () {\r",
+											"    pm.expect(pm.response.text()).to.equal('');\r",
+											"});\r",
+											"\r",
+											"// Validar que el tiempo de respuesta es menor a 500ms\r",
+											"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+											"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/1/episodes/41",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"1",
+										"episodes",
+										"41"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "DeleteEpisode",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v1/content/series/7/episodes/17",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v1",
+												"content",
+												"series",
+												"7",
+												"episodes",
+												"17"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "plain",
+									"header": [
+										{
+											"key": "Vary",
+											"value": "Origin"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Method"
+										},
+										{
+											"key": "Vary",
+											"value": "Access-Control-Request-Headers"
+										},
+										{
+											"key": "Content-Length",
+											"value": "0"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 22 Nov 2024 18:23:12 GMT"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=60"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										}
+									],
+									"cookie": [],
+									"body": ""
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "GetSeries",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que cada serie tiene las propiedades correctas\r",
+									"pm.test(\"Cada serie tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(serie => {\r",
+									"        pm.expect(serie).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"seasons\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"        pm.expect(serie.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de las series en la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"serieID\": { \"type\": \"integer\" },\r",
+									"            \"title\": { \"type\": \"string\" },\r",
+									"            \"seasons\": { \"type\": \"integer\" },\r",
+									"            \"releaseYear\": { \"type\": \"integer\" },\r",
+									"            \"genreID\": { \"type\": \"integer\" },\r",
+									"            \"description\": { \"type\": \"string\" },\r",
+									"            \"photoURL\": { \"type\": \"string\" },\r",
+									"            \"arrayActors\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"integer\" }\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"serieID\", \"title\", \"seasons\", \"releaseYear\", \"genreID\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"// Validar que todas las series tienen al menos una temporada\r",
+									"pm.test(\"Cada serie tiene al menos una temporada\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(serie => {\r",
+									"        pm.expect(serie.seasons).to.be.at.least(1);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetSeries",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 20:12:25 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"serieID\": 1,\n        \"title\": \"Stranger Things\",\n        \"seasons\": 4,\n        \"releaseYear\": 2016,\n        \"genreID\": 1,\n        \"description\": \"Un grupo de niños investiga desapariciones misteriosas en su pequeña ciudad.\",\n        \"photoURL\": \"https://example.com/strangerthings.jpg\",\n        \"arrayActors\": [\n            1,\n            2,\n            3\n        ]\n    },\n    {\n        \"serieID\": 2,\n        \"title\": \"Breaking Bad\",\n        \"seasons\": 5,\n        \"releaseYear\": 2008,\n        \"genreID\": 3,\n        \"description\": \"Un profesor de química se convierte en fabricante de metanfetaminas para asegurar el futuro de su familia.\",\n        \"photoURL\": \"https://example.com/breakingbad.jpg\",\n        \"arrayActors\": [\n            4,\n            5,\n            6\n        ]\n    },\n    {\n        \"serieID\": 3,\n        \"title\": \"The Office\",\n        \"seasons\": 9,\n        \"releaseYear\": 2005,\n        \"genreID\": 2,\n        \"description\": \"Un documental ficticio sobre la vida cotidiana en una oficina de ventas de papel.\",\n        \"photoURL\": \"https://example.com/theoffice.jpg\",\n        \"arrayActors\": [\n            7,\n            8,\n            9\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "GetSerieByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto\r",
+									"pm.test(\"La respuesta es un objeto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la serie tiene las propiedades correctas\r",
+									"pm.test(\"La serie tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"seasons\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"serieID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"seasons\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"serieID\", \"title\", \"seasons\", \"releaseYear\", \"genreID\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el ID de la serie coincide con el solicitado\r",
+									"pm.test(\"El ID de la serie coincide con el solicitado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.serieID).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetSerieById",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 20:17:16 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"serieID\": 1,\n    \"title\": \"Stranger Things\",\n    \"seasons\": 4,\n    \"releaseYear\": 2016,\n    \"genreID\": 1,\n    \"description\": \"Un grupo de niños investiga desapariciones misteriosas en su pequeña ciudad.\",\n    \"photoURL\": \"https://example.com/strangerthings.jpg\",\n    \"arrayActors\": [\n        1,\n        2,\n        3\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "PostSerie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 201 (creación exitosa)\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto\r",
+									"pm.test(\"La respuesta es un objeto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la serie creada tiene las propiedades correctas\r",
+									"pm.test(\"La serie creada tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"seasons\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar que los datos creados coinciden con los enviados\r",
+									"pm.test(\"Los datos creados coinciden con los enviados\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const requestBody = {\r",
+									"    \"serieID\": 21,\r",
+									"    \"title\": \"Series Title\",\r",
+									"    \"seasons\": 5,\r",
+									"    \"releaseYear\": 2022,\r",
+									"    \"genreID\": 1,\r",
+									"    \"description\": \"Series Sinopsis\",\r",
+									"    \"photoURL\": \"string\",\r",
+									"    \"arrayActors\": [\r",
+									"        1,\r",
+									"        2,\r",
+									"        3\r",
+									"    ]\r",
+									"};\r",
+									"\r",
+									"    pm.expect(jsonData).to.deep.include(requestBody);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"serieID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"seasons\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"serieID\", \"title\", \"seasons\", \"releaseYear\", \"genreID\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serieID\": 21,\r\n    \"title\": \"Series Title\",\r\n    \"seasons\": 5,\r\n    \"releaseYear\": 2022,\r\n    \"genreID\": 1,\r\n    \"description\": \"Series Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PostSerie",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"serieID\": 1,\r\n    \"title\": \"Series Title\",\r\n    \"seasons\": 5,\r\n    \"releaseYear\": 2022,\r\n    \"genreID\": 1,\r\n    \"description\": \"Series Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        101,\r\n        102,\r\n        103\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 22:23:56 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"serieID\": 6,\n    \"title\": \"Series Title\",\n    \"seasons\": 5,\n    \"releaseYear\": 2022,\n    \"genreID\": 1,\n    \"description\": \"Series Sinopsis\",\n    \"photoURL\": \"string\",\n    \"arrayActors\": [\n        101,\n        102,\n        103\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "PutSerie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto\r",
+									"pm.test(\"La respuesta es un objeto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la serie tiene las propiedades correctas después de la actualización\r",
+									"pm.test(\"La serie tiene las propiedades esperadas después de la actualización\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"seasons\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar que los datos actualizados coinciden con los enviados\r",
+									"pm.test(\"Los datos actualizados coinciden con los enviados\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const requestBody = {\r",
+									"        \"serieID\": 21,\r",
+									"        \"title\": \"Series Title\",\r",
+									"        \"seasons\": 5,\r",
+									"        \"releaseYear\": 2022,\r",
+									"        \"genreID\": 1,\r",
+									"        \"description\": \"Series Sinopsis\",\r",
+									"        \"photoURL\": \"string\",\r",
+									"        \"arrayActors\": [1, 2, 3]\r",
+									"    };\r",
+									"\r",
+									"    pm.expect(jsonData).to.deep.include(requestBody);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"serieID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"seasons\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"serieID\", \"title\", \"seasons\", \"releaseYear\", \"genreID\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"serieID\": 21,\r\n    \"title\": \"Series Title\",\r\n    \"seasons\": 5,\r\n    \"releaseYear\": 2022,\r\n    \"genreID\": 1,\r\n    \"description\": \"Series Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        1,\r\n        2,\r\n        3\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "putSerie",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"serieID\": 1,\r\n    \"title\": \"Series Title\",\r\n    \"seasons\": 5,\r\n    \"releaseYear\": 2022,\r\n    \"genreID\": 1,\r\n    \"description\": \"Series Sinopsis\",\r\n    \"photoURL\": \"string\",\r\n    \"arrayActors\": [\r\n        101,\r\n        102,\r\n        103\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 20:25:24 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"serieID\": 1,\n    \"title\": \"Series Title\",\n    \"seasons\": 5,\n    \"releaseYear\": 2022,\n    \"genreID\": 1,\n    \"description\": \"Series Sinopsis\",\n    \"photoURL\": \"string\",\n    \"arrayActors\": [\n        101,\n        102,\n        103\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "GetSerieByTitle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un objeto\r",
+									"pm.test(\"La respuesta es un objeto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"});\r",
+									"\r",
+									"// Validar que la serie tiene las propiedades esperadas\r",
+									"pm.test(\"La serie tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"seasons\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"    pm.expect(jsonData.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"});\r",
+									"\r",
+									"// Validar que la serie encontrada tiene el título esperado\r",
+									"pm.test(\"La serie tiene el título 'Breaking Bad'\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.title).to.equal(\"Breaking Bad\");\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"serieID\": { \"type\": \"integer\" },\r",
+									"        \"title\": { \"type\": \"string\" },\r",
+									"        \"seasons\": { \"type\": \"integer\" },\r",
+									"        \"releaseYear\": { \"type\": \"integer\" },\r",
+									"        \"genreID\": { \"type\": \"integer\" },\r",
+									"        \"description\": { \"type\": \"string\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" },\r",
+									"        \"arrayActors\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": { \"type\": \"integer\" }\r",
+									"        }\r",
+									"    },\r",
+									"    \"required\": [\"serieID\", \"title\", \"seasons\", \"releaseYear\", \"genreID\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series/title/Breaking Bad",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series",
+								"title",
+								"Breaking Bad"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetSerieByTitle",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/title/Breaking Bad",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"title",
+										"Breaking Bad"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 22:47:15 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"serieID\": 2,\n    \"title\": \"Breaking Bad\",\n    \"seasons\": 5,\n    \"releaseYear\": 2008,\n    \"genreID\": 3,\n    \"description\": \"Un profesor de química se convierte en fabricante de metanfetaminas para asegurar el futuro de su familia.\",\n    \"photoURL\": \"https://example.com/breakingbad.jpg\",\n    \"arrayActors\": [\n        4,\n        5,\n        6\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "GetSerieByActorId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que hay al menos una serie en la lista\r",
+									"pm.test(\"La respuesta contiene al menos una serie\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+									"});\r",
+									"\r",
+									"// Validar las propiedades de cada serie\r",
+									"pm.test(\"Cada serie tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(serie => {\r",
+									"        pm.expect(serie).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"seasons\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"        pm.expect(serie.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"serieID\": { \"type\": \"integer\" },\r",
+									"            \"title\": { \"type\": \"string\" },\r",
+									"            \"seasons\": { \"type\": \"integer\" },\r",
+									"            \"releaseYear\": { \"type\": \"integer\" },\r",
+									"            \"genreID\": { \"type\": \"integer\" },\r",
+									"            \"description\": { \"type\": \"string\" },\r",
+									"            \"photoURL\": { \"type\": \"string\" },\r",
+									"            \"arrayActors\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"integer\" }\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"serieID\", \"title\", \"seasons\", \"releaseYear\", \"genreID\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series/actor/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series",
+								"actor",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "getSerieByActorId",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/actor/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"actor",
+										"4"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 22:51:48 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"serieID\": 2,\n        \"title\": \"Breaking Bad\",\n        \"seasons\": 5,\n        \"releaseYear\": 2008,\n        \"genreID\": 3,\n        \"description\": \"Un profesor de química se convierte en fabricante de metanfetaminas para asegurar el futuro de su familia.\",\n        \"photoURL\": \"https://example.com/breakingbad.jpg\",\n        \"arrayActors\": [\n            4,\n            5,\n            6\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "GetSerieByGenreId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que hay al menos una serie en la lista\r",
+									"pm.test(\"La respuesta contiene al menos una serie\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+									"});\r",
+									"\r",
+									"// Validar las propiedades de cada serie\r",
+									"pm.test(\"Cada serie tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(serie => {\r",
+									"        pm.expect(serie).to.have.property(\"serieID\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"title\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"seasons\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"releaseYear\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"genreID\").that.is.a(\"number\");\r",
+									"        pm.expect(serie).to.have.property(\"description\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"        pm.expect(serie).to.have.property(\"arrayActors\").that.is.an(\"array\");\r",
+									"        pm.expect(serie.arrayActors).to.satisfy(arr => arr.every(actorID => typeof actorID === \"number\"));\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que todas las series tienen `genreID` igual a 3\r",
+									"pm.test(\"Todas las series tienen el genreID 3\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(serie => {\r",
+									"        pm.expect(serie.genreID).to.equal(3);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"serieID\": { \"type\": \"integer\" },\r",
+									"            \"title\": { \"type\": \"string\" },\r",
+									"            \"seasons\": { \"type\": \"integer\" },\r",
+									"            \"releaseYear\": { \"type\": \"integer\" },\r",
+									"            \"genreID\": { \"type\": \"integer\" },\r",
+									"            \"description\": { \"type\": \"string\" },\r",
+									"            \"photoURL\": { \"type\": \"string\" },\r",
+									"            \"arrayActors\": {\r",
+									"                \"type\": \"array\",\r",
+									"                \"items\": { \"type\": \"integer\" }\r",
+									"            }\r",
+									"        },\r",
+									"        \"required\": [\"serieID\", \"title\", \"seasons\", \"releaseYear\", \"genreID\", \"description\", \"photoURL\", \"arrayActors\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series/genre/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series",
+								"genre",
+								"3"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetSerieByGenreId",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/genre/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"genre",
+										"3"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 22:54:19 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"serieID\": 2,\n        \"title\": \"Breaking Bad\",\n        \"seasons\": 5,\n        \"releaseYear\": 2008,\n        \"genreID\": 3,\n        \"description\": \"Un profesor de química se convierte en fabricante de metanfetaminas para asegurar el futuro de su familia.\",\n        \"photoURL\": \"https://example.com/breakingbad.jpg\",\n        \"arrayActors\": [\n            4,\n            5,\n            6\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "DeleteSerie",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (eliminación exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/series/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"series",
+								"5"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "DeleteSerie",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/series/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"series",
+										"5"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Nov 2024 22:43:07 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Actors",
+			"item": [
+				{
+					"name": "GetActors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta es un array\r",
+									"pm.test(\"La respuesta es un array de actores\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"// Validar que hay al menos un actor en la lista\r",
+									"pm.test(\"La respuesta contiene al menos un actor\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.length).to.be.at.least(1);\r",
+									"});\r",
+									"\r",
+									"// Validar las propiedades de cada actor en la lista\r",
+									"pm.test(\"Cada actor tiene las propiedades esperadas\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(actor => {\r",
+									"        pm.expect(actor).to.have.property(\"actorID\").that.is.a(\"number\");\r",
+									"        pm.expect(actor).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"        pm.expect(actor).to.have.property(\"birthdayDate\").that.is.a(\"string\");\r",
+									"        pm.expect(actor).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar que las fechas de cumpleaños estén en un formato ISO 8601\r",
+									"pm.test(\"Las fechas de cumpleaños están en formato ISO 8601\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    jsonData.forEach(actor => {\r",
+									"        const regex = /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z/;\r",
+									"        pm.expect(actor.birthdayDate).to.match(regex);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta de actores\r",
+									"const schema = {\r",
+									"    \"type\": \"array\",\r",
+									"    \"items\": {\r",
+									"        \"type\": \"object\",\r",
+									"        \"properties\": {\r",
+									"            \"actorID\": { \"type\": \"integer\" },\r",
+									"            \"name\": { \"type\": \"string\" },\r",
+									"            \"birthdayDate\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"            \"photoURL\": { \"type\": \"string\" }\r",
+									"        },\r",
+									"        \"required\": [\"actorID\", \"name\", \"birthdayDate\", \"photoURL\"]\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/actors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"actors"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetActors",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/actors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"actors"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 22 Nov 2024 18:30:12 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"actorID\": 1,\n        \"name\": \"Robert Downey Jr.\",\n        \"birthdayDate\": \"1965-04-04T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/rdj.jpg\"\n    },\n    {\n        \"actorID\": 2,\n        \"name\": \"Scarlett Johansson\",\n        \"birthdayDate\": \"1984-11-22T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/scarlett.jpg\"\n    },\n    {\n        \"actorID\": 3,\n        \"name\": \"Chris Hemsworth\",\n        \"birthdayDate\": \"1983-08-11T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/chris_hemsworth.jpg\"\n    },\n    {\n        \"actorID\": 4,\n        \"name\": \"Gal Gadot\",\n        \"birthdayDate\": \"1985-04-30T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/gal_gadot.jpg\"\n    },\n    {\n        \"actorID\": 5,\n        \"name\": \"Leonardo DiCaprio\",\n        \"birthdayDate\": \"1974-11-11T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/leo.jpg\"\n    },\n    {\n        \"actorID\": 6,\n        \"name\": \"Natalie Portman\",\n        \"birthdayDate\": \"1981-06-09T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/natalie.jpg\"\n    },\n    {\n        \"actorID\": 7,\n        \"name\": \"Tom Hanks\",\n        \"birthdayDate\": \"1956-07-09T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/tom_hanks.jpg\"\n    },\n    {\n        \"actorID\": 8,\n        \"name\": \"Morgan Freeman\",\n        \"birthdayDate\": \"1937-06-01T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/morgan.jpg\"\n    },\n    {\n        \"actorID\": 9,\n        \"name\": \"Emma Watson\",\n        \"birthdayDate\": \"1990-04-15T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/emma.jpg\"\n    },\n    {\n        \"actorID\": 10,\n        \"name\": \"Will Smith\",\n        \"birthdayDate\": \"1968-09-25T00:00:00Z\",\n        \"photoURL\": \"https://example.com/photos/will_smith.jpg\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "GetActorById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene un objeto con las propiedades del actor\r",
+									"pm.test(\"La respuesta contiene un actor\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"actorID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"birthdayDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el `actorID` en la respuesta es el mismo que el solicitado\r",
+									"pm.test(\"El actorID es el correcto\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.actorID).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"// Validar que la fecha de cumpleaños esté en un formato ISO 8601\r",
+									"pm.test(\"La fecha de cumpleaños está en formato ISO 8601\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const regex = /\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z/;\r",
+									"    pm.expect(jsonData.birthdayDate).to.match(regex);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta del actor\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"actorID\": { \"type\": \"integer\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"birthdayDate\": { \"type\": \"string\", \"format\": \"date-time\" },\r",
+									"        \"photoURL\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"actorID\", \"name\", \"birthdayDate\", \"photoURL\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/actors/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"actors",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "GetActorById",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/actors/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"actors",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 22 Nov 2024 18:33:12 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"actorID\": 1,\n    \"name\": \"Robert Downey Jr.\",\n    \"birthdayDate\": \"1965-04-04T00:00:00Z\",\n    \"photoURL\": \"https://example.com/photos/rdj.jpg\"\n}"
+						}
+					]
+				},
+				{
+					"name": "PostActor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 201 (Creación exitosa)\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene un objeto con las propiedades del actor\r",
+									"pm.test(\"La respuesta contiene un actor creado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"actorID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"birthdayDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"// Validar que la fecha de cumpleaños esté en formato `timestamp`\r",
+									"pm.test(\"La fecha de cumpleaños está en formato timestamp\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.birthdayDate).to.be.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Validar el esquema de la respuesta del actor creado\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"actorID\": { \"type\": \"integer\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"birthdayDate\": { \"type\": \"string\" }, // Ahora es un `timestamp`\r",
+									"        \"photoURL\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"actorID\", \"name\", \"birthdayDate\", \"photoURL\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"actorID\": 21,\r\n    \"name\": \"Actor Name\",\r\n    \"birthdayDate\": \"2024-11-22T18:38:40.385Z\",\r\n    \"photoURL\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/content/actors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"actors"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PostEpisode",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"actorID\": 1,\r\n    \"name\": \"Actor Name\",\r\n    \"birthdayDate\": \"2024-11-22T18:38:40.385Z\",\r\n    \"photoURL\": \"string\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/actors",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"actors"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 22 Nov 2024 18:42:52 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"actorID\": 14,\n    \"name\": \"Actor Name\",\n    \"birthdayDate\": \"2024-11-22T18:38:40.385Z\",\n    \"photoURL\": \"string\"\n}"
+						}
+					]
+				},
+				{
+					"name": "PutActor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (Actualización exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Validar que la respuesta contiene un objeto con las propiedades del actor actualizado\r",
+									"pm.test(\"La respuesta contiene el actor actualizado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"actorID\").that.is.a(\"number\");\r",
+									"    pm.expect(jsonData).to.have.property(\"name\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"birthdayDate\").that.is.a(\"string\");\r",
+									"    pm.expect(jsonData).to.have.property(\"photoURL\").that.is.a(\"string\");\r",
+									"});\r",
+									"\r",
+									"// Validar que el `actorID` en la respuesta es el mismo que el enviado\r",
+									"pm.test(\"El actorID en la respuesta coincide con el enviado\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.actorID).to.eql(21);\r",
+									"});\r",
+									"\r",
+									"// Validar que la fecha de cumpleaños esté en formato string (timestamp)\r",
+									"pm.test(\"La fecha de cumpleaños está en formato string timestamp\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const regex = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?Z$/; // Timestamp en formato ISO 8601\r",
+									"    pm.expect(jsonData.birthdayDate).to.match(regex);\r",
+									"});\r",
+									"\r",
+									"// Validar el esquema de la respuesta del actor actualizado\r",
+									"const schema = {\r",
+									"    \"type\": \"object\",\r",
+									"    \"properties\": {\r",
+									"        \"actorID\": { \"type\": \"integer\" },\r",
+									"        \"name\": { \"type\": \"string\" },\r",
+									"        \"birthdayDate\": { \"type\": \"string\" }, // Ahora es un string (timestamp)\r",
+									"        \"photoURL\": { \"type\": \"string\" }\r",
+									"    },\r",
+									"    \"required\": [\"actorID\", \"name\", \"birthdayDate\", \"photoURL\"]\r",
+									"};\r",
+									"\r",
+									"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+									"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"actorID\": 21,\r\n    \"name\": \"Editado\",\r\n    \"birthdayDate\": \"1965-04-04T00:00:00Z\",\r\n    \"photoURL\": \"https://example.com/photos/rd.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/v1/content/actors/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"actors",
+								"21"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "PutActor",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"actorID\": 1,\r\n    \"name\": \"Robert Downey Jr.\",\r\n    \"birthdayDate\": \"1965-04-04T00:00:00Z\",\r\n    \"photoURL\": \"https://example.com/photos/rd.jpg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/v1/content/actors/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"actors",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 22 Nov 2024 18:45:59 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"actorID\": 1,\n    \"name\": \"Robert Downey Jr.\",\n    \"birthdayDate\": \"1965-04-04T00:00:00Z\",\n    \"photoURL\": \"https://example.com/photos/rd.jpg\"\n}"
+						}
+					]
+				},
+				{
+					"name": "DeleteActor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validar que el código de estado es 200 (Eliminación exitosa)\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"// Validar que el tiempo de respuesta es menor a 500ms\r",
+									"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/v1/content/actors/21",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"v1",
+								"content",
+								"actors",
+								"21"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "DeleteActor",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/v1/content/actors/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"v1",
+										"content",
+										"actors",
+										"2"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 22 Nov 2024 18:47:42 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	]
+}
