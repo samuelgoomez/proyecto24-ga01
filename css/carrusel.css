@@ -1,0 +1,116 @@
+/* Contenedor principal del carrusel */
+.netflix-carousel {
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
+    color: #fff;
+    width: 95%;
+    max-width: 95%;
+    margin: 0 auto;
+    overflow: hidden; /* Asegura que el contenido no se desborde */
+    margin-top: 50px;
+}
+
+/* Título del carrusel */
+.netflix-carousel h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+}
+
+/* Contenedor de películas */
+.carousel-container-film {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    justify-content: flex-start; /* Alineación al inicio */
+    overflow-x: auto; /* Desplazamiento horizontal */
+    scroll-snap-type: x mandatory; /* Desplazamiento suave */
+    white-space: nowrap; /* Todo en una sola fila */
+    width: 100%; /* 100% de ancho */
+    box-sizing: border-box;
+}
+
+/* Contenedor de series */
+.carousel-container-serie {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    justify-content: flex-start; /* Alineación al inicio */
+    overflow-x: auto; /* Desplazamiento horizontal */
+    scroll-snap-type: x mandatory; /* Desplazamiento suave */
+    white-space: nowrap; /* Todo en una sola fila */
+    width: 100%; /* 100% de ancho */
+    box-sizing: border-box;
+}
+
+.carousel-container-actor {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    justify-content: flex-start; /* Alineación al inicio */
+    overflow-x: auto; /* Desplazamiento horizontal */
+    scroll-snap-type: x mandatory; /* Desplazamiento suave */
+    white-space: nowrap; /* Todo en una sola fila */
+    width: 100%; /* 100% de ancho */
+    box-sizing: border-box;
+}
+
+/* Tarjetas de película */
+.movie-card {
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 200px; /* Asegura un tamaño mínimo */
+    max-width: 200px; /* Asegura un tamaño máximo */
+    background: none; /* Sin fondo en la tarjeta */
+}
+
+/* Imágenes de las películas */
+.movie-card img {
+    width: auto; /* Ancho proporcional al alto */
+    height: 200px; /* Alto fijo para la imagen */
+    object-fit: cover; /* Se adapta al tamaño del contenedor */
+    border-bottom: 2px solid #444; /* Línea divisoria debajo de la imagen */
+}
+
+/* Efecto hover para las tarjetas */
+.movie-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+}
+
+/* Título de la película */
+.movie-title {
+    height: 50px; /* Altura fija para el título */
+    width: 100%; /* Alinea el texto con el ancho de la imagen */
+    padding: 10px 5px;
+    font-size: 1em;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    /* background-color: rgba(0, 0, 0, 0.7); Fondo oscuro solo debajo del título */
+    text-overflow: ellipsis; /* Cortar texto largo con puntos suspensivos */
+    overflow: hidden;
+    white-space: nowrap; /* Evita que el texto se desborde */
+    display: flex; /* Centra verticalmente el texto */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Oculta la barra de desplazamiento (opcional) */
+.carousel-container-film::-webkit-scrollbar,
+.carousel-container-actor::-webkit-scrollbar,
+.carousel-container-serie::-webkit-scrollbar {
+    width: 6px; /* Establece el grosor de la barra de desplazamiento */
+    height: 6px; /* Si también quieres personalizar la barra horizontal */
+}
+
+a{
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
+}

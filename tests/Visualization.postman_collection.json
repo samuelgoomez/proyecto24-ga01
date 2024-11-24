@@ -1,0 +1,1348 @@
+{
+	"info": {
+		"_postman_id": "4a4b8281-9b5b-46c3-8576-8ce41a68a88b",
+		"name": "Visualization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39967427"
+	},
+	"item": [
+		{
+			"name": "GetVisualizationsByUser",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que la respuesta tenga estado 200\r",
+							"pm.test(\"Estado 200 - Respuesta exitosa\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Convertir la respuesta a JSON\r",
+							"let responseData = pm.response.json();\r",
+							"\r",
+							"// Verificar que la respuesta contenga datos\r",
+							"pm.test(\"La respuesta no está vacía\", function () {\r",
+							"    pm.expect(responseData.length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"// Validar estructura y datos del primer elemento\r",
+							"if (responseData.length > 0) {\r",
+							"    let visualization = responseData[0];\r",
+							"\r",
+							"    // Validar estructura\r",
+							"    pm.test(\"Validar estructura del primer elemento\", function () {\r",
+							"        pm.expect(visualization).to.have.property(\"visualizationID\");\r",
+							"        pm.expect(visualization).to.have.property(\"userID\");\r",
+							"        pm.expect(visualization).to.have.property(\"filmID\");\r",
+							"        pm.expect(visualization).to.have.property(\"serieID\");\r",
+							"        pm.expect(visualization).to.have.property(\"visualizationDate\");\r",
+							"        pm.expect(visualization).to.have.property(\"progreso\");\r",
+							"    });\r",
+							"\r",
+							"    // Validar valores específicos\r",
+							"    pm.test(\"Validar datos del primer elemento\", function () {\r",
+							"        pm.expect(visualization.visualizationID).to.eql(1); // ID esperado\r",
+							"        pm.expect(visualization.userID).to.eql(1); // userID esperado\r",
+							"        pm.expect(visualization.filmID).to.eql(1); // filmID esperado\r",
+							"        pm.expect(visualization.serieID).to.eql(null); // serieID esperado\r",
+							"        pm.expect(visualization.progreso).to.eql(\"Viendo\"); // progreso esperado\r",
+							"    });\r",
+							"\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/visualizations/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualizations",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetVisualizationsByUser",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/visualizations/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualizations",
+								"5"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 21:00:17 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"visualizationID\": 3,\n        \"userID\": 5,\n        \"filmID\": 1,\n        \"serieID\": null,\n        \"visualizationDate\": \"2024-11-19T16:10:22.136677Z\",\n        \"progreso\": \"Viendo\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "GetContinueWatching",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que la respuesta tenga estado 200\r",
+							"pm.test(\"Estado 200 - Respuesta exitosa\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Convertir la respuesta a JSON\r",
+							"let responseData = pm.response.json();\r",
+							"\r",
+							"// Verificar que la respuesta contenga datos\r",
+							"pm.test(\"La respuesta no está vacía\", function () {\r",
+							"    pm.expect(responseData.length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"// Validar estructura y datos del primer elemento\r",
+							"if (responseData.length > 0) {\r",
+							"    let visualization = responseData[0];\r",
+							"\r",
+							"    // Validar estructura\r",
+							"    pm.test(\"Validar estructura del primer elemento\", function () {\r",
+							"        pm.expect(visualization).to.have.property(\"visualizationID\");\r",
+							"        pm.expect(visualization).to.have.property(\"userID\");\r",
+							"        pm.expect(visualization).to.have.property(\"filmID\");\r",
+							"        pm.expect(visualization).to.have.property(\"serieID\");\r",
+							"        pm.expect(visualization).to.have.property(\"visualizationDate\");\r",
+							"        pm.expect(visualization).to.have.property(\"progreso\");\r",
+							"    });\r",
+							"\r",
+							"    // Validar valores específicos\r",
+							"    pm.test(\"Validar datos del primer elemento\", function () {\r",
+							"        pm.expect(visualization.visualizationID).to.eql(1);\r",
+							"        pm.expect(visualization.userID).to.eql(1);\r",
+							"        pm.expect(visualization.filmID).to.eql(1);\r",
+							"        pm.expect(visualization.serieID).to.eql(0);\r",
+							"        pm.expect(visualization.progreso).to.eql(\"Viendo\");\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/visualization/1/continue-watching",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualization",
+						"1",
+						"continue-watching"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetContinueWatching",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/visualization/5/continue-watching",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualization",
+								"5",
+								"continue-watching"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 20:58:09 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"visualizationID\": 3,\n        \"userID\": 5,\n        \"filmID\": 1,\n        \"serieID\": 0,\n        \"visualizationDate\": \"2024-11-19T16:10:22.136677Z\",\n        \"progreso\": \"Viendo\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "GetPersonalizedRecommendationsFilm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que la respuesta tenga estado 200\r",
+							"pm.test(\"Estado 200 - Respuesta exitosa\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Convertir la respuesta a JSON\r",
+							"let responseData = pm.response.json();\r",
+							"\r",
+							"// Verificar que la respuesta contenga datos\r",
+							"pm.test(\"La respuesta no está vacía\", function () {\r",
+							"    pm.expect(responseData.length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"// Validar estructura y datos del primer elemento\r",
+							"if (responseData.length > 0) {\r",
+							"    let recommendation = responseData[0];\r",
+							"\r",
+							"    // Validar estructura\r",
+							"    pm.test(\"Validar estructura del primer elemento\", function () {\r",
+							"        pm.expect(recommendation).to.have.property(\"filmID\");\r",
+							"        pm.expect(recommendation).to.have.property(\"serieID\");\r",
+							"        pm.expect(recommendation).to.have.property(\"title\");\r",
+							"        pm.expect(recommendation).to.have.property(\"photoURL\");\r",
+							"    });\r",
+							"\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/recommendations/film/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"recommendations",
+						"film",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "GetPersonalizedRecommendationsFilm",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/recommendations/film/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"recommendations",
+								"film",
+								"5"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 20:59:19 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"filmID\": 2,\n        \"serieID\": null,\n        \"title\": \"Superbad\",\n        \"photoURL\": \"https://example.com/superbad.jpg\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "PostChangeSubstitlesFilm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que la respuesta tenga estado 200\r",
+							"pm.test(\"Estado 200 - Respuesta exitosa\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Convertir la respuesta a JSON\r",
+							"let responseData = pm.response.json();\r",
+							"\r",
+							"// Validar que la respuesta no esté vacía\r",
+							"pm.test(\"La respuesta no está vacía\", function () {\r",
+							"    pm.expect(responseData).to.not.be.null;\r",
+							"});\r",
+							"\r",
+							"// Validar la estructura de la respuesta\r",
+							"pm.test(\"Validar estructura de la respuesta\", function () {\r",
+							"    pm.expect(responseData).to.have.property(\"visualizationID\");\r",
+							"    pm.expect(responseData).to.have.property(\"estado\");\r",
+							"    pm.expect(responseData).to.have.property(\"idioma\");\r",
+							"    pm.expect(responseData).to.have.property(\"subtitulos\");\r",
+							"});\r",
+							"\r",
+							"// Validar valores específicos de la respuesta\r",
+							"pm.test(\"Validar datos de la respuesta\", function () {\r",
+							"    pm.expect(responseData.visualizationID).to.eql(1); // ID esperado\r",
+							"    pm.expect(responseData.estado).to.eql(\"Reproduciendo\"); // Estado esperado\r",
+							"    pm.expect(responseData.idioma).to.eql(\"Español\"); // Idioma esperado\r",
+							"    pm.expect(responseData.subtitulos).to.be.true; // Subtítulos esperados\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"languageCode\": \"Sí\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/views/visualization/1/film/1/subtitles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualization",
+						"1",
+						"film",
+						"1",
+						"subtitles"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostChangeSubstitlesFilm",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"languageCode\": \"Sí\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/views/visualization/5/film/1/subtitles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualization",
+								"5",
+								"film",
+								"1",
+								"subtitles"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 20:56:42 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"visualizationID\": 3,\n    \"estado\": \"Reproduciendo\",\n    \"idioma\": \"Español\",\n    \"subtitulos\": true\n}"
+				}
+			]
+		},
+		{
+			"name": "PostPauseFilm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que la respuesta es un objeto\r",
+							"pm.test(\"La respuesta es un objeto\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// Validar las propiedades de la respuesta\r",
+							"pm.test(\"La respuesta contiene las propiedades esperadas\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"visualizationID\").that.is.a(\"number\");\r",
+							"    pm.expect(jsonData).to.have.property(\"estado\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData).to.have.property(\"idioma\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData).to.have.property(\"subtitulos\").that.is.a(\"boolean\");\r",
+							"});\r",
+							"\r",
+							"// Validar los valores específicos de las propiedades\r",
+							"pm.test(\"Los valores de las propiedades son correctos\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.visualizationID).to.eql(1);\r",
+							"    pm.expect(jsonData.estado).to.eql(\"Pausado\");\r",
+							"    pm.expect(jsonData.idioma).to.eql(\"Español\");\r",
+							"    pm.expect(jsonData.subtitulos).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"// Validar el esquema de la respuesta\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"visualizationID\": { \"type\": \"integer\" },\r",
+							"        \"estado\": { \"type\": \"string\" },\r",
+							"        \"idioma\": { \"type\": \"string\" },\r",
+							"        \"subtitulos\": { \"type\": \"boolean\" }\r",
+							"    },\r",
+							"    \"required\": [\"visualizationID\", \"estado\", \"idioma\", \"subtitulos\"]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+							"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/visualization/1/film/1/pause",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualization",
+						"1",
+						"film",
+						"1",
+						"pause"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostPuaseFilm",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/visualization/5/film/1/pause",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualization",
+								"5",
+								"film",
+								"1",
+								"pause"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 21:35:44 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"visualizationID\": 3,\n    \"estado\": \"Pausado\",\n    \"idioma\": \"Español\",\n    \"subtitulos\": false\n}"
+				}
+			]
+		},
+		{
+			"name": "PostPlayFilm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que la respuesta es un objeto\r",
+							"pm.test(\"La respuesta es un objeto\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// Validar las propiedades de la respuesta\r",
+							"pm.test(\"La respuesta contiene las propiedades esperadas\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"visualizationID\").that.is.a(\"number\");\r",
+							"    pm.expect(jsonData).to.have.property(\"estado\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData).to.have.property(\"idioma\").that.is.a(\"string\");\r",
+							"    pm.expect(jsonData).to.have.property(\"subtitulos\").that.is.a(\"boolean\");\r",
+							"});\r",
+							"\r",
+							"// Validar los valores específicos de las propiedades\r",
+							"pm.test(\"Los valores de las propiedades son correctos\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.visualizationID).to.eql(1);\r",
+							"    pm.expect(jsonData.estado).to.eql(\"Reproduciendo\");\r",
+							"    pm.expect(jsonData.idioma).to.eql(\"Español\");\r",
+							"    pm.expect(jsonData.subtitulos).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"// Validar el esquema de la respuesta\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"visualizationID\": { \"type\": \"integer\" },\r",
+							"        \"estado\": { \"type\": \"string\" },\r",
+							"        \"idioma\": { \"type\": \"string\" },\r",
+							"        \"subtitulos\": { \"type\": \"boolean\" }\r",
+							"    },\r",
+							"    \"required\": [\"visualizationID\", \"estado\", \"idioma\", \"subtitulos\"]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+							"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/visualization/1/film/1/play",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualization",
+						"1",
+						"film",
+						"1",
+						"play"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostPlayFilm",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/visualization/5/film/1/play",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualization",
+								"5",
+								"film",
+								"1",
+								"play"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 21:38:16 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"visualizationID\": 3,\n    \"estado\": \"Reproduciendo\",\n    \"idioma\": \"Español\",\n    \"subtitulos\": false\n}"
+				}
+			]
+		},
+		{
+			"name": "PostChangeLanguage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que la respuesta tenga estado 200\r",
+							"pm.test(\"Estado 200 - Respuesta exitosa\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Convertir la respuesta a JSON\r",
+							"let responseData = pm.response.json();\r",
+							"\r",
+							"// Verificar que la respuesta no esté vacía\r",
+							"pm.test(\"La respuesta no está vacía\", function () {\r",
+							"    pm.expect(responseData).to.not.be.null;\r",
+							"});\r",
+							"\r",
+							"// Validar la estructura de la respuesta\r",
+							"pm.test(\"Validar estructura de la respuesta\", function () {\r",
+							"    pm.expect(responseData).to.have.property(\"visualizationID\");\r",
+							"    pm.expect(responseData).to.have.property(\"estado\");\r",
+							"    pm.expect(responseData).to.have.property(\"idioma\");\r",
+							"    pm.expect(responseData).to.have.property(\"subtitulos\");\r",
+							"});\r",
+							"\r",
+							"// Validar valores específicos de la respuesta\r",
+							"pm.test(\"Validar datos de la respuesta\", function () {\r",
+							"    pm.expect(responseData.visualizationID).to.eql(1); // ID esperado\r",
+							"    pm.expect(responseData.estado).to.eql(\"Reproduciendo\"); // Estado esperado\r",
+							"    pm.expect(responseData.idioma).to.eql(\"Ingles\"); // Idioma esperado\r",
+							"    pm.expect(responseData.subtitulos).to.be.true; // Subtítulos esperados\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"languageCode\": \"Ingles\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/views/visualization/1/film/1/language",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualization",
+						"1",
+						"film",
+						"1",
+						"language"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostChangeLanguage",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"languageCode\": \"Español\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/views/visualization/5/film/1/language",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualization",
+								"5",
+								"film",
+								"1",
+								"language"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 21:44:11 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"visualizationID\": 3,\n    \"estado\": \"Reproduciendo\",\n    \"idioma\": \"Español\",\n    \"subtitulos\": true\n}"
+				}
+			]
+		},
+		{
+			"name": "PostEndFilm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que la respuesta no tiene contenido (cuerpo vacío)\r",
+							"pm.test(\"La respuesta no tiene contenido\", function () {\r",
+							"    pm.expect(pm.response.text()).to.be.empty;\r",
+							"});\r",
+							"\r",
+							"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+							"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/visualization/1/film/1/end",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualization",
+						"1",
+						"film",
+						"1",
+						"end"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostEndFilm",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/visualization/5/film/1/end",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualization",
+								"5",
+								"film",
+								"1",
+								"end"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Length",
+							"value": "0"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 21:40:52 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "PostDownloadContent",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que la respuesta es un objeto JSON\r",
+							"pm.test(\"La respuesta es un objeto JSON\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// Validar que el mensaje es 'Descargando película...'\r",
+							"pm.test(\"El mensaje es 'Descargando película...'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Descargando película...\");\r",
+							"});\r",
+							"\r",
+							"// Validar el esquema de la respuesta\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"message\": { \"type\": \"string\" }\r",
+							"    },\r",
+							"    \"required\": [\"message\"]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+							"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/visualization/1/film/1/download",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualization",
+						"1",
+						"film",
+						"1",
+						"download"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "PostDownloadContent",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/visualization/5/film/1/download",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualization",
+								"5",
+								"film",
+								"1",
+								"download"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 21:46:12 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Descargando película...\"\n}"
+				}
+			]
+		},
+		{
+			"name": "DeleteHistorial",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Validar que el código de estado es 200 (Solicitud exitosa)\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"// Validar que la respuesta es un objeto JSON\r",
+							"pm.test(\"La respuesta es un objeto JSON\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"});\r",
+							"\r",
+							"// Validar que el mensaje es 'Historial Borrado'\r",
+							"pm.test(\"El mensaje es 'Hitorial Borrado'\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"message\", \"Hitorial Borrado\");\r",
+							"});\r",
+							"\r",
+							"// Validar el esquema de la respuesta\r",
+							"const schema = {\r",
+							"    \"type\": \"object\",\r",
+							"    \"properties\": {\r",
+							"        \"message\": { \"type\": \"string\" }\r",
+							"    },\r",
+							"    \"required\": [\"message\"]\r",
+							"};\r",
+							"\r",
+							"pm.test(\"La estructura de la respuesta es correcta\", function () {\r",
+							"    pm.expect(tv4.validate(pm.response.json(), schema)).to.be.true;\r",
+							"});\r",
+							"\r",
+							"// Validar que el tiempo de respuesta sea menor a 500ms\r",
+							"pm.test(\"El tiempo de respuesta es menor a 500ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/views/visualizations/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"views",
+						"visualizations",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "DeleteHistorial",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8081/views/visualizations/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"views",
+								"visualizations",
+								"5"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 23 Nov 2024 21:55:00 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Hitorial Borrado\"\n}"
+				}
+			]
+		}
+	]
+}

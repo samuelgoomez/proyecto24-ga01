@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Método de Pago</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+  <a href="javascript:history.back()" class="back-button">
+    <div class="back-arrow">&lt;</div>
+  </a>
+    <div class="formbold-main-wrapper">
+        <h1>Registro de Método de Pago</h1>
+        <div class="formbold-form-wrapper">
+          <form id="paymentMethodForm">
+              <!-- Eliminamos paymentID ya que lo gestionará el backend -->
+                <div>
+                  <label for="paymentID" class="formbold-form-label"></label>
+                  <input
+                  type="hidden"
+                  name="paymentID"
+                  id="paymentID"
+                  value="1"
+                  class="formbold-form-input"
+                  />
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="userID" class="formbold-form-label"></label>
+                    <input
+                    type="hidden"
+                    name="userID"
+                    id="userID"
+                    placeholder="ID del usuario"
+                    class="formbold-form-input"
+                    value="8"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="cardNumber" class="formbold-form-label">Número de Tarjeta</label>
+                    <input
+                    type="text"
+                    name="cardNumber"
+                    id="cardNumber"
+                    placeholder="Número de tarjeta"
+                    class="formbold-form-input"
+                    required
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="expirationDate" class="formbold-form-label">Fecha de Expiración</label>
+                    <input
+                    type="date"
+                    name="expirationDate"
+                    id="expirationDate"
+                    class="formbold-form-input"
+                    required
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="cardHolderName" class="formbold-form-label">Nombre del Titular</label>
+                    <input
+                    type="text"
+                    name="cardHolderName"
+                    id="cardHolderName"
+                    placeholder="Nombre del titular"
+                    class="formbold-form-input"
+                    required
+                    />
+                </div>
+              </div>
+              <button type="button" class="formbold-btn" id="btregistrarMetodoPago">
+                  Registrar Método de Pago
+              </button>
+          </form>
+        </div>
+      </div>
+      <script src="../js/registrarMetodoPago.js"></script>
+</body>
+</html>

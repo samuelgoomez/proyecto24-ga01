@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="../css/iniciarSesion.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+      </a>
+    <div class="formbold-main-wrapper">
+        <h1>Iniciar Sesión</h1>
+        <form class="formbold-form-wrapper" action="login.php" method="POST">
+            <div class="formbold-input-flex">
+                <input type="text" id="username" name="username" class="formbold-form-input" placeholder=" " required>
+                <label for="username" class="formbold-form-label">Nombre de Usuario</label>
+            </div>
+            <div class="formbold-input-flex">
+                <input type="password" id="password" name="password" class="formbold-form-input" placeholder=" " required>
+                <label for="password" class="formbold-form-label">Contraseña</label>
+            </div>
+            <button type="button" class="formbold-btn" id="btn-iniciarSesion">Iniciar Sesión</button>
+        </form>
+    </div>
+    <script src="../js/iniciarSesion.js"></script>
+</body>
+</html>
+

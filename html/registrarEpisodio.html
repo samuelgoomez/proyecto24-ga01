@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Episodio</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+  <a href="javascript:history.back()" class="back-button">
+    <div class="back-arrow">&lt;</div>
+  </a>
+    <div class="formbold-main-wrapper">
+        <h1>Registro de Episodios</h1>
+        <div class="formbold-form-wrapper">
+          <form id="filmForm">
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="episodeID" class="formbold-form-label"></label>
+                    <input
+                    type="hidden"
+                    name="episodeID"
+                    id="episodeID"
+                    value="1"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                  <label for="numEpisodio" class="formbold-form-label"> Número de episodio </label>
+                    <input
+                    type="number"
+                    name="numEpisodio"
+                    id="numEpisodio"
+                    placeholder="1"
+                    class="formbold-form-input"
+                    />
+                </div>
+                <div>
+                    <label for="numTemporada" class="formbold-form-label"> Número de temporada </label>
+                    <input
+                    type="number"
+                    name="numTemporada"
+                    id="numTemporada"
+                    placeholder="1"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="titulo" class="formbold-form-label"> Titulo </label>
+                    <input
+                    type="text"
+                    name="titulo"
+                    id="titulo"
+                    placeholder="Titulo"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <div class="formbold-input-flex">
+                <div>
+                    <label for="photoURL" class="formbold-form-label"> Miniatura de la película </label>
+                    <input
+                    type="url"
+                    name="photoURL"
+                    id="photoURL"
+                    placeholder="https://example.com/image.jpg"
+                    class="formbold-form-input"
+                    />
+                </div>
+              </div>
+              <button type="button" class="formbold-btn" id="btregistrar">
+                  Registrar Episodio
+              </button>
+          </form>
+        </div>
+      </div>
+      <script src="../js/registrarEpisodio.js"></script>
+</body>
+</html>

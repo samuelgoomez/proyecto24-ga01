@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ñefli</title>
+  <link rel="stylesheet" href="../css/paginaPrincipal.css">
+  <link rel="stylesheet" href="../css/carrusel.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="visualizaciones">
+    <div class="logo"><h2 href="paginaPrincipal.html">ÑEFLI</h2></div>
+      <a href="historial.html" class="btn-principal">Historial</a>
+      <a href="recomendaciones.html" class="btn-principal">Recomendaciones</a>
+      <a href="seguirViendo.html" class="btn-principal">Seguir viendo</a>
+    </div>
+    <div class="user-info">
+        <a href="verListas.html" class="btn-principal">Mis Listas</a>
+        <a href="verPerfiles.html" class="btn-principal">Mis Perfiles</a>
+        <div class="user-section" id="userSection">
+          <span class="user-icon">👤</span>
+          <a href="infoCuenta.html" class="usuario-info" id="redirect-link">
+          <p><strong></strong> <span id="username-display">Cargando...</span></p>
+        </a>
+    </div>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <h1 class="main-title">ÑEFLI</h1>
+    <h2>Bienvenido a Ñefli</h2>
+    <p>Explora nuestro catálogo y disfruta de una experiencia única.</p>
+
+    <form id="form-buscador" class="search-form">
+      <div class="search-box">
+          <input 
+              type="text" 
+              id="titulo" 
+              name="titulo" 
+              class="search-input" 
+              placeholder="¿Qué película o serie estás buscando?" 
+          />
+          <button type="button" id="btn-buscar" class="search-button">Buscar</button>
+      </div>
+    </form>
+    
+    <!-- Botón de Registrar Serie -->
+    <button class="btn-registrarSerie" onclick="registrarSerie()">Registrar Serie</button>
+
+    <!-- Botón de Registrar Película -->
+    <button class="btn-registrarPelicula" onclick="registrarPelicula()">Registrar Película</button>
+
+    <!-- Botón de Registrar Actor -->
+    <button class="btn-registrarActor" onclick="registrarActor()">Registrar Actor</button>
+  </main>
+
+  <div class="netflix-carousel">
+    <h2>Películas</h2>
+    <div class="carousel-container-film"></div>
+  </div>
+  
+  <div class="netflix-carousel">
+    <h2>Series</h2>
+    <div class="carousel-container-serie"></div>
+  </div>
+  
+  <div class="netflix-carousel">
+    <h2>Actores</h2>
+    <div class="carousel-container-actor"></div>
+  </div>
+
+
+  <script src="../js/paginaPrincipal.js"></script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método de pago</title>
+    <link rel="stylesheet" href="../css/infoCuenta.css">
+</head>
+<body>
+    <!-- Botón de regreso estilo Netflix -->
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+    </a>
+    
+    <div class="account-info">
+        <h1>Información de tu método de pago</h1>
+        <div id="info-usuario" class="user-details">
+            <p><strong>Número de tarjeta:</strong> <span id="cardnumber-display">Cargando...</span></p>
+            <p><strong>Fecha de expiración:</strong> <span id="expirationdate-display">Cargando...</span></p>
+            <p><strong>Nombre del titular:</strong> <span id="cardholdername-display">Cargando...</span></p>
+        </div>
+
+        <button id="btn-eliminarMetodoPago" class="btn-eliminar" style="display: none;">Eliminar Método de Pago</button>
+    </div>
+
+    <script src="../js/verMetodoPago.js"></script>
+</body>
+</html>

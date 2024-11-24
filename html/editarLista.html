@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Lista</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+<body>
+    <a href="javascript:history.back()" class="back-button">
+        <div class="back-arrow">&lt;</div>
+    </a>
+
+    <div class="formbold-main-wrapper">
+        <h1>Editar Lista</h1>
+        
+        <!-- Formulario para editar el nombre de la lista -->
+
+        <!-- Mostrar películas y series -->
+        <h3>Películas:</h3>
+        <ul id="peliculas-list" class="formbold-list">
+            <!-- Las películas se agregarán aquí mediante JavaScript -->
+        </ul>
+
+        <h3>Series:</h3>
+        <ul id="series-list" class="formbold-list">
+            <!-- Las series se agregarán aquí mediante JavaScript -->
+        </ul>
+
+        <form class="formbold-form-wrapper">
+            <input type="hidden" name="userID" id="userID" />
+            <input type="hidden" name="listID" id="listID" />
+
+            <div class="formbold-input-flex">
+                <label for="name" class="formbold-form-label">Nombre de la Lista</label>
+                <input type="text" name="name" id="name" class="formbold-form-input" placeholder="Nuevo nombre de la lista" />
+            </div>
+
+        <button type="button" class="formbold-btn" id="btn-guardarLista" onclick="guardarNombre()">Guardar Cambios</button>
+        </form>
+
+    </div>
+
+    
+
+    <script src="../js/editarLista.js"></script>
+</body>
+</html>

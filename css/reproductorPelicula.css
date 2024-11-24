@@ -1,0 +1,297 @@
+/* Fondo general */
+body {
+    margin: 0;
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Contenedor principal */
+.pelicula-detalles {
+    display: none; /* Ocultar detalles si no son necesarios */
+}
+
+.reproductor {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+}
+
+/* Estilo de los botones de idioma */
+.control-btn img {
+    width: 40px;  /* Aumenta el tamaño de las banderas */
+    height: auto; /* Mantiene la proporción de la imagen */
+    margin-right: 8px;  /* Espacio entre la bandera y el texto */
+}
+
+/* Opcionalmente, ajusta el tamaño del texto */
+.control-btn span {
+    font-size: 14px;  /* Tamaño del texto */
+}
+
+/* Botones centrales (Reproducir, Adelantar, Retroceder) */
+.controles {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 40%;
+}
+
+/* Botones de control */
+.control-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.control-btn:hover {
+    opacity: 1;
+}
+
+/* Barra de progreso */
+.progreso {
+    position: absolute;
+    bottom: 10%;
+    width: 100%;
+    left: 1%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+
+}
+
+.barra {
+    flex-grow: 1;
+    height: 5px;
+    background-color: #444;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progreso-actual {
+    height: 100%;
+    background-color: #e50914;
+    width: 30%; /* Esto simula un progreso del 30% */
+}
+
+.tiempo {
+    color: #aaa;
+    font-size: 0.9rem;
+    margin: 0 10px;
+}
+
+/* Iconos adicionales */
+.iconos-superiores, .iconos-inferiores {
+    position: absolute;
+    display: flex;
+    justify-content: space-around; /* Espaciado más uniforme */
+    width: 100%;
+    padding: 10px;
+    color: #fff;
+}
+
+.iconos-superiores {
+    top: 0;
+    
+}
+
+.iconos-inferiores {
+    bottom: 0; /* Pegado al fondo de la pantalla */
+    font-size: 2rem; /* Aumenta el tamaño de los iconos */
+    align-items: center; /* Centra los iconos verticalmente */
+    margin-bottom: 0; /* Asegura que no haya espacio adicional en la parte inferior */
+}
+
+.icono {
+    cursor: pointer;
+    opacity: 0.8;
+    font-size: 2.5rem;  /* Aumenta el tamaño de los iconos */
+    transition: opacity 0.3s, transform 0.3s;  /* Agrega transición de tamaño */
+}
+
+.icono:hover {
+    opacity: 1;
+    transform: scale(1.2);  /* Efecto de agrandar al pasar el ratón */
+}
+
+.icono_vuelta {
+    cursor: pointer;
+    opacity: 0.8;
+    font-size: 2.5rem;  /* Aumenta el tamaño de los iconos */
+    transition: opacity 0.3s, transform 0.3s;  /* Agrega transición de tamaño */
+}
+
+.icono_vuelta:hover {
+    opacity: 1;
+    transform: scale(1.2);  /* Efecto de agrandar al pasar el ratón */
+}
+
+.iconos-inferiores button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem; /* Aumenta el tamaño del texto */
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.iconos-inferiores button:hover {
+    background-color: rgba(255, 255, 255, 0.1);  /* Efecto de fondo al pasar el ratón */
+}
+
+.iconos-inferiores button img {
+    width: 50px;  /* Aumenta el tamaño de las imágenes de los iconos */
+    height: auto;
+    margin-right: 10px;  /* Espacio entre la imagen y el texto */
+}
+
+/* Botón Descargar */
+#download-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 4rem; /* Aumenta el tamaño del icono */
+    padding: 20px 30px; /* Aumenta el padding para hacerlo más grande */
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Efecto de hover para el botón */
+#download-button:hover {
+    opacity: 0.9; /* Disminuye un poco la opacidad al pasar el ratón */
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño al pasar el ratón */
+}
+
+/* Estilo para el icono dentro del botón */
+#download-button .icono {
+    font-size: 1.5rem; /* Tamaño grande del icono dentro del botón */
+    transition: transform 0.3s;
+}
+
+#download-button img {
+    width: 35px; /* Ajusta el tamaño de la imagen */
+    height: 35px;
+    transition: transform 0.3s;
+}
+
+/* Efecto de hover en el icono */
+#download-button:hover .icono {
+    transform: scale(1.1); /* Agranda el icono cuando el botón es hover */
+}
+
+/* Botón de reproducir */
+#play-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 4rem; /* Aumenta el tamaño del botón */
+    padding: 20px 30px; /* Aumenta el padding */
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Efecto hover para el botón de reproducir */
+#play-button:hover {
+    opacity: 0.9; /* Disminuye un poco la opacidad */
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño */
+}
+
+/* Estilo para la imagen dentro del botón */
+#play-button img {
+    width: 35px; /* Ajusta el tamaño de la imagen */
+    height: 35px;
+    transition: transform 0.3s;
+}
+
+/* Hover en la imagen del botón de reproducir */
+#play-button:hover img {
+    transform: scale(1.1); /* Agranda la imagen en hover */
+}
+
+/* Botón de pausar */
+#pause-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 4rem; /* Aumenta el tamaño del botón */
+    padding: 20px 30px; /* Aumenta el padding */
+    cursor: pointer;
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Efecto hover para el botón de pausar */
+#pause-button:hover {
+    opacity: 0.9; /* Disminuye un poco la opacidad */
+    transform: scale(1.1); /* Aumenta ligeramente el tamaño */
+}
+
+/* Estilo para la imagen dentro del botón */
+#pause-button img {
+    width: 35px; /* Ajusta el tamaño de la imagen */
+    height: 35px;
+    transition: transform 0.3s;
+}
+
+/* Hover en la imagen del botón de pausar */
+#pause-button:hover img {
+    transform: scale(1.1); /* Agranda la imagen en hover */
+}
+
+/* Estilo para el contenedor del GIF */
+#centered-gif {
+    position: fixed;  /* Fija el contenedor en la pantalla */
+    top: 50%;  /* Centra el contenedor verticalmente */
+    left: 50%;  /* Centra el contenedor horizontalmente */
+    transform: translate(-50%, -50%);  /* Ajusta para asegurar que esté perfectamente centrado */
+    z-index: 9999;  /* Asegura que el gif se muestre por encima de otros elementos */
+}
+
+/* Estilo para el GIF dentro del contenedor */
+#loading-gif img {
+    width: 70vw;  /* Establece el ancho del GIF al 70% del ancho de la ventana */
+    height: 70vh; /* Establece la altura del GIF al 70% de la altura de la ventana */
+    margin-right: 200px;
+}
+
+/* Estilo para el GIF */
+#loading-gif {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999; /* Asegura que el GIF esté por encima de otros elementos */
+}
+
+/* Ocultar el GIF inicialmente */
+.hidden {
+    display: none;
+}
+
+
