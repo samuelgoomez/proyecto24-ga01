@@ -23,7 +23,7 @@ jobs:
           POSTGRES_PASSWORD: 12345
 
     steps:
-      # Clona el repositorio
+      # Clona el repositorio1
       - name: Check out repository
         uses: actions/checkout@v4
         with:
