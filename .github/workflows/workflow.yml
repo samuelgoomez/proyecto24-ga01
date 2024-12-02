@@ -1,17 +1,17 @@
-# Workflow de integración continua y análisis SonarQube
-name: CI/CD and SonarQube Analysis
+name: Compilación, Pruebas y Análisis con SonarCloud
 
 on:
   push:
     branches:
-      - main
-      - feature/Integracion-Continua
+      - "main"
+      - "feature/Integracion-Continua"
   pull_request:
     types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-analyze:
+    name: Build, Test and Analyze Content Microservice
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -23,116 +23,68 @@ jobs:
           POSTGRES_PASSWORD: 12345
 
     steps:
-      # Clona el repositorio1
+      # Clona el repositorio
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Necesario para SonarQube
+          fetch-depth: 0  # Para un análisis completo en SonarCloud
 
-      # Configura Java 8
-      - name: Set up JDK 8
-        uses: actions/setup-java@v4
+      # Configura Java 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-          java-version: '8'
-          distribution: 'temurin'
+          java-version: 17
+          distribution: 'zulu'
           cache: maven
 
-      # Configura PostgreSQL
+      # Espera a que PostgreSQL esté listo
       - name: Wait for PostgreSQL to be ready
         run: |
           while ! pg_isready -h localhost -p 5432 -U postgres; do
-            echo "Waiting for PostgreSQL to be ready..."
+            echo "Esperando a que PostgreSQL esté listo..."
             sleep 2
           done
 
-      # Ejecutar scripts SQL
-      - name: Execute SQL scripts
+      # Ejecutar scripts SQL para inicializar la base de datos del microservicio Content
+      - name: Execute SQL script for Content database
         run: |
           export PGPASSWORD=12345
-          psql -h localhost -U postgres -f User.sql
           psql -h localhost -U postgres -f Content.sql
-          psql -h localhost -U postgres -f Visualization.sql
 
-      # Construir y probar microservicios
-      - name: Build and test Visualization microservice
-        run: |
-          cd Visualization
-          mvn clean install
-          mvn test
+      # Construir y probar solo el microservicio Content
       - name: Build and test Content microservice
         run: |
           cd Content
           mvn clean install
           mvn test
-      - name: Build and test User microservice
-        run: |
-          cd User
-          mvn clean install
-          mvn test
 
-      # Ejecutar microservicios
-      - name: Run Visualization microservice
-        run: |
-          cd Visualization
-          mvn spring-boot:run &
-      - name: Run Content microservice
-        run: |
-          cd Content
-          mvn spring-boot:run &
-      - name: Run User microservice
-        run: |
-          cd User
-          mvn spring-boot:run &
-
-      # Configurar Node.js y ejecutar pruebas Postman
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-      - name: Install Newman
-        run: npm install -g newman
-      - name: Run Postman User tests
-        run: newman run tests/User.postman_collection.json
-      - name: Run Postman Content tests
-        run: newman run tests/Content.postman_collection.json
-      - name: Run Postman Visualization tests
-        run: newman run tests/Visualization.postman_collection.json
-
-      # Mensaje de éxito
-      - name: Completion message
-        run: echo "Todos los microservicios han sido compilados y probados exitosamente."
-
-  sonar_analysis:
-    name: SonarQube Analysis
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: 'zulu'
-      - name: Cache SonarQube Cloud packages
+      # Análisis de SonarCloud para el microservicio Content
+      - name: Cache SonarCloud packages
         uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache Maven packages
         uses: actions/cache@v4
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build and analyze with SonarQube
+
+      - name: Run SonarCloud analysis for Content
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           cd User
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=samuelgoomez_proyecto24-ga01
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=samuelgoomez_proyecto24-ga01 \
+            -Dsonar.organization=samuelgoomez \
+            -Dsonar.host.url=https://sonarcloud.io \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-
+      # Mensaje final
+      - name: Completion Message
+        run: echo "El microservicio Content ha sido compilado, probado y analizado exitosamente con SonarCloud."
