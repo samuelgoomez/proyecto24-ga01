@@ -1,10 +1,13 @@
-name: Compilación de la rama main
+# Workflow de integración continua y análisis SonarQube
+name: CI/CD and SonarQube Analysis
 
 on:
   push:
     branches:
-      - "main"
-      - "feature/Integracion-Continua"
+      - main
+      - feature/Integracion-Continua
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 jobs:
@@ -22,17 +25,19 @@ jobs:
     steps:
       # Clona el repositorio
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Necesario para SonarQube
 
       # Configura Java 8
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v4
         with:
-          java-version: '8' # Usa '8' en lugar de '1.8'
+          java-version: '8'
           distribution: 'temurin'
           cache: maven
-      
-           # Set up PostgreSQL
+
+      # Configura PostgreSQL
       - name: Wait for PostgreSQL to be ready
         run: |
           while ! pg_isready -h localhost -p 5432 -U postgres; do
@@ -40,84 +45,91 @@ jobs:
             sleep 2
           done
 
-      # Ejecutar el script SQL para crear la base de datos y las tablas
-      - name: Execute SQL script to set up  User database
+      # Ejecutar scripts SQL
+      - name: Execute SQL scripts
         run: |
-          # Establecer la contraseña del usuario postgres
           export PGPASSWORD=12345
-          # Ejecutar el script SQL para crear las tablas
           psql -h localhost -U postgres -f User.sql
-      
-      - name: Execute SQL script to set up Content database
-        run: |
-            # Establecer la contraseña del usuario postgres
-            export PGPASSWORD=12345
-            # Ejecutar el script SQL para crear las tablas
-            psql -h localhost -U postgres -f Content.sql
+          psql -h localhost -U postgres -f Content.sql
+          psql -h localhost -U postgres -f Visualization.sql
 
-      - name: Execute SQL script to set up Visualization database
-        run: |
-            # Establecer la contraseña del usuario postgres
-            export PGPASSWORD=12345
-            # Ejecutar el script SQL para crear las tablas
-            psql -h localhost -U postgres -f Visualization.sql
-
-      # Construye y prueba el primer microservicio
-      - name: Build and test microservicio Visualization 
+      # Construir y probar microservicios
+      - name: Build and test Visualization microservice
         run: |
           cd Visualization
           mvn clean install
           mvn test
-
-      # Construye y prueba el segundo microservicio
-      - name: Build and test microservicio Content
+      - name: Build and test Content microservice
         run: |
           cd Content
           mvn clean install
           mvn test
-
-      # Construye y prueba el tercer microservicio
-      - name: Build and test microservicio User
+      - name: Build and test User microservice
         run: |
           cd User
           mvn clean install
           mvn test
-      
+
+      # Ejecutar microservicios
       - name: Run Visualization microservice
         run: |
-            cd Visualization
-            mvn spring-boot:run &
-
+          cd Visualization
+          mvn spring-boot:run &
       - name: Run Content microservice
         run: |
-            cd Content
-            mvn spring-boot:run &
+          cd Content
+          mvn spring-boot:run &
       - name: Run User microservice
         run: |
-            cd User
-            mvn spring-boot:run &  
-                
-     # Paso 5: Instalar Node.js (para usar Newman)
+          cd User
+          mvn spring-boot:run &
+
+      # Configurar Node.js y ejecutar pruebas Postman
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-
-      # Paso 6: Instalar Newman
       - name: Install Newman
         run: npm install -g newman
-
-      # Paso 7: Ejecutar pruebas de Postman
       - name: Run Postman User tests
         run: newman run tests/User.postman_collection.json
-      
-       # Paso 7: Ejecutar pruebas de Postman
       - name: Run Postman Content tests
         run: newman run tests/Content.postman_collection.json
-      
-       # Paso 7: Ejecutar pruebas de Postman
       - name: Run Postman Visualization tests
         run: newman run tests/Visualization.postman_collection.json
-#================================================================
-      - name: Run a one-line script
-        run: echo Todos los microservicios \(Visualization, User, Content\) han sido compilados y probados exitosamente
+
+      # Mensaje de éxito
+      - name: Completion message
+        run: echo "Todos los microservicios han sido compilados y probados exitosamente."
+
+  sonar_analysis:
+    name: SonarQube Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'zulu'
+      - name: Cache SonarQube Cloud packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze with SonarQube
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=samuelgoomez_proyecto24-ga01
+
